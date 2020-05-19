@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function HomeScreen({ navigation }) {
+export default function DownloadScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text>this is home page</Text>
+            <Text>this is download page</Text>
         </View>
     );
 }

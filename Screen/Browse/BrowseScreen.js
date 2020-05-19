@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default function LoginScreen({ navigation }) {
+export default function BrowseScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      
+      <Text>This is browse screen</Text>
     </View>
   );
 }
