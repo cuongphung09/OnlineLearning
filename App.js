@@ -1,11 +1,11 @@
 import React from "react";
 import { Avatar } from "react-native-elements";
-import { StyleSheet, Text, View, Button, UIManager,findNodeHandle } from "react-native";
-import SearchScreen from "./Screen/SearchScreen";
+import { StyleSheet, Text, View, Button, UIManager, findNodeHandle } from "react-native";
+import Search from "./Screen/SearchScreen";
 import ProfileScreen from "./Screen/ProfileScreen";
-import HomeScreen from "./Screen/HomeScreen";
-import DownloadScreen from "./Screen/DownloadScreen";
-import BrowseScreen from "./Screen/BrowseScreen";
+import HomeScreen from "./src/Main/Home/HomeScreen";
+import Download from "./Screen/DownloadScreen";
+import Browse from "./Screen/BrowseScreen";
 import "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -13,55 +13,118 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { NavigationContainer } from "@react-navigation/native";
 import { ScreenStack } from "react-native-screens";
 import { createStackNavigator } from "@react-navigation/stack";
-import Header from "./Component/header";
+import Header from "./src/Component/header";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Alert } from "react-native";
 const Stack = createStackNavigator();
+const HomeStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 function Home({ navigation }) {
   return (
-    <Tab.Navigator initialRouteName="HomeScreen">
-      <Tab.Screen
-        name="HomeScreen"
+    <HomeStack.Navigator
+      headerMode="screen"
+      screenOptions={({ navigation, route }) => ({
+        headerTitleStyle: {
+          color: "white",
+        },
+        headerStyle: {
+          backgroundColor: "#212121",
+        },
+        headerRight: () => (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Avatar
+              containerStyle={{ marginRight: 10 }}
+              size={25}
+              rounded
+              source={{
+                uri:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+              }}
+              onPress={() => navigation.navigate("Profile")}
+            />
+            <TouchableOpacity
+              onPress={() => {
+
+                Alert.alert("Ai rảnh ")
+              }}
+            >
+              <MaterialCommunityIcons
+                name="dots-vertical"
+                color="white"
+                size={25}
+                style={{ marginRight: 10 }}
+              />
+            </TouchableOpacity>
+          </View>
+        ),
+      })}
+    >
+      <HomeStack.Screen
+        name="Home"
         component={HomeScreen}
+      >
+      </HomeStack.Screen>
+    </HomeStack.Navigator>
+  )
+}
+function Main({ navigation }) {
+  return (
+    <Tab.Navigator initialRouteName="Home"
+      tabBarOptions={{
+        activeBackgroundColor: '#212121',
+        inactiveBackgroundColor: '#212121',
+        inactiveTintColor:'#fff'
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="home-outline"
               color={color}
-              size={size}
+              size={size+5}
             />
           ),
+
         }}
       />
       <Tab.Screen
-        name="DownloadScreen"
-        component={DownloadScreen}
+        name="Download"
+        component={Download}
         options={{
           tabBarLabel: "Download",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="download" color={color} size={size} />
+            <MaterialCommunityIcons name="download" color={color} size={size+5} />
           ),
         }}
       />
       <Tab.Screen
-        name="BrowseScreen"
-        component={BrowseScreen}
+        name="Browse"
+        component={Browse}
         options={{
           tabBarLabel: "Browse",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="grid" color={color} size={size} />
+            <MaterialCommunityIcons name="grid" color={color} size={size+5} />
           ),
         }}
       />
       <Tab.Screen
         name="Search"
-        component={SearchScreen}
+        component={Search}
+
         options={{
           tabBarLabel: "Search",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={size} />
+            <MaterialCommunityIcons name="magnify" color={color} size={size+5} />
           ),
         }}
       />
@@ -73,64 +136,14 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        headerMode="screen"
-        screenOptions={({ navigation, route }) => ({
-          headerTitleStyle: {
-            color: "white",
-          },
-          headerStyle: {
-            backgroundColor: "#212121",
-          },
-          headerRight: () => (
-            // <Button title="PRO" onPress={()=>navigation.navigate('Profile')}></Button>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Avatar
-                containerStyle={{ marginRight: 10 }}
-                size={25}
-                rounded
-                source={{
-                  uri:
-                    "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-                }}
-                onPress={() => navigation.navigate("Profile")}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  // UIManager.showPopupMenu(
-                  //   findNodeHandle(<Text>ABC</Text>),
-                  //   this.props.actions,
-                  //   this.onError,
-                  //   this.props.onPress
-                  // );
-                  Alert.alert("Ai rảnh ")
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="dots-vertical"
-                  color="white"
-                  size={25}
-                  style={{ marginRight: 10 }}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-        })}
+        headerMode="none"
       >
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+          name="Main"
+          component={Main} />
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}
-          options={{
-            headerRightContainerStyle: {
-              opacity: 0,
-            },
-          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
