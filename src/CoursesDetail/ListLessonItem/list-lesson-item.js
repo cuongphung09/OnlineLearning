@@ -1,8 +1,8 @@
 import React from "react"
-import { View, StyleSheet, Text, Image, Dimensions } from "react-native"
+import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
 const ListLessonItem = (props) => {
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={props.onPress}>
             <View style={styles.imgContainer}>
                 <Image style={styles.img} source={require('../../../react.png')}></Image>
             </View>
@@ -13,7 +13,7 @@ const ListLessonItem = (props) => {
                 <Text style={styles.text}>{props.item.level} • {props.item.release} • {props.item.duration}</Text>
 
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 const styles = StyleSheet.create({

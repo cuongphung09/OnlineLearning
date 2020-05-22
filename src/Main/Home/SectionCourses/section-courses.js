@@ -4,6 +4,7 @@ import { View, Text, ScrollView, StyleSheet, Alert } from "react-native"
 import SectionCoursesItem from "../SectionCoursesItem/section-courses-item"
 import { TouchableOpacity } from "react-native-gesture-handler"
 const SectionCourses = (props) => {
+    
     const courses = [
         {
             id: 1,
@@ -31,7 +32,7 @@ const SectionCourses = (props) => {
         }
     ]
     const renderListItem = (courses) => {
-        return courses.map(item => <SectionCoursesItem item={item} key={item.id} />)
+        return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.push('CoursesDetail')}/>)
     }
     return (
         <View style={{ marginBottom: 30 }}>

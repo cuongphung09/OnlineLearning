@@ -1,8 +1,8 @@
 import React from "react"
-import { View, StyleSheet, Text, Image, Dimensions } from "react-native"
+import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
 const SectionCoursesItem = (props) => {
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={props.onPress}>
             <View style={styles.imgContainer}>
                 <Image style={styles.img} source={require('../../../../react.png')}></Image>
             </View>
@@ -13,7 +13,7 @@ const SectionCoursesItem = (props) => {
                 <Text style={styles.text}>{props.item.level} • {props.item.release} • {props.item.duration}</Text>
 
             </View>
-        </View>
+        </TouchableOpacity>
     )
 
 }
@@ -22,12 +22,8 @@ const styles = StyleSheet.create({
         marginRight: 20,
         width: 200,
         height: 200,
-        backgroundColor: '#1F242A',
+        // backgroundColor: '#1F242A',
         display: 'flex',
-
-        // display: 'flex',
-        // alignItems: 'flex-start',
-        // justifyContent: 'flex-end',
     },
     imgContainer: {
         width: 200,

@@ -16,6 +16,7 @@ import ListLesson from "./src/CoursesDetail/ListLesson/list-lesson";
 import DownloadScreen from "./Screen/DownloadScreen";
 import DownloadNavigation from "./src/Main/Download/DownloadNavigation";
 import BrowseScreen from "./Screen/BrowseScreen";
+import CoursesDetail from "./src/CoursesDetail/course-detail";
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const DownloadStack = createStackNavigator();
@@ -189,7 +190,8 @@ function Main({ navigation }) {
       tabBarOptions={{
         activeBackgroundColor: '#212121',
         inactiveBackgroundColor: '#212121',
-        inactiveTintColor: '#fff'
+        inactiveTintColor: '#fff',
+        keyboardHidesTabBar:true
       }}
     >
       <Tab.Screen
@@ -250,9 +252,6 @@ export default function App() {
       <Stack.Navigator
         headerMode="screen"
         screenOptions={() => ({
-          // headerTitleStyle: {
-          //   color: "white",
-          // },
           headerStyle: {
             backgroundColor: "#212121",
           },
@@ -270,6 +269,13 @@ export default function App() {
         <Stack.Screen
           name='ListLesson'
           component={ListLesson}
+          options={{
+            title: ''
+          }}
+        />
+        <Stack.Screen
+          name='CoursesDetail'
+          component={CoursesDetail}
           options={{
             title: ''
           }}

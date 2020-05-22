@@ -1,8 +1,8 @@
 import React from "react"
-import { View, StyleSheet, Text, Image, ScrollView } from "react-native"
+import { View, StyleSheet, Text, Image, ScrollView, Alert } from "react-native"
 import ListLessonItem from '../ListLessonItem/list-lesson-item'
 import { TouchableOpacity } from "react-native-gesture-handler"
-const ListLesson = ({ props,route }) => {
+const ListLesson = ({ route,navigation }) => {
     const courses = [
         {
             id: 1,
@@ -86,7 +86,7 @@ const ListLesson = ({ props,route }) => {
         }
     ]
     const renderListItem = (courses) => {
-        return courses.map(item => <ListLessonItem item={item} key={item.id} />)
+        return courses.map(item => <ListLessonItem item={item} key={item.id} onPress={()=>navigation.navigate('CoursesDetail')} />)
     }
     return (
         <View style={styles.container}>
