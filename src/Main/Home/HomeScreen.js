@@ -1,29 +1,25 @@
-import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { color } from 'react-native-reanimated';
-import { withTheme } from 'react-native-elements';
 import SectionCourses from "./SectionCourses/section-courses"
-const HomeScreen = ( props, navigation )=> {
-  return (
-    <ScrollView style={styles.container}>
-      <SectionCourses  title='Software Development'/>
-      <SectionCourses  title='IT operations'/>
-      <SectionCourses  title='Data Professional'/>
-    </ScrollView>
-  );
+import React from 'react'
+import { View, StyleSheet, ImageBackground, TouchableOpacity, Text, ScrollView } from 'react-native'
+const HomeScreen = ({navigation}) => {
+   return (
+      <ScrollView style={styles.container}>
+         <ImageBackground style={{ height: 100, justifyContent: 'flex-end' }} source={{ uri: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' }}>
+            <Text style={{ color: '#d6d6d6', marginBottom: 5 }}>Welcome to PluralSight!</Text>
+         </ImageBackground>
+         <Text style={{ color: 'white', fontSize: 15, paddingTop: 10, paddingBottom: 20, fontWeight: 'bold' }}>With PluralSight, you can build and apply skills in top technologies.</Text>
+         <SectionCourses title='Software Development' onPress={() => navigation.navigate("ListLesson",{title:'Software Development'})} />
+         <SectionCourses title='IT operations' onPress={() => navigation.navigate("ListLesson",{title:'IT operations'})} />
+         <SectionCourses title='Data Professional' onPress={() => navigation.navigate("ListLesson",{title:'Data Professional'})} />
+      </ScrollView>
+   )
 }
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // // backgroundColor: '#fff',
-    // display: 'flex',
-    // alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
-    paddingLeft: 10,
-    paddingTop: 10,
-    backgroundColor: '#000',
-  },
-
-});
+   container: {
+      flex: 1,
+      paddingLeft: 10,
+      paddingTop: 10,
+      backgroundColor: '#0E0F13',
+   },
+})
 export default HomeScreen

@@ -1,10 +1,10 @@
 import React from "react"
 import { View, StyleSheet, Text, Image, Dimensions } from "react-native"
-const SectionCoursesItem = (props) => {
+const ListLessonItem = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.imgContainer}>
-                <Image style={styles.img} source={require('../../../../react.png')}></Image>
+                <Image style={styles.img} source={require('../../../react.png')}></Image>
             </View>
 
             <View style={styles.textContainer}>
@@ -15,35 +15,33 @@ const SectionCoursesItem = (props) => {
             </View>
         </View>
     )
-
 }
 const styles = StyleSheet.create({
     container: {
-        marginRight: 20,
-        width: 200,
-        height: 200,
-        backgroundColor: '#1F242A',
-        display: 'flex',
+        flex: 1,
+        // backgroundColor: '#1F242A',
+        flexDirection: 'row',
+        marginBottom: 10,
 
-        // display: 'flex',
-        // alignItems: 'flex-start',
-        // justifyContent: 'flex-end',
     },
     imgContainer: {
-        width: 200,
+        marginLeft: 20,
+        width: 100,
         height: 100,
+        alignSelf: 'center',
+        // backgroundColor: '#fff',
     },
     img: {
         flex: 1,
         width: null,
         height: null,
         resizeMode: 'contain',
-
+        margin: 10,
+        // backgroundColor: '#000',
     },
     textContainer: {
-        margin: 5,
-        alignContent: 'flex-start',
-        alignSelf: 'flex-start'
+        marginLeft: 5,
+        alignItems: 'flex-start',
     },
     title: {
         textAlignVertical: 'top',
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#d6d6d6',
-        fontSize: 12
+        fontSize: 12,
     }
 })
-export default SectionCoursesItem
+export default ListLessonItem
