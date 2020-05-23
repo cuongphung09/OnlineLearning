@@ -116,6 +116,76 @@ export default function BrowseScreen({ navigation }) {
               Andrew
             </Text>
           </View>
+          <View style={styles.avatar}>
+            <Avatar
+              containerStyle={{ margin:10 }}
+              size={75}
+              rounded
+              source={{
+                uri:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+              }}
+            />
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
+              Andrew
+            </Text>
+          </View>
+          <View style={styles.avatar}>
+            <Avatar
+              containerStyle={{ margin:10 }}
+              size={75}
+              rounded
+              source={{
+                uri:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+              }}
+            />
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
+              Andrew
+            </Text>
+          </View>
+          <View style={styles.avatar}>
+            <Avatar
+              containerStyle={{ margin:10 }}
+              size={75}
+              rounded
+              source={{
+                uri:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+              }}
+            />
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
+              Andrew
+            </Text>
+          </View>
+          <View style={styles.avatar}>
+            <Avatar
+              containerStyle={{ margin:10 }}
+              size={75}
+              rounded
+              source={{
+                uri:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+              }}
+            />
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
+              Andrew
+            </Text>
+          </View>
+          <View style={styles.avatar}>
+            <Avatar
+              containerStyle={{ margin:10 }}
+              size={75}
+              rounded
+              source={{
+                uri:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+              }}
+            />
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
+              Andrew
+            </Text>
+          </View>
         </ScrollView>
       </View>
     </ScrollView>

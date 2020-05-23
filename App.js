@@ -53,8 +53,7 @@ function Home({ navigation }) {
             />
             <TouchableOpacity
               onPress={() => {
-
-                Alert.alert("Ai rảnh ")
+                navigation.navigate('Profile')
               }}
             >
               <MaterialCommunityIcons
@@ -108,7 +107,7 @@ function Download({ navigation }) {
             <TouchableOpacity
               onPress={() => {
 
-                Alert.alert("Ai rảnh ")
+                Alert.alert("Menu")
               }}
             >
               <MaterialCommunityIcons
@@ -162,7 +161,7 @@ function Browse({ navigation }) {
             <TouchableOpacity
               onPress={() => {
 
-                Alert.alert("Ai rảnh ")
+                Alert.alert("Menu")
               }}
             >
               <MaterialCommunityIcons

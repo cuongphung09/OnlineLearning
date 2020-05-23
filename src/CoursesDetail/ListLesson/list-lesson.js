@@ -86,7 +86,7 @@ const ListLesson = ({ route,navigation,props  }) => {
         }
     ]
     const renderListItem = (courses) => {
-        return courses.map(item => <ListLessonItem item={item} key={item.id} onPress={()=>navigation.navigate('CoursesDetail')} />)
+        return courses.map(item => <ListLessonItem item={item} key={item.id} onPress={()=>navigation.navigate('CoursesDetail',{item:item})} />)
     }
     return (
         <View style={styles.container}>

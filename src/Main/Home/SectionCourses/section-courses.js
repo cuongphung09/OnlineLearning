@@ -12,7 +12,7 @@ const SectionCourses = (props) => {
             author: "Joe Eames",
             level: "Intermediate",
             release: "12/2019",
-            duration: "9 hours 30 minutes aaaa"
+            duration: "9 hours 30 minutes"
         },
         {
             id: 2,
