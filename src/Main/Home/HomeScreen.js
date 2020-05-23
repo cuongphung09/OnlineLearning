@@ -8,9 +8,6 @@ const HomeScreen = ({navigation}) => {
             <Text style={{ color: '#d6d6d6', marginBottom: 5 }}>Welcome to PluralSight!</Text>
          </ImageBackground>
          <Text style={{ color: 'white', fontSize: 15, paddingTop: 10, paddingBottom: 20, fontWeight: 'bold' }}>With PluralSight, you can build and apply skills in top technologies.</Text>
-         {/* <SectionCourses title='Software Development' onPress={() => navigation.navigate("ListLesson",{title:'Software Development'})} />
-         <SectionCourses title='IT operations' onPress={() => navigation.navigate("ListLesson",{title:'IT operations'})} />
-         <SectionCourses title='Data Professional' onPress={() => navigation.navigate("ListLesson",{title:'Data Professional'})} />*/}
          <SectionCourses title='Software Development' navigation={navigation}  onPress={() => navigation.navigate("ListLesson",{title:'Software Development'})}/>
          <SectionCourses title='IT operations' navigation={navigation} onPress={() => navigation.navigate("ListLesson",{title:'IT operations'})}/>
          <SectionCourses title='Data Professional' navigation={navigation} onPress={() => navigation.navigate("ListLesson",{title:'Data Professional'})}/> 

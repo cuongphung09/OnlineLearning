@@ -2,7 +2,7 @@ import React from "react"
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from "react-native"
 import ListLessonItem from '../ListLessonItem/list-lesson-item'
 import { TouchableOpacity } from "react-native-gesture-handler"
-const ListLesson = ({ route,navigation }) => {
+const ListLesson = ({ route,navigation,props  }) => {
     const courses = [
         {
             id: 1,

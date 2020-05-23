@@ -32,7 +32,7 @@ const SectionCourses = (props) => {
         }
     ]
     const renderListItem = (courses) => {
-        return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.push('CoursesDetail')}/>)
+        return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail',{item:item})}/>)
     }
     return (
         <View style={{ marginBottom: 30 }}>
