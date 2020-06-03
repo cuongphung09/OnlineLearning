@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // const Tab = createBottomTabNavigator();
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, HeaderBackButton } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Alert } from "react-native";
 import ListLesson from "./src/CoursesDetail/ListLesson/list-lesson";
@@ -276,7 +276,8 @@ export default function App() {
           name='CoursesDetail'
           component={CoursesDetail}
           options={{
-            title: ''
+            title: '',
+            headerShown: false
           }}
         />
       </Stack.Navigator>
