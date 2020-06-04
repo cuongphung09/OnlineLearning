@@ -1,8 +1,10 @@
 import React from "react"
-import { View, StyleSheet, Text, Image, ScrollView, Alert } from "react-native"
+import { View, StyleSheet, Text, Image, ScrollView, Alert, Dimensions } from "react-native"
 import ListLessonItem from '../ListLessonItem/list-lesson-item'
 import { TouchableOpacity } from "react-native-gesture-handler"
-const ListLesson = ({ route,navigation,props  }) => {
+import ImageButton from "../../Common/image-button"
+
+const ListLesson = ({ route, navigation, props }) => {
     const courses = [
         {
             id: 1,
@@ -86,11 +88,21 @@ const ListLesson = ({ route,navigation,props  }) => {
         }
     ]
     const renderListItem = (courses) => {
-        return courses.map(item => <ListLessonItem item={item} key={item.id} onPress={()=>navigation.navigate('CoursesDetail',{item:item})} />)
+        return courses.map(item => <ListLessonItem item={item} key={item.id} onPress={() => navigation.navigate('CoursesDetail', { item: item })} />)
     }
     return (
         <View style={styles.container}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', margin: 20 }}>{route.params.title}</Text>
+            {route.params.source ?
+                <View style={{ width: Dimensions.get('window').width }}>
+                    <ImageButton 
+                        title={route.params.title}
+                        source={{
+                            uri:route.params.source,
+                        }}
+                    />
+                </View> :
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', margin: 20 }}>{route.params.title}</Text>
+            }
             <ScrollView>
                 {renderListItem(courses)}
             </ScrollView>

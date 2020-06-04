@@ -1,7 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import { Avatar } from "react-native-elements";
-import { StyleSheet, Text, View, Button, UIManager, findNodeHandle } from "react-native";
+import { StyleSheet, Text, View, Button, UIManager, findNodeHandle, Alert } from "react-native";
 import Search from "./Screen/SearchScreen";
+import SettingScreen from "./Screen/SettingScreen";
 import ProfileScreen from "./Screen/ProfileScreen";
 import HomeNavigation from "./src/Main/Home/HomeNavigation";
 import "react-native-gesture-handler";
@@ -11,17 +12,30 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, HeaderBackButton } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Alert } from "react-native";
 import ListLesson from "./src/CoursesDetail/ListLesson/list-lesson";
 import DownloadScreen from "./Screen/DownloadScreen";
 import DownloadNavigation from "./src/Main/Download/DownloadNavigation";
 import BrowseScreen from "./Screen/BrowseScreen";
 import CoursesDetail from "./src/CoursesDetail/course-detail";
+import CustomMenuIcon from './src/Component/pop-up-menu'
+import {
+  MenuContext,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  MenuProvider,
+} from 'react-native-popup-menu';
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const DownloadStack = createStackNavigator();
 const BrowseStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const onPopupEvent = (eventName, index) => {
+  if (eventName !== 'itemSelected') return
+  if (index === 0) console.log('edit')
+  else console.log('remove')
+}
 function Home({ navigation }) {
   return (
     <HomeStack.Navigator
@@ -51,18 +65,25 @@ function Home({ navigation }) {
               }}
               onPress={() => navigation.navigate("Profile")}
             />
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Profile')
+            <CustomMenuIcon
+              //Menu Text
+              menutext="Menu"
+              //Menu View Style
+              menustyle={{
+                marginRight: 16,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
-            >
-              <MaterialCommunityIcons
-                name="dots-vertical"
-                color="white"
-                size={25}
-                style={{ marginRight: 10 }}
-              />
-            </TouchableOpacity>
+              textStyle={{
+                color: 'white',
+              }}
+              option1Click={() => {
+                navigation.navigate('Setting');
+              }}
+              option2Click={() => { }}
+              option3Click={() => { }}
+
+            />
           </View>
         ),
       })}
@@ -72,7 +93,7 @@ function Home({ navigation }) {
         component={HomeNavigation}
       >
       </HomeStack.Screen>
-    </HomeStack.Navigator>
+    </HomeStack.Navigator >
   )
 }
 function Download({ navigation }) {
@@ -104,19 +125,25 @@ function Download({ navigation }) {
               }}
               onPress={() => navigation.navigate("Profile")}
             />
-            <TouchableOpacity
-              onPress={() => {
-
-                Alert.alert("Menu")
+            <CustomMenuIcon
+              //Menu Text
+              menutext="Menu"
+              //Menu View Style
+              menustyle={{
+                marginRight: 16,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
-            >
-              <MaterialCommunityIcons
-                name="dots-vertical"
-                color="white"
-                size={25}
-                style={{ marginRight: 10 }}
-              />
-            </TouchableOpacity>
+              textStyle={{
+                color: 'white',
+              }}
+              option1Click={() => {
+                navigation.navigate('Setting');
+              }}
+              option2Click={() => { }}
+              option3Click={() => { }}
+
+            />
           </View>
         ),
       })}
@@ -158,26 +185,34 @@ function Browse({ navigation }) {
               }}
               onPress={() => navigation.navigate("Profile")}
             />
-            <TouchableOpacity
-              onPress={() => {
-
-                Alert.alert("Menu")
+            <CustomMenuIcon
+              //Menu Text
+              menutext="Menu"
+              //Menu View Style
+              menustyle={{
+                marginRight: 16,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
-            >
-              <MaterialCommunityIcons
-                name="dots-vertical"
-                color="white"
-                size={25}
-                style={{ marginRight: 10 }}
-              />
-            </TouchableOpacity>
+              textStyle={{
+                color: 'white',
+              }}
+              option1Click={() => {
+                navigation.navigate('Setting');
+              }}
+              option2Click={() => { }}
+              option3Click={() => { }}
+
+            />
           </View>
         ),
       })}
     >
       <BrowseStack.Screen
+        
         name="Browse"
         component={BrowseScreen}
+        
       >
       </BrowseStack.Screen>
     </BrowseStack.Navigator>
@@ -190,7 +225,7 @@ function Main({ navigation }) {
         activeBackgroundColor: '#212121',
         inactiveBackgroundColor: '#212121',
         inactiveTintColor: '#fff',
-        keyboardHidesTabBar:true
+        keyboardHidesTabBar: true
       }}
     >
       <Tab.Screen
@@ -279,6 +314,14 @@ export default function App() {
             title: '',
             headerShown: false
           }}
+        />
+        <Stack.Screen
+        name='Setting'
+        component={SettingScreen}
+        options={{
+          title:'Settings',
+          headerShown:true
+        }}
         />
       </Stack.Navigator>
     </NavigationContainer>

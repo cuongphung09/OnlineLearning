@@ -11,7 +11,7 @@ export default function BrowseScreen({ navigation }) {
       <View style={styles.imageButton}>
         <ImageButton
           title="NEW RELEASE"
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("ListLesson", { title: 'NEW RELEASE', source:'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg' })}
           source={{
             uri:
               "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
@@ -19,7 +19,7 @@ export default function BrowseScreen({ navigation }) {
         />
         <ImageButton
           title="RECOMENDED FOR YOU"
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("ListLesson", { title: 'RECOMENDED FOR YOU', source:'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU' })}
           source={{
             uri:
               "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
@@ -104,7 +104,7 @@ export default function BrowseScreen({ navigation }) {
         <ScrollView horizontal={true} style={{ padding: 10 }}>
           <View style={styles.avatar}>
             <Avatar
-              containerStyle={{ margin:10 }}
+              containerStyle={{ margin: 10 }}
               size={75}
               rounded
               source={{
@@ -118,7 +118,7 @@ export default function BrowseScreen({ navigation }) {
           </View>
           <View style={styles.avatar}>
             <Avatar
-              containerStyle={{ margin:10 }}
+              containerStyle={{ margin: 10 }}
               size={75}
               rounded
               source={{
@@ -132,7 +132,7 @@ export default function BrowseScreen({ navigation }) {
           </View>
           <View style={styles.avatar}>
             <Avatar
-              containerStyle={{ margin:10 }}
+              containerStyle={{ margin: 10 }}
               size={75}
               rounded
               source={{
@@ -146,7 +146,7 @@ export default function BrowseScreen({ navigation }) {
           </View>
           <View style={styles.avatar}>
             <Avatar
-              containerStyle={{ margin:10 }}
+              containerStyle={{ margin: 10 }}
               size={75}
               rounded
               source={{
@@ -160,7 +160,7 @@ export default function BrowseScreen({ navigation }) {
           </View>
           <View style={styles.avatar}>
             <Avatar
-              containerStyle={{ margin:10 }}
+              containerStyle={{ margin: 10 }}
               size={75}
               rounded
               source={{
@@ -174,7 +174,7 @@ export default function BrowseScreen({ navigation }) {
           </View>
           <View style={styles.avatar}>
             <Avatar
-              containerStyle={{ margin:10 }}
+              containerStyle={{ margin: 10 }}
               size={75}
               rounded
               source={{

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, ImageBackground, TouchableOpacity, Text } from 'react-native'
 const SmallerImageButton = (props) => {
     return (
-        <ImageBackground style={{height: 75, marginBottom: 10, width: 150}} source={props.source}>
+        <ImageBackground style={{height: 75, marginBottom: 10, width: 150, marginRight: 10}} source={props.source}>
             <TouchableOpacity style={styles.touch}
                 onPress={props.onPress}
             >
