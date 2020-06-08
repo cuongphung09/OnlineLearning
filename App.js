@@ -1,41 +1,32 @@
-import React, { Component } from "react";
+import React, { useContext, useState, createContext } from "react";
 import { Avatar } from "react-native-elements";
-import { StyleSheet, Text, View, Button, UIManager, findNodeHandle, Alert } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Search from "./Screen/SearchScreen";
 import SettingScreen from "./Screen/SettingScreen";
 import ProfileScreen from "./Screen/ProfileScreen";
-import HomeNavigation from "./src/Main/Home/HomeNavigation";
 import "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // const Tab = createBottomTabNavigator();
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator, HeaderBackButton } from "@react-navigation/stack";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { createStackNavigator } from "@react-navigation/stack";
 import ListLesson from "./src/CoursesDetail/ListLesson/list-lesson";
 import DownloadScreen from "./Screen/DownloadScreen";
-import DownloadNavigation from "./src/Main/Download/DownloadNavigation";
 import BrowseScreen from "./Screen/BrowseScreen";
 import CoursesDetail from "./src/CoursesDetail/course-detail";
 import CustomMenuIcon from './src/Component/pop-up-menu'
-import {
-  MenuContext,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-  MenuProvider,
-} from 'react-native-popup-menu';
+import HomeScreen from "./src/Main/Home/HomeScreen";
+import SplashScreen from "./Screen/SplashScreen";
+import LoginScreen from "./Screen/LoginScreen";
+
+import ThemeContext, { themes } from './src/Context/theme-context'
+
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const DownloadStack = createStackNavigator();
 const BrowseStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const onPopupEvent = (eventName, index) => {
-  if (eventName !== 'itemSelected') return
-  if (index === 0) console.log('edit')
-  else console.log('remove')
-}
+
 function Home({ navigation }) {
   return (
     <HomeStack.Navigator
@@ -90,7 +81,7 @@ function Home({ navigation }) {
     >
       <HomeStack.Screen
         name="Home"
-        component={HomeNavigation}
+        component={HomeScreen}
       >
       </HomeStack.Screen>
     </HomeStack.Navigator >
@@ -209,10 +200,10 @@ function Browse({ navigation }) {
       })}
     >
       <BrowseStack.Screen
-        
+
         name="Browse"
         component={BrowseScreen}
-        
+
       >
       </BrowseStack.Screen>
     </BrowseStack.Navigator>
@@ -279,59 +270,83 @@ function Main({ navigation }) {
     </Tab.Navigator>
   );
 }
+// const themes = {
+//   light: {
+//     foreground: "#000000",
+//     background: "#eeeeee"
+//   },
+//   dark: {
+//     foreground: "#ffffff",
+//     background: "#222222"
+//   }
+// };
+// export const ThemeContext = React.createContext(themes.light) 
 
 export default function App() {
+  const [theme,setTheme] = useState(themes.dark)
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        headerMode="screen"
-        screenOptions={() => ({
-          headerStyle: {
-            backgroundColor: "#212121",
-          },
-          headerTintColor: 'white'
-        })}
-      >
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Main"
-          component={Main} />
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
-        />
-        <Stack.Screen
-          name='ListLesson'
-          component={ListLesson}
-          options={{
-            title: ''
-          }}
-        />
-        <Stack.Screen
-          name='CoursesDetail'
-          component={CoursesDetail}
-          options={{
-            title: '',
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-        name='Setting'
-        component={SettingScreen}
-        options={{
-          title:'Settings',
-          headerShown:true
-        }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeContext.Provider value={theme}>
+      <NavigationContainer>
+        <Stack.Navigator
+          headerMode="screen"
+          screenOptions={() => ({
+            headerStyle: {
+              backgroundColor: "#212121",
+            },
+            headerTintColor: 'white'
+          })}
+        >
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="SplashScreen"
+            component={SplashScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="LoginScreen"
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Main"
+            component={Main} />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+          />
+          <Stack.Screen
+            name='ListLesson'
+            component={ListLesson}
+            options={{
+              title: ''
+            }}
+          />
+          <Stack.Screen
+            name='CoursesDetail'
+            component={CoursesDetail}
+            options={{
+              title: '',
+              headerShown: false
+            }}
+          />
+          <Stack.Screen
+            name='Setting'
+            component={SettingScreen}
+            options={{
+              title: 'Settings',
+              headerShown: true
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeContext.Provider>
+
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor:  "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
