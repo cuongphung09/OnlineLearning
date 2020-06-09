@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Alert } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useSafeArea } from "react-native-safe-area-context";
 import ThemeContext from '../src/Context/theme-context'
@@ -9,11 +9,26 @@ export default function LoginScreen({ navigation }) {
     const [passwordOpacity, setPasswordOpacity] = useState(0.7)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const users = [
+        {
+            username: 'ptcuong',
+            password: '123'
+        },
+        {
+            username: 'ptcuong1',
+            password: '1234'
+        },
+        {
+            username: 'ptcuong2',
+            password: '12345'
+        }
+
+    ]
     return (
         <ThemeContext.Consumer>
-            {(theme) => {
+            {([theme, setTheme]) => {
                 return (
-                    <View style={[styles.container,{backgroundColor: theme.background}]}>
+                    <View style={[styles.container, { backgroundColor: theme.background }]}>
                         {/* <MaterialCommunityIcons name="download" color={'white'} size={200} /> */}
                         <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: theme.foreground }}>Login</Text>
                         <View style={{ margin: 30 }}>
@@ -25,7 +40,7 @@ export default function LoginScreen({ navigation }) {
                                     setUsername(value)
                                 }}
                             ></TextInput>
-                            <TextInput style={{ opacity: passwordOpacity, marginBottom: 20 ,color: theme.foreground}} value={password} placeholder='Password'
+                            <TextInput style={{ opacity: passwordOpacity, marginBottom: 20, color: theme.foreground }} value={password} placeholder='Password'
                                 secureTextEntry={true}
                                 onChangeText={(value) => {
                                     if (value !== '') {
@@ -33,8 +48,20 @@ export default function LoginScreen({ navigation }) {
                                     }
                                     setPassword(value)
                                 }}></TextInput>
-                            <TouchableOpacity style={[styles.button,{color: theme.foreground}]} title='LOGIN' onPress={() => {
-                                navigation.navigate('Main')
+                            <TouchableOpacity style={[styles.button, { color: theme.foreground }]} title='LOGIN' onPress={() => {
+                                // navigation.navigate('Main')
+                                let foundUser = users.filter(user=>user.username ===username)[0]
+                                if(foundUser){
+                                    if(foundUser.username ===username && foundUser.password===password){
+                                        navigation.navigate('Main')
+                                    }
+                                    else{
+                                        Alert.alert('Wrong username or password')
+                                    }
+                                }
+                                else{
+                                    Alert.alert("Not found User")
+                                }
                             }} >
                                 <Text style={{ fontSize: 20, color: 'white' }}>Login</Text>
                             </TouchableOpacity>

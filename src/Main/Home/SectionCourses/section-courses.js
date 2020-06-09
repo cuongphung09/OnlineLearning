@@ -3,8 +3,9 @@ import { View, Text, ScrollView, StyleSheet, Alert } from "react-native"
 // import { ScrollView } from "react-native-gesture-handler"
 import SectionCoursesItem from "../SectionCoursesItem/section-courses-item"
 import { TouchableOpacity } from "react-native-gesture-handler"
+import ThemeContext, { themes } from '../../../Context/theme-context'
 const SectionCourses = (props) => {
-    
+
     const courses = [
         {
             id: 1,
@@ -32,27 +33,33 @@ const SectionCourses = (props) => {
         }
     ]
     const renderListItem = (courses) => {
-        return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail',{item:item})}/>)
+        return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />)
     }
     return (
-        <View style={{ marginBottom: 30 }}>
-            <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.text}>{props.title}</Text>
-                <TouchableOpacity onPress={props.onPress}>
-                    <Text style={{ color: 'lightgray' }} >
-                        See all ⟩
+        <ThemeContext.Consumer>
+            {(theme) => {
+                return (
+                    <View style={{ marginBottom: 30 }}>
+                        <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={[styles.text,{color: theme.foreground}]}>{props.title}</Text>
+                            <TouchableOpacity onPress={props.onPress}>
+                                <Text style={{ color: theme.foreground, opacity: 0.5 }} >
+                                    See all ⟩
                     </Text>
-                </TouchableOpacity>
-            </View>
-            <ScrollView horizontal={true}>
-                {renderListItem(courses)}
-            </ScrollView>
-        </View>
+                            </TouchableOpacity>
+                        </View>
+                        <ScrollView horizontal={true}>
+                            {renderListItem(courses)}
+                        </ScrollView>
+                    </View>
+                )
+            }}
+        </ThemeContext.Consumer>
+
     )
 }
 const styles = StyleSheet.create({
     text: {
-        color: '#fff',
         fontSize: 15,
         fontWeight: '600'
     }

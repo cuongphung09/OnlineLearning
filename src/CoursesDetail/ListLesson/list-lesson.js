@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, ScrollView, Alert, Dimensions } from "re
 import ListLessonItem from '../ListLessonItem/list-lesson-item'
 import { TouchableOpacity } from "react-native-gesture-handler"
 import ImageButton from "../../Common/image-button"
-
+import ThemeContext from '../../Context/theme-context'
 const ListLesson = ({ route, navigation, props }) => {
     const courses = [
         {
@@ -91,29 +91,37 @@ const ListLesson = ({ route, navigation, props }) => {
         return courses.map(item => <ListLessonItem item={item} key={item.id} onPress={() => navigation.navigate('CoursesDetail', { item: item })} />)
     }
     return (
-        <View style={styles.container}>
-            {route.params.source ?
-                <View style={{ width: Dimensions.get('window').width }}>
-                    <ImageButton 
-                        title={route.params.title}
-                        source={{
-                            uri:route.params.source,
-                        }}
-                    />
-                </View> :
-                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', margin: 20 }}>{route.params.title}</Text>
-            }
-            <ScrollView>
-                {renderListItem(courses)}
-            </ScrollView>
-        </View>
+        <ThemeContext.Consumer>
+            {([theme,setTheme]) => {
+                return (
+                    <View style={[styles.container,{backgroundColor: theme.background}]}>
+                        {route.params.source ?
+                            <View style={{ width: Dimensions.get('window').width }}>
+                                <ImageButton
+                                    title={route.params.title}
+                                    source={{
+                                        uri: route.params.source,
+                                    }}
+                                />
+                            </View> :
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.foreground, margin: 20 }}>{route.params.title}</Text>
+                        }
+                        <ScrollView>
+                            {renderListItem(courses)}
+                        </ScrollView>
+                    </View>
+
+                )
+            }}
+        </ThemeContext.Consumer>
+
     )
 
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0E0F13',
+        
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     }

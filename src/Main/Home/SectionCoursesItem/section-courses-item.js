@@ -1,19 +1,29 @@
 import React from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
+import ThemeContext from '../../../Context/theme-context'
 const SectionCoursesItem = (props) => {
     return (
-        <TouchableOpacity style={styles.container} onPress={props.onPress}>
-            <View style={styles.imgContainer}>
-                <Image style={styles.img} source={require('../../../../react.png')}></Image>
-            </View>
+        <ThemeContext.Consumer>
+            {
+                (theme) => {
+                    return (
+                        <TouchableOpacity style={[styles.container, {  }]} onPress={props.onPress}>
+                            <View style={styles.imgContainer}>
+                                <Image style={styles.img} source={require('../../../../react.png')}></Image>
+                            </View>
 
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>{props.item.title}</Text>
-                <Text style={styles.text}>{props.item.author}</Text>
-                <Text style={styles.text}>{props.item.level} • {props.item.release} • {props.item.duration}</Text>
+                            <View style={styles.textContainer}>
+                                <Text style={[styles.title, { color: theme.foreground }]}>{props.item.title}</Text>
+                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.author}</Text>
+                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.level} • {props.item.release} • {props.item.duration}</Text>
 
-            </View>
-        </TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                }
+            }
+        </ThemeContext.Consumer>
+
     )
 
 }
@@ -22,7 +32,6 @@ const styles = StyleSheet.create({
         marginRight: 20,
         width: 200,
         height: 200,
-        // backgroundColor: '#1F242A',
         display: 'flex',
     },
     imgContainer: {
@@ -43,11 +52,9 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlignVertical: 'top',
-        color: '#fff',
         fontSize: 16
     },
     text: {
-        color: '#d6d6d6',
         fontSize: 12
     }
 })

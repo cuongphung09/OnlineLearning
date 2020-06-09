@@ -5,9 +5,7 @@ import headerRight from "../../Component/headerRight"
 import ThemeContext from '../../../src/Context/theme-context'
 
 const HomeScreen = ({ navigation }) => {
-   // console.log(navigation)
    return (
-
       <ThemeContext.Consumer>
          {(theme) => {
             return (

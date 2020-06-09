@@ -1,19 +1,29 @@
 import React from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
+import ThemeContext from '../../Context/theme-context'
 const ListLessonItem = (props) => {
     return (
-        <TouchableOpacity style={styles.container} onPress={props.onPress}>
-            <View style={styles.imgContainer}>
-                <Image style={styles.img} source={require('../../../react.png')}></Image>
-            </View>
+        <ThemeContext.Consumer>
+            {
+                (([theme, setTheme]) => {
+                    return (
+                        <TouchableOpacity style={styles.container} onPress={props.onPress}>
+                            <View style={styles.imgContainer}>
+                                <Image style={styles.img} source={require('../../../react.png')}></Image>
+                            </View>
 
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>{props.item.title}</Text>
-                <Text style={styles.text}>{props.item.author}</Text>
-                <Text style={styles.text}>{props.item.level} • {props.item.release} • {props.item.duration}</Text>
+                            <View style={styles.textContainer}>
+                                <Text style={[styles.title, { color: theme.foreground }]}>{props.item.title}</Text>
+                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.author}</Text>
+                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.level} • {props.item.release} • {props.item.duration}</Text>
 
-            </View>
-        </TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                })
+            }
+        </ThemeContext.Consumer>
+
     )
 }
 const styles = StyleSheet.create({
@@ -29,7 +39,6 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         alignSelf: 'center',
-        // backgroundColor: '#fff',
     },
     img: {
         flex: 1,
@@ -37,7 +46,6 @@ const styles = StyleSheet.create({
         height: null,
         resizeMode: 'contain',
         margin: 10,
-        // backgroundColor: '#000',
     },
     textContainer: {
         marginLeft: 5,

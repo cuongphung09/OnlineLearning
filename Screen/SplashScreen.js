@@ -18,7 +18,7 @@ export default function SplashScreen({ navigation }) {
     }, [count]);
     return (
         <ThemeContext.Consumer>
-            {(theme) => {
+            {([theme, setTheme]) => {
                 return (
                     <View 
                     style={[styles.container, {backgroundColor: theme.background}]}
