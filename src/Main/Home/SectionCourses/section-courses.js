@@ -37,7 +37,7 @@ const SectionCourses = (props) => {
     }
     return (
         <ThemeContext.Consumer>
-            {(theme) => {
+            {([theme,setTheme]) => {
                 return (
                     <View style={{ marginBottom: 30 }}>
                         <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>

@@ -5,7 +5,7 @@ const SectionCoursesItem = (props) => {
     return (
         <ThemeContext.Consumer>
             {
-                (theme) => {
+                ([theme,setTheme]) => {
                     return (
                         <TouchableOpacity style={[styles.container, {  }]} onPress={props.onPress}>
                             <View style={styles.imgContainer}>

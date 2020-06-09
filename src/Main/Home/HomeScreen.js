@@ -7,7 +7,7 @@ import ThemeContext from '../../../src/Context/theme-context'
 const HomeScreen = ({ navigation }) => {
    return (
       <ThemeContext.Consumer>
-         {(theme) => {
+         {([theme,setTheme]) => {
             return (
                <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
                   <ImageBackground style={{ height: 100, justifyContent: 'flex-end', margin: 5 }} source={{ uri: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' }}>
