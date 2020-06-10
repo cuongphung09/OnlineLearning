@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  ScrollView,
-  Button,
-  Alert,
-} from "react-native";
+import { StyleSheet,Text,View,Dimensions,TouchableOpacity,ScrollView} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Video } from "expo-av";
 import { Avatar } from "react-native-elements";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import ThemeContext from '../Context/theme-context'
 export default function CoursesDetail({ navigation, props, route }) {
-
   const [textHeight, setTextHeight] = useState(75)
   const [chevron, setchevron] = useState('chevron-down')
   const { item } = route.params;
@@ -24,7 +14,6 @@ export default function CoursesDetail({ navigation, props, route }) {
     { key: 'first', title: 'CONTENTS' },
     { key: 'second', title: 'TRANSCRIPT' },
   ]);
-
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
@@ -197,7 +186,6 @@ export default function CoursesDetail({ navigation, props, route }) {
                         />
                       )
                     }
-
                   }
                   onIndexChange={setIndex}
                   initialLayout={initialLayout}
