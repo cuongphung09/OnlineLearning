@@ -31,64 +31,64 @@ function Home({ navigation }) {
   return (
     <ThemeContext.Consumer>
       {([theme, setTheme]) => {
-          return (<HomeStack.Navigator
-            headerMode="screen"
-            screenOptions={({ navigation, route }) => ({
-              headerTitleStyle: {
-                color: theme.foreground,
-              },
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerRight: () => (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
+        return (<HomeStack.Navigator
+          headerMode="screen"
+          screenOptions={({ navigation, route }) => ({
+            headerTitleStyle: {
+              color: theme.foreground,
+            },
+            headerStyle: {
+              backgroundColor: theme.header,
+            },
+            headerRight: () => (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  containerStyle={{ marginRight: 10 }}
+                  size={25}
+                  rounded
+                  source={{
+                    uri:
+                      "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
                   }}
-                >
-                  <Avatar
-                    containerStyle={{ marginRight: 10 }}
-                    size={25}
-                    rounded
-                    source={{
-                      uri:
-                        "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-                    }}
-                    onPress={() => navigation.navigate("Profile")}
-                  />
-                  <CustomMenuIcon
-                    //Menu Text
-                    menutext="Menu"
-                    //Menu View Style
-                    menustyle={{
-                      marginRight: 16,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                    }}
-                    textStyle={{
-                      color: theme.foreground,
-                    }}
-                    option1Click={() => {
-                      navigation.navigate('Setting');
-                    }}
-                    option2Click={() => { }}
-                    option3Click={() => { }}
+                  onPress={() => navigation.navigate("Profile")}
+                />
+                <CustomMenuIcon
+                  //Menu Text
+                  menutext="Menu"
+                  //Menu View Style
+                  menustyle={{
+                    marginRight: 16,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                  }}
+                  textStyle={{
+                    color: theme.foreground,
+                  }}
+                  option1Click={() => {
+                    navigation.navigate('Setting');
+                  }}
+                  option2Click={() => { }}
+                  option3Click={() => { }}
 
-                  />
-                </View>
-              ),
-            })}
+                />
+              </View>
+            ),
+          })}
+        >
+          <HomeStack.Screen
+            name="Home"
+            component={HomeScreen}
           >
-            <HomeStack.Screen
-              name="Home"
-              component={HomeScreen}
-            >
-            </HomeStack.Screen>
-          </HomeStack.Navigator >
-          )
-        }
+          </HomeStack.Screen>
+        </HomeStack.Navigator >
+        )
+      }
       }
     </ThemeContext.Consumer>
 
@@ -96,124 +96,142 @@ function Home({ navigation }) {
 }
 function Download({ navigation }) {
   return (
-    <DownloadStack.Navigator
-      headerMode="screen"
-      screenOptions={({ navigation, route }) => ({
-        headerTitleStyle: {
-          color: "white",
-        },
-        headerStyle: {
-          backgroundColor: "#212121",
-        },
-        headerRight: () => (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Avatar
-              containerStyle={{ marginRight: 10 }}
-              size={25}
-              rounded
-              source={{
-                uri:
-                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-              }}
-              onPress={() => navigation.navigate("Profile")}
-            />
-            <CustomMenuIcon
-              //Menu Text
-              menutext="Menu"
-              //Menu View Style
-              menustyle={{
-                marginRight: 16,
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}
-              textStyle={{
-                color: 'white',
-              }}
-              option1Click={() => {
-                navigation.navigate('Setting');
-              }}
-              option2Click={() => { }}
-              option3Click={() => { }}
+    <ThemeContext.Consumer>
+      {
+        ([theme, setTheme]) => {
+          return (
+            <DownloadStack.Navigator
+              headerMode="screen"
+              screenOptions={({ navigation, route }) => ({
+                headerTitleStyle: {
+                  color: theme.foreground,
+                },
+                headerStyle: {
+                  backgroundColor: theme.header,
+                },
+                headerRight: () => (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Avatar
+                      containerStyle={{ marginRight: 10 }}
+                      size={25}
+                      rounded
+                      source={{
+                        uri:
+                          "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+                      }}
+                      onPress={() => navigation.navigate("Profile")}
+                    />
+                    <CustomMenuIcon
+                      //Menu Text
+                      menutext="Menu"
+                      //Menu View Style
+                      menustyle={{
+                        marginRight: 16,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                      }}
+                      textStyle={{
+                        color: 'white',
+                      }}
+                      option1Click={() => {
+                        navigation.navigate('Setting');
+                      }}
+                      option2Click={() => { }}
+                      option3Click={() => { }}
 
-            />
-          </View>
-        ),
-      })}
-    >
-      <DownloadStack.Screen
-        name="Download"
-        component={DownloadScreen}
-      >
-      </DownloadStack.Screen>
-    </DownloadStack.Navigator>
+                    />
+                  </View>
+                ),
+              })}
+            >
+              <DownloadStack.Screen
+                name="Download"
+                component={DownloadScreen}
+              >
+              </DownloadStack.Screen>
+            </DownloadStack.Navigator>
+          )
+        }
+      }
+    </ThemeContext.Consumer>
+
   )
 }
 function Browse({ navigation }) {
   return (
-    <BrowseStack.Navigator
-      headerMode="screen"
-      screenOptions={({ navigation, route }) => ({
-        headerTitleStyle: {
-          color: "white",
-        },
-        headerStyle: {
-          backgroundColor: "#212121",
-        },
-        headerRight: () => (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Avatar
-              containerStyle={{ marginRight: 10 }}
-              size={25}
-              rounded
-              source={{
-                uri:
-                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-              }}
-              onPress={() => navigation.navigate("Profile")}
-            />
-            <CustomMenuIcon
-              //Menu Text
-              menutext="Menu"
-              //Menu View Style
-              menustyle={{
-                marginRight: 16,
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}
-              textStyle={{
-                color: 'white',
-              }}
-              option1Click={() => {
-                navigation.navigate('Setting');
-              }}
-              option2Click={() => { }}
-              option3Click={() => { }}
+    <ThemeContext.Consumer>
+      {
+        ([theme, setTheme]) => {
+          return (
+            <BrowseStack.Navigator
+              headerMode="screen"
+              screenOptions={({ navigation, route }) => ({
+                headerTitleStyle: {
+                  color: theme.foreground,
+                },
+                headerStyle: {
+                  backgroundColor: theme.background,
+                },
+                headerRight: () => (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Avatar
+                      containerStyle={{ marginRight: 10 }}
+                      size={25}
+                      rounded
+                      source={{
+                        uri:
+                          "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+                      }}
+                      onPress={() => navigation.navigate("Profile")}
+                    />
+                    <CustomMenuIcon
+                      //Menu Text
+                      menutext="Menu"
+                      //Menu View Style
+                      menustyle={{
+                        marginRight: 16,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                      }}
+                      textStyle={{
+                        color: 'white',
+                      }}
+                      option1Click={() => {
+                        navigation.navigate('Setting');
+                      }}
+                      option2Click={() => { }}
+                      option3Click={() => { }}
 
-            />
-          </View>
-        ),
-      })}
-    >
-      <BrowseStack.Screen
+                    />
+                  </View>
+                ),
+              })}
+            >
+              <BrowseStack.Screen
 
-        name="Browse"
-        component={BrowseScreen}
+                name="Browse"
+                component={BrowseScreen}
 
-      >
-      </BrowseStack.Screen>
-    </BrowseStack.Navigator>
+              >
+              </BrowseStack.Screen>
+            </BrowseStack.Navigator>
+          )
+        }
+      }
+    </ThemeContext.Consumer>
+
   )
 }
 function Main({ navigation }) {
@@ -319,18 +337,25 @@ export default function App() {
           <Stack.Screen
             name="Profile"
             component={ProfileScreen}
+            options={{
+              title: 'Profile',
+              headerStyle: {
+                backgroundColor: theme.header,
+              },
+              headerTintColor: theme.foreground
+            }}
           />
           <Stack.Screen
             name='ListLesson'
             component={ListLesson}
             options={{
               title: '',
-              headerStyle:{
+              headerStyle: {
                 backgroundColor: theme.header,
               },
               headerTintColor: theme.foreground
             }}
-            
+
           />
           <Stack.Screen
             name='CoursesDetail'
@@ -346,7 +371,7 @@ export default function App() {
             options={{
               title: 'Settings',
               headerShown: true,
-              headerStyle:{
+              headerStyle: {
                 backgroundColor: theme.header,
               },
               headerTintColor: theme.foreground

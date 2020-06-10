@@ -6,6 +6,7 @@ export const themes = {
         header: 'white',
         inactiveTintColor: 'gray',
         activeTintColor: 'black',
+        tagButton: 'whitesmoke',
     },
     dark: {
         foreground: 'white',
@@ -13,6 +14,7 @@ export const themes = {
         header: '#212121',
         inactiveTintColor: '#fff',
         activeTintColor: '#007AFF',
+        tagButton: '#505050',
     }
 }
 const ThemeContext = React.createContext(null)
