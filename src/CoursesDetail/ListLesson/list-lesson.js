@@ -106,7 +106,7 @@ const ListLesson = ({ route, navigation, props }) => {
                             </View> :
                             <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.foreground, margin: 20 }}>{route.params.title}</Text>
                         }
-                        <ScrollView>
+                        <ScrollView >
                             {renderListItem(courses)}
                         </ScrollView>
                     </View>
