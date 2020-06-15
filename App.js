@@ -12,7 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ListLesson from "./src/CoursesDetail/ListLesson/list-lesson";
 import DownloadScreen from "./Screen/DownloadScreen";
-import BrowseScreen from "./Screen/BrowseScreen";
+import BrowseScreen from "./src/Main/Browse/BrowseScreen";
 import CoursesDetail from "./src/CoursesDetail/course-detail";
 import CustomMenuIcon from "./src/Component/pop-up-menu";
 import HomeScreen from "./src/Main/Home/HomeScreen";
@@ -167,7 +167,7 @@ function Browse({ navigation }) {
                 color: theme.foreground,
               },
               headerStyle: {
-                backgroundColor: theme.background,
+                backgroundColor: theme.header,
               },
               headerRight: () => (
                 <View

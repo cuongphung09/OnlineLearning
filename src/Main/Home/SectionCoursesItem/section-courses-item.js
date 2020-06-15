@@ -52,10 +52,11 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlignVertical: 'top',
-        fontSize: 16
+        fontSize: 14
     },
     text: {
-        fontSize: 12
+        fontSize: 12,
+        opacity: 0.7
     }
 })
 export default SectionCoursesItem

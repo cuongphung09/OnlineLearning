@@ -11,13 +11,13 @@ export default function SearchScreen({ navigation }) {
             <View style={[styles.container,{backgroundColor: theme.background}]}>
               <SearchBar
                 containerStyle={{
-                  backgroundColor: theme.background,
+                  backgroundColor: theme.header,
                   paddingTop: 40,
                 }}
                 inputContainerStyle={{
                   height: 40,
                   borderRadius: 10,
-                  backgroundColor: theme.background,
+                  backgroundColor: theme.header,
                 }}
                 placeholder="Search..."
               // onChangeText={this.updateSearch}
@@ -37,6 +37,5 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
     display: "flex",
-    backgroundColor: "#0E0F13",
   },
 });

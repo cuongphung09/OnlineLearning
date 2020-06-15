@@ -5,47 +5,21 @@ import SectionCoursesItem from "../SectionCoursesItem/section-courses-item"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import ThemeContext, { themes } from '../../../Context/theme-context'
 const SectionCourses = (props) => {
-
-    const courses = [
-        {
-            id: 1,
-            title: "Angular Fundamentals",
-            author: "Joe Eames",
-            level: "Intermediate",
-            release: "12/2019",
-            duration: "9 hours 30 minutes"
-        },
-        {
-            id: 2,
-            title: "C# Fundamentals",
-            author: "Scott Allen",
-            level: "Beginner",
-            release: "4/2019",
-            duration: "6 hours 5 minutes"
-        },
-        {
-            id: 3,
-            title: "C# Fundamentals",
-            author: "Scott Allen",
-            level: "Beginner",
-            release: "4/2019",
-            duration: "6 hours 5 minutes"
-        }
-    ]
+    const courses = (props.data)
     const renderListItem = (courses) => {
         return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />)
     }
     return (
         <ThemeContext.Consumer>
-            {([theme,setTheme]) => {
+            {([theme, setTheme]) => {
                 return (
                     <View style={{ marginBottom: 30 }}>
                         <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={[styles.text,{color: theme.foreground}]}>{props.title}</Text>
+                            <Text style={[styles.text, { color: theme.foreground }]}>{props.title}</Text>
                             <TouchableOpacity onPress={props.onPress}>
                                 <Text style={{ color: theme.foreground, opacity: 0.5 }} >
                                     See all ⟩
-                    </Text>
+                                </Text>
                             </TouchableOpacity>
                         </View>
                         <ScrollView horizontal={true}>

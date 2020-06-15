@@ -1,0 +1,201 @@
+import React from "react";
+import { StyleSheet, Text, View, Button, ScrollView, Alert } from "react-native";
+import ImageButton from "../../Common/image-button";
+import SmallerImageButton from "../../Common/smaller-imagee-button";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Avatar } from "react-native-elements";
+import ThemeContext, { themes } from '../../Context/theme-context'
+import authorsData from './authors'
+export default function BrowseScreen({ navigation }) {
+  const authors = authorsData
+  const language = [
+    {
+      id: 1,
+      name: "Angular"
+    },
+    {
+      id: 2,
+      name: "React"
+    },
+    {
+      id: 3,
+      name: "Javascript"
+    },
+    {
+      id: 4,
+      name: "VueJS"
+    },
+    {
+      id: 5,
+      name: "Swift"
+    },
+    {
+      id: 6,
+      name: "C#"
+    }
+  ]
+  const renderAuthor = (authors, theme) => {
+    return authors.map(author =>
+      <TouchableOpacity key={author.id} style={styles.avatar}>
+        <Avatar
+          containerStyle={{ margin: 10 }}
+          size={75}
+          rounded
+          source={{
+            uri: author.avaUri,
+          }}
+        />
+        <Text style={{ color: theme.foreground, fontSize: 13, fontWeight: "bold" }}>
+          {author.name}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+  const renderLanguage = (language, theme) => {
+    return language.map(item => (
+      <TouchableOpacity key={item.id} style={[styles.button, { backgroundColor: theme.background, borderColor: theme.foreground }]}>
+        <Text style={[styles.tagButton, { color: theme.foreground }]}>{item.name}</Text>
+      </TouchableOpacity>
+    ))
+  }
+  return (
+    <ThemeContext.Consumer>
+      {
+        ([theme, setTheme]) => {
+          return (
+            <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
+              <View style={styles.imageButton}>
+                <ImageButton
+                  title="NEW RELEASE"
+                  onPress={() => navigation.navigate("ListLesson", { title: 'NEW RELEASE', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg' })}
+                  source={{
+                    uri:
+                      "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
+                  }}
+                />
+                <ImageButton
+                  title="RECOMENDED FOR YOU"
+                  onPress={() => navigation.navigate("ListLesson", { title: 'RECOMENDED FOR YOU', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU' })}
+                  source={{
+                    uri:
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
+                  }}
+                />
+              </View>
+              <ScrollView horizontal={true} style={{ padding: 10 }}>
+                <SmallerImageButton
+                  title="CONFERENCES"
+                  onPress={() => {
+                    navigation.navigate("ListLesson", { title: 'CONFERENCES', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU' })
+                  }}
+                  source={{
+                    uri:
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU",
+                  }}
+                />
+                <SmallerImageButton
+                  title="IT OPS"
+                  onPress={() => {
+                    navigation.navigate("ListLesson", { title: 'IT OPS', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg' })
+                  }}
+                  source={{
+                    uri:
+                      "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
+                  }}
+                />
+                <SmallerImageButton
+                  title="<Software> DEVELOPMENT"
+                  onPress={() =>
+                    navigation.navigate("ListLesson", { title: '<Software> DEVELOPMENT', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU' })
+                  }
+                  source={{
+                    uri:
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
+                  }}
+                />
+                <SmallerImageButton
+                  title="Information AND CYBER SECURITY"
+                  onPress={() =>
+                    navigation.navigate("ListLesson", { title: 'Information AND CYBER SECURITY', source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
+                  }
+                  source={{
+                    uri:
+                      "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+                  }}
+                />
+                <SmallerImageButton
+                  title="DATA PROFESSIONAL"
+                  onPress={() =>
+                    navigation.navigate("ListLesson", { title: 'DATA PROFESSIONAL', source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
+                  }
+                  source={{
+                    uri:
+                      "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+                  }}
+                />
+                <SmallerImageButton
+                  title="BUSINESS PROFESSIONAL"
+                  onPress={() =>
+                    navigation.navigate("ListLesson", { title: 'BUSINESS PROFESSIONAL', source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
+                  }
+                  source={{
+                    uri:
+                      "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+                  }}
+                />
+              </ScrollView>
+              <View>
+                <Text style={[styles.title, { color: theme.foreground }]}>Popular Skills</Text>
+                <ScrollView horizontal={true} style={{ padding: 10 }}>
+                  {renderLanguage(language, theme)}
+                </ScrollView>
+              </View>
+              <View>
+                <Text style={[styles.title, { color: theme.foreground }]}>Top Authors</Text>
+                <ScrollView horizontal={true} style={{ padding: 10 }}>
+                  {renderAuthor(authors, theme)}
+                </ScrollView>
+              </View>
+            </ScrollView>
+          )
+        }
+      }
+    </ThemeContext.Consumer>
+
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 0,
+    display: "flex",
+    backgroundColor: "#0E0F13",
+  },
+  imageButton: {
+    padding: 10,
+  },
+  title: {
+    color: "white",
+    fontSize: 15,
+    padding: 10,
+  },
+  button: {
+    borderRadius: 50,
+    borderWidth: 1,
+    marginRight: 10,
+  },
+  tagButton: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  avatar: {
+    flexDirection: "column",
+    marginBottom: 40,
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
