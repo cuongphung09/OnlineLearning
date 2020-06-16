@@ -5,9 +5,13 @@ import SmallerImageButton from "../../Common/smaller-imagee-button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar } from "react-native-elements";
 import ThemeContext, { themes } from '../../Context/theme-context'
-import authorsData from './authors'
+import authorsData from './authors-data'
+import listCourses from './listCourse-data'
+import PathItem from './pathItem/path-item'
+import pathData from './path-data'
 export default function BrowseScreen({ navigation }) {
   const authors = authorsData
+  const path = pathData
   const language = [
     {
       id: 1,
@@ -58,6 +62,9 @@ export default function BrowseScreen({ navigation }) {
       </TouchableOpacity>
     ))
   }
+  const renderListItem = (path) => {
+    return path.map(item => <PathItem item={item} key={item.id} onPress={() => { navigation.navigate('PathDetail', { item: item, title: item.name }) }} />)
+  }
   return (
     <ThemeContext.Consumer>
       {
@@ -67,7 +74,7 @@ export default function BrowseScreen({ navigation }) {
               <View style={styles.imageButton}>
                 <ImageButton
                   title="NEW RELEASE"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'NEW RELEASE', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg' })}
+                  onPress={() => navigation.navigate("ListLesson", { title: 'NEW RELEASE', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg', data: listCourses[0].courses })}
                   source={{
                     uri:
                       "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
@@ -75,7 +82,7 @@ export default function BrowseScreen({ navigation }) {
                 />
                 <ImageButton
                   title="RECOMENDED FOR YOU"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'RECOMENDED FOR YOU', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU' })}
+                  onPress={() => navigation.navigate("ListLesson", { title: 'RECOMENDED FOR YOU', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU', data: listCourses[1].courses })}
                   source={{
                     uri:
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
@@ -155,6 +162,27 @@ export default function BrowseScreen({ navigation }) {
                 <ScrollView horizontal={true} style={{ padding: 10 }}>
                   {renderAuthor(authors, theme)}
                 </ScrollView>
+              </View>
+              <View>
+                {/* <Path data={pathData[0].objects} onPress={()=>{navigation.navigate('Profile')}}
+              onPressSeeAll={()=>{navigation.navigate('Path')}}
+              ></Path> */}
+
+                <View style={{ marginBottom: 30, marginLeft: 10 }}>
+                  <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={[styles.text, { color: theme.foreground }]}>Path</Text>
+                    <TouchableOpacity onPress={() => { navigation.navigate('Path') }} >
+                      <Text style={{ color: theme.foreground, opacity: 0.5 }} >
+                        See all ⟩
+                                </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <ScrollView horizontal={true}>
+                    {renderListItem(pathData[0].objects)}
+                  </ScrollView>
+                </View>
+
+
               </View>
             </ScrollView>
           )

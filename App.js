@@ -20,6 +20,8 @@ import SplashScreen from "./Screen/SplashScreen";
 import LoginScreen from "./Screen/LoginScreen";
 
 import ThemeContext, { themes } from "./src/Context/theme-context";
+import PathScreen from "./Screen/PathScreen";
+import PathDetailScreen from "./Screen/PathDetailScreen";
 // import AuthContext from './src/Context/auth-context'
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -331,6 +333,28 @@ export default function App() {
             component={ProfileScreen}
             options={{
               title: "Profile",
+              headerStyle: {
+                backgroundColor: theme.header,
+              },
+              headerTintColor: theme.foreground,
+            }}
+          />
+          <Stack.Screen
+            name="Path"
+            component={PathScreen}
+            options={{
+              title: "Paths",
+              headerStyle: {
+                backgroundColor: theme.header,
+              },
+              headerTintColor: theme.foreground,
+            }}
+          />
+          <Stack.Screen
+            name="PathDetail"
+            component={PathDetailScreen}
+            options={{
+              // title: "Paths",
               headerStyle: {
                 backgroundColor: theme.header,
               },

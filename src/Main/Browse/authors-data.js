@@ -1,4 +1,5 @@
 import React from 'react'
+import homeData from '../Home/home-data'
 export default authors = [
     {
         id: 1,

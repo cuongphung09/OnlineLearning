@@ -20,9 +20,6 @@ const HomeScreen = ({ navigation }) => {
                   </ImageBackground>
                   <Text style={{ color: theme.foreground, fontSize: 15, paddingTop: 10, paddingBottom: 20, fontWeight: 'bold', margin: 5 }}>With PluralSight, you can build and apply skills in top technologies.</Text>
                   <View style={{ margin: 5 }}>
-                     {/* <SectionCourses title='Software Development' navigation={navigation} onPress={() => navigation.navigate("ListLesson", { title: 'Software Development' })} />
-                  <SectionCourses title='IT operations' navigation={navigation} onPress={() => navigation.navigate("ListLesson", { title: 'IT operations' })} />
-                  <SectionCourses title='Data Professional' navigation={navigation} onPress={() => navigation.navigate("ListLesson", { title: 'Data Professional' })} /> */}
                      {renderData(data)}
                   </View>
                </ScrollView>
