@@ -7,9 +7,8 @@ import ThemeContext, { themes } from '../src/Context/theme-context'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ScrollView } from 'react-native-gesture-handler';
 import ListLessonItem from '../src/CoursesDetail/ListLessonItem/list-lesson-item'
-import { render } from 'react-dom';
 
-export default function PathDetailScreen({ navigation, props, route }) {
+export default function AuthorDetailScreen({ navigation, props, route }) {
     // console.log(route.params.item)
     const [textHeight, setTextHeight] = useState(80)
     const [chevron, setchevron] = useState('chevron-down')

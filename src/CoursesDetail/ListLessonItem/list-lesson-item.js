@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
   },
   imgContainer: {
-    marginLeft: 20,
+    // marginLeft: 20,
     width: 100,
     height: 100,
     alignSelf: "center",
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   textContainer: {
     marginLeft: 5,
     alignItems: "flex-start",
-    width: Dimensions.get("window").width * 0.65,
+    width: Dimensions.get("window").width * 0.75,
   },
   title: {
     textAlignVertical: "top",
