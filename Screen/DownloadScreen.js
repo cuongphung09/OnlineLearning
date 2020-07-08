@@ -12,7 +12,7 @@ export default function DownloadScreen({ navigation }) {
             <View style={[styles.container,{backgroundColor:theme.background}]}>
               <MaterialCommunityIcons name="download" color={theme.foreground} size={200} />
               <Text style={{ fontSize: 30, fontWeight: 'bold', color: theme.foreground }}>No download</Text>
-              <Text style={{ fontSize: 20, color: theme.foreground }}>Courses you download will appear here</Text>
+              <Text style={{ fontSize: 16, color: theme.foreground }}>Courses you download will appear here</Text>
             </View>
           )
         }

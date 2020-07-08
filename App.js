@@ -1,6 +1,6 @@
-import React, { useContext, useState, createContext, useMemo } from "react";
+import React, { useContext, useState, createContext, useMemo, useEffect } from "react";
 import { Avatar } from "react-native-elements";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, AsyncStorage } from "react-native";
 import Search from "./Screen/SearchScreen";
 import SettingScreen from "./Screen/SettingScreen";
 import ProfileScreen from "./Screen/ProfileScreen";
@@ -22,6 +22,9 @@ import LoginScreen from "./Screen/LoginScreen";
 import ThemeContext, { themes } from "./src/Context/theme-context";
 import PathScreen from "./Screen/PathScreen";
 import PathDetailScreen from "./Screen/PathDetailScreen";
+import AuthorDetailScreen from "./Screen/AuthorScreen";
+import AuthContext, { users } from "./src/Context/auth-context";
+import SignUpScreen from "./Screen/SignUpScreen";
 // import AuthContext from './src/Context/auth-context'
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -31,371 +34,460 @@ const Tab = createBottomTabNavigator();
 
 function Home({ navigation }) {
   return (
-    <ThemeContext.Consumer>
-      {([theme, setTheme]) => {
+    <AuthContext.Consumer>
+      {([user, setUser]) => {
         return (
-          <HomeStack.Navigator
-            headerMode="screen"
-            screenOptions={({ navigation, route }) => ({
-              headerTitleStyle: {
-                color: theme.foreground,
-              },
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerRight: () => (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Avatar
-                    containerStyle={{ marginRight: 10 }}
-                    size={25}
-                    rounded
-                    source={{
-                      uri:
-                        "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-                    }}
-                    onPress={() => navigation.navigate("Profile")}
-                  />
-                  <CustomMenuIcon
-                    //Menu Text
-                    menutext="Menu"
-                    //Menu View Style
-                    menustyle={{
-                      marginRight: 16,
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                    }}
-                    textStyle={{
+          <ThemeContext.Consumer>
+            {([theme, setTheme]) => {
+              return (
+                <HomeStack.Navigator
+                  headerMode="screen"
+                  screenOptions={({ navigation, route }) => ({
+                    headerTitleStyle: {
                       color: theme.foreground,
-                    }}
-                    option1Click={() => {
-                      navigation.navigate("Setting");
-                    }}
-                    option2Click={() => {}}
-                    option3Click={() => {}}
-                  />
-                </View>
-              ),
-            })}
-          >
-            <HomeStack.Screen
-              name="Home"
-              component={HomeScreen}
-            ></HomeStack.Screen>
-          </HomeStack.Navigator>
-        );
+                    },
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerRight: () => (
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Avatar
+                          containerStyle={{ marginRight: 10 }}
+                          size={25}
+                          rounded
+                          source={{
+                            uri: user.avatar,
+                          }}
+                          onPress={() => navigation.navigate("Profile")}
+                        />
+                        <CustomMenuIcon
+                          //Menu Text
+                          menutext="Menu"
+                          //Menu View Style
+                          menustyle={{
+                            marginRight: 16,
+                            flexDirection: "row",
+                            justifyContent: "flex-end",
+                          }}
+                          textStyle={{
+                            color: theme.foreground,
+                          }}
+                          option1Click={() => {
+                            navigation.navigate("Setting");
+                          }}
+                          option2Click={() => { }}
+                          option3Click={() => { }}
+                        />
+                      </View>
+                    ),
+                  })}
+                >
+                  <HomeStack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                  ></HomeStack.Screen>
+                </HomeStack.Navigator>
+              );
+            }}
+          </ThemeContext.Consumer>
+        )
       }}
-    </ThemeContext.Consumer>
+    </AuthContext.Consumer>
   );
 }
 function Download({ navigation }) {
   return (
-    <ThemeContext.Consumer>
-      {([theme, setTheme]) => {
-        return (
-          <DownloadStack.Navigator
-            headerMode="screen"
-            screenOptions={({ navigation, route }) => ({
-              headerTitleStyle: {
-                color: theme.foreground,
-              },
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerRight: () => (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Avatar
-                    containerStyle={{ marginRight: 10 }}
-                    size={25}
-                    rounded
-                    source={{
-                      uri:
-                        "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-                    }}
-                    onPress={() => navigation.navigate("Profile")}
-                  />
-                  <CustomMenuIcon
-                    //Menu Text
-                    menutext="Menu"
-                    //Menu View Style
-                    menustyle={{
-                      marginRight: 16,
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                    }}
-                    textStyle={{
-                      color: "white",
-                    }}
-                    option1Click={() => {
-                      navigation.navigate("Setting");
-                    }}
-                    option2Click={() => {}}
-                    option3Click={() => {}}
-                  />
-                </View>
-              ),
-            })}
-          >
-            <DownloadStack.Screen
-              name="Download"
-              component={DownloadScreen}
-            ></DownloadStack.Screen>
-          </DownloadStack.Navigator>
-        );
+    <AuthContext.Consumer>
+      {([user, setUser]) => {
+        return <ThemeContext.Consumer>
+          {([theme, setTheme]) => {
+            return (
+              <DownloadStack.Navigator
+                headerMode="screen"
+                screenOptions={({ navigation, route }) => ({
+                  headerTitleStyle: {
+                    color: theme.foreground,
+                  },
+                  headerStyle: {
+                    backgroundColor: theme.header,
+                  },
+                  headerRight: () => (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Avatar
+                        containerStyle={{ marginRight: 10 }}
+                        size={25}
+                        rounded
+                        source={{
+                          uri: user.avatar,
+                        }}
+                        onPress={() => navigation.navigate("Profile")}
+                      />
+                      <CustomMenuIcon
+                        //Menu Text
+                        menutext="Menu"
+                        //Menu View Style
+                        menustyle={{
+                          marginRight: 16,
+                          flexDirection: "row",
+                          justifyContent: "flex-end",
+                        }}
+                        textStyle={{
+                          color: "white",
+                        }}
+                        option1Click={() => {
+                          navigation.navigate("Setting");
+                        }}
+                        option2Click={() => { }}
+                        option3Click={() => { }}
+                      />
+                    </View>
+                  ),
+                })}
+              >
+                <DownloadStack.Screen
+                  name="Download"
+                  component={DownloadScreen}
+                ></DownloadStack.Screen>
+              </DownloadStack.Navigator>
+            );
+          }}
+        </ThemeContext.Consumer>
       }}
-    </ThemeContext.Consumer>
+    </AuthContext.Consumer>
   );
 }
 function Browse({ navigation }) {
   return (
-    <ThemeContext.Consumer>
-      {([theme, setTheme]) => {
+    <AuthContext.Consumer>
+      {([user, setUser]) => {
         return (
-          <BrowseStack.Navigator
-            headerMode="screen"
-            screenOptions={({ navigation, route }) => ({
-              headerTitleStyle: {
-                color: theme.foreground,
-              },
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerRight: () => (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+          <ThemeContext.Consumer>
+            {([theme, setTheme]) => {
+              return (
+                <BrowseStack.Navigator
+                  headerMode="screen"
+                  screenOptions={({ navigation, route }) => ({
+                    headerTitleStyle: {
+                      color: theme.foreground,
+                    },
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerRight: () => (
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Avatar
+                          containerStyle={{ marginRight: 10 }}
+                          size={25}
+                          rounded
+                          source={{
+                            uri: user.avatar,
+                          }}
+                          onPress={() => navigation.navigate("Profile")}
+                        />
+                        <CustomMenuIcon
+                          //Menu Text
+                          menutext="Menu"
+                          //Menu View Style
+                          menustyle={{
+                            marginRight: 16,
+                            flexDirection: "row",
+                            justifyContent: "flex-end",
+                          }}
+                          textStyle={{
+                            color: "white",
+                          }}
+                          option1Click={() => {
+                            navigation.navigate("Setting");
+                          }}
+                          option2Click={() => { }}
+                          option3Click={() => { }}
+                        />
+                      </View>
+                    ),
+                  })}
                 >
-                  <Avatar
-                    containerStyle={{ marginRight: 10 }}
-                    size={25}
-                    rounded
-                    source={{
-                      uri:
-                        "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-                    }}
-                    onPress={() => navigation.navigate("Profile")}
-                  />
-                  <CustomMenuIcon
-                    //Menu Text
-                    menutext="Menu"
-                    //Menu View Style
-                    menustyle={{
-                      marginRight: 16,
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                    }}
-                    textStyle={{
-                      color: "white",
-                    }}
-                    option1Click={() => {
-                      navigation.navigate("Setting");
-                    }}
-                    option2Click={() => {}}
-                    option3Click={() => {}}
-                  />
-                </View>
-              ),
-            })}
-          >
-            <BrowseStack.Screen
-              name="Browse"
-              component={BrowseScreen}
-            ></BrowseStack.Screen>
-          </BrowseStack.Navigator>
-        );
+                  <BrowseStack.Screen
+                    name="Browse"
+                    component={BrowseScreen}
+                  ></BrowseStack.Screen>
+                </BrowseStack.Navigator>
+              );
+            }}
+          </ThemeContext.Consumer>
+        )
       }}
-    </ThemeContext.Consumer>
+    </AuthContext.Consumer>
   );
 }
 function Main({ navigation }) {
+
   return (
-    <ThemeContext.Consumer>
-      {([theme, setTheme]) => {
-        return (
-          <Tab.Navigator
-            initialRouteName="Home"
-            tabBarOptions={{
-              activeBackgroundColor: theme.header,
-              inactiveBackgroundColor: theme.header,
-              inactiveTintColor: theme.inactiveTintColor,
-              activeTintColor: theme.activeTintColor,
-              keyboardHidesTabBar: true,
-            }}
-          >
-            <Tab.Screen
-              name="Home"
-              component={Home}
-              options={{
-                tabBarLabel: "Home",
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="home-outline"
-                    color={color}
-                    size={size + 5}
-                  />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Download"
-              component={Download}
-              options={{
-                tabBarLabel: "Download",
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="download"
-                    color={color}
-                    size={size + 5}
-                  />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Browse"
-              component={Browse}
-              options={{
-                tabBarLabel: "Browse",
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="grid"
-                    color={color}
-                    size={size + 5}
-                  />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Search"
-              component={Search}
-              options={{
-                tabBarLabel: "Search",
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="magnify"
-                    color={color}
-                    size={size + 5}
-                  />
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        );
+    <AuthContext.Consumer>
+      {([user, setUser]) => {
+        // console.log(user)
+        return (<ThemeContext.Consumer>
+          {([theme, setTheme]) => {
+            return (
+              <Tab.Navigator
+                initialRouteName="Home"
+                tabBarOptions={{
+                  activeBackgroundColor: theme.header,
+                  inactiveBackgroundColor: theme.header,
+                  inactiveTintColor: theme.inactiveTintColor,
+                  activeTintColor: theme.activeTintColor,
+                  keyboardHidesTabBar: true,
+                }}
+              >
+                <Tab.Screen
+                  name="Home"
+                  component={Home}
+                  options={{
+                    tabBarLabel: "Home",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="home-outline"
+                        color={color}
+                        size={size + 5}
+                      />
+                    ),
+                  }}
+                />
+                <Tab.Screen
+                  name="Download"
+                  component={Download}
+                  options={{
+                    tabBarLabel: "Download",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="download"
+                        color={color}
+                        size={size + 5}
+                      />
+                    ),
+                  }}
+                />
+                <Tab.Screen
+                  name="Browse"
+                  component={Browse}
+                  options={{
+                    tabBarLabel: "Browse",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="grid"
+                        color={color}
+                        size={size + 5}
+                      />
+                    ),
+                  }}
+                />
+                <Tab.Screen
+                  name="Search"
+                  component={Search}
+                  options={{
+                    tabBarLabel: "Search",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="magnify"
+                        color={color}
+                        size={size + 5}
+                      />
+                    ),
+                  }}
+                />
+              </Tab.Navigator>
+            );
+          }}
+        </ThemeContext.Consumer>)
       }}
-    </ThemeContext.Consumer>
+    </AuthContext.Consumer>
   );
 }
-export default function App() {
-  const [theme, setTheme] = useState(themes.light);
-  return (
-    <ThemeContext.Provider value={[theme, setTheme]}>
-      <NavigationContainer>
-        <Stack.Navigator
-          headerMode="screen"
-          screenOptions={() => ({
-            headerStyle: {
-              backgroundColor: "#212121",
-            },
-            headerTintColor: "white",
-          })}
-        >
-          {/* <Stack.Screen
-            options={{ headerShown: false }}
-            name="SplashScreen"
-            component={SplashScreen}
-          />
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="LoginScreen"
-            component={LoginScreen}
 
-          /> */}
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Main"
-            component={Main}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{
-              title: "Profile",
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerTintColor: theme.foreground,
-            }}
-          />
-          <Stack.Screen
-            name="Path"
-            component={PathScreen}
-            options={{
-              title: "Paths",
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerTintColor: theme.foreground,
-            }}
-          />
-          <Stack.Screen
-            name="PathDetail"
-            component={PathDetailScreen}
-            options={{
-              // title: "Paths",
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerTintColor: theme.foreground,
-            }}
-          />
-          <Stack.Screen
-            name="ListLesson"
-            component={ListLesson}
-            options={{
-              title: "",
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerTintColor: theme.foreground,
-            }}
-          />
-          <Stack.Screen
-            name="CoursesDetail"
-            component={CoursesDetail}
-            options={{
-              title: "",
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Setting"
-            component={SettingScreen}
-            options={{
-              title: "Settings",
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.header,
-              },
-              headerTintColor: theme.foreground,
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ThemeContext.Provider>
-  );
+export default function App() {
+  const [loading, setLoading] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [token, setToken] = useState('')
+  const [userInfo, setUserInfo] = useState()
+  const [theme, setTheme] = useState(themes.light);
+  const [user, setUser] = useState(null)
+  useEffect(() => {
+    async function fetchData() {
+      const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
+      const tokenTemp = await AsyncStorage.getItem('token')
+      const userInfoTemp = await AsyncStorage.getItem('userInfo')
+      setIsLoggedIn(isLoggedInTemp)
+      setToken(tokenTemp)
+      setUserInfo(userInfoTemp)
+      setLoading(false)
+      setUser(JSON.parse(userInfoTemp))
+      // await AsyncStorage.removeItem('isLoggedIn')
+      // await AsyncStorage.removeItem('token')
+      // await AsyncStorage.removeItem('userInfo')
+    }
+    fetchData()
+  }, []);
+  return (
+    <AuthContext.Provider value={[user, setUser]}>
+      <ThemeContext.Provider value={[theme, setTheme]}>
+        {loading ? (
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                options={{ headerShown: false }}
+                name="SplashScreen"
+                component={SplashScreen}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        ) : (
+            // isLoggedIn === true ? (
+            <NavigationContainer>
+              <Stack.Navigator
+                headerMode="screen"
+                screenOptions={() => ({
+                  headerStyle: {
+                    backgroundColor: "#212121",
+                  },
+                  headerTintColor: "white",
+                })}
+              >
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name="LoginScreen"
+                  component={LoginScreen}
+                />
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name="Main"
+                  component={Main}
+                />
+                <Stack.Screen
+                  name="Profile"
+                  component={ProfileScreen}
+                  options={{
+                    title: "Profile",
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerTintColor: theme.foreground,
+                  }}
+                />
+                <Stack.Screen
+                  name="Path"
+                  component={PathScreen}
+                  options={{
+                    title: "Paths",
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerTintColor: theme.foreground,
+                  }}
+                />
+                <Stack.Screen
+                  name="PathDetail"
+                  component={PathDetailScreen}
+                  options={{
+                    // title: "Paths",
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerTintColor: theme.foreground,
+                  }}
+                />
+                <Stack.Screen
+                  name="ListLesson"
+                  component={ListLesson}
+                  options={{
+                    title: "",
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerTintColor: theme.foreground,
+                  }}
+                />
+                <Stack.Screen
+                  name="CoursesDetail"
+                  component={CoursesDetail}
+                  options={{
+                    title: "",
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="Setting"
+                  component={SettingScreen}
+                  options={{
+                    title: "Settings",
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerTintColor: theme.foreground,
+                  }}
+                />
+                <Stack.Screen
+                  name="Author"
+                  component={AuthorDetailScreen}
+                  options={{
+                    title: "Author",
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: theme.header,
+                    },
+                    headerTintColor: theme.foreground,
+                  }}
+                />
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name="SignUpScreen"
+                  component={SignUpScreen}
+                />
+                {/* </Stack.Navigator>
+              </NavigationContainer>
+            ) : (
+                <NavigationContainer>
+                  <Stack.Navigator
+                    headerMode="screen"
+                    screenOptions={() => ({
+                      headerStyle: {
+                        backgroundColor: "#212121",
+                      },
+                      headerTintColor: "white",
+                    })}
+                  > */}
+                {/* <Stack.Screen
+                      options={{ headerShown: false }}
+                      name="LoginScreen"
+                      component={LoginScreen}
+                    /> */}
+              </Stack.Navigator>
+            </NavigationContainer>
+            // )
+          )}
+
+
+
+      </ThemeContext.Provider>
+    </AuthContext.Provider>
+  )
 }
 const styles = StyleSheet.create({
   container: {

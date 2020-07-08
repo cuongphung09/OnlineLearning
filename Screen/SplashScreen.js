@@ -25,7 +25,7 @@ export default function SplashScreen({ navigation }) {
                     >
                         <Text style={{ fontSize: 30, fontWeight: 'bold', color: theme.foreground, textAlign: 'center', marginBottom: 100 }}>Welcome to Online Learning App</Text>
                         <ProgressBarAndroid styleAttr="Horizontal" color="#2196F3" style={{ width: 200 }} />
-                        <Text style={{color: theme.foreground}}>Loading {count}%</Text>
+                        {/* <Text style={{color: theme.foreground}}>Loading {count}%</Text> */}
                     </View>
                 )
             }}

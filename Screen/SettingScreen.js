@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, Dimensions, Alert, TouchableOpacity, Switch } from "react-native";
+import { StyleSheet, Text, View, Button, Dimensions, Alert, TouchableOpacity, Switch, AsyncStorage } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Avatar } from "react-native-elements";
 import ThemeContext, { themes } from '../src/Context/theme-context'
@@ -61,7 +61,14 @@ export default function SettingScreen({ navigation }) {
                                 height: 40,
                                 borderRadius: 5
 
-                            }}>
+                            }}
+                                onPress={async () => {
+                                    await AsyncStorage.removeItem('isLoggedIn')
+                                    await AsyncStorage.removeItem('token')
+                                    await AsyncStorage.removeItem('userInfo')
+                                    navigation.navigate('LoginScreen')
+                                }}
+                            >
                                 <Text style={{ color: '#0084BD' }}>SIGN OUT</Text>
                             </TouchableOpacity>
 

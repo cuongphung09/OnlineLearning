@@ -38,9 +38,11 @@ export default function BrowseScreen({ navigation }) {
       name: "C#"
     }
   ]
-  const renderAuthor = (authors, theme) => {
+  const renderAuthor = (authors, theme, navigation) => {
     return authors.map(author =>
-      <TouchableOpacity key={author.id} style={styles.avatar}>
+      <TouchableOpacity key={author.id} style={styles.avatar} onPress={
+        ()=>{navigation.navigate('Author',{item: author})}
+      }>
         <Avatar
           containerStyle={{ margin: 10 }}
           size={75}
@@ -160,7 +162,7 @@ export default function BrowseScreen({ navigation }) {
               <View>
                 <Text style={[styles.title, { color: theme.foreground }]}>Top Authors</Text>
                 <ScrollView horizontal={true} style={{ padding: 10 }}>
-                  {renderAuthor(authors, theme)}
+                  {renderAuthor(authors, theme, navigation)}
                 </ScrollView>
               </View>
               <View>

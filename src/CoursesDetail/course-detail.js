@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet,Text,View,Dimensions,TouchableOpacity,ScrollView} from "react-native";
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Video } from "expo-av";
 import { Avatar } from "react-native-elements";
@@ -137,7 +137,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <View style={{ width: '88%', marginLeft: 10, marginRight: 0 }}>
                     <Text style={{ color: theme.foreground, height: textHeight }}>
                       {item.description}
-                      </Text>
+                    </Text>
                   </View>
 
                   <TouchableOpacity style={{
@@ -159,7 +159,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                   <TouchableOpacity style={{ backgroundColor: theme.tagButton, width: '94%', height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginBottom: 20 }}>
-                    <Text style={styles.whiteText}>
+                    <Text style={styles.whiteText, [{ color: theme.foreground }]}>
                       Take a learning check
           </Text>
                   </TouchableOpacity>

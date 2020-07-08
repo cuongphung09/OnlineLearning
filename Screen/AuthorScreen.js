@@ -3,26 +3,26 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Dimensions, Pr
 import { Divider } from "react-native-elements";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
+import { Avatar } from "react-native-elements";
 import ThemeContext, { themes } from '../src/Context/theme-context'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ScrollView } from 'react-native-gesture-handler';
 import ListLessonItem from '../src/CoursesDetail/ListLessonItem/list-lesson-item'
 
 export default function AuthorDetailScreen({ navigation, props, route }) {
-    // console.log(route.params.item)
+    console.log(route.params)
     const [textHeight, setTextHeight] = useState(80)
     const [chevron, setchevron] = useState('chevron-down')
-    const renderListItem = (courses, theme) => {
-        return courses.map(item =>
-            <View key={item.id}>
-                <Divider style={{ backgroundColor: theme.foreground, height: 1 }} />
-                <ListLessonItem item={item}  onPress={() => navigation.navigate('CoursesDetail', { item: item })} />
+    // const renderListItem = (courses, theme) => {
+    //     return courses.map(item =>
+    //         <View key={item.id}>
+    //             <Divider style={{ backgroundColor: theme.foreground, height: 1 }} />
+    //             <ListLessonItem item={item}  onPress={() => navigation.navigate('CoursesDetail', { item: item })} />
 
-            </View>
+    //         </View>
 
-        )
-    }
-    navigation.setOptions({ title: route.params.item.name })
+    //     )
+    // }
     return (
         <ThemeContext.Consumer>
             {
@@ -30,22 +30,42 @@ export default function AuthorDetailScreen({ navigation, props, route }) {
                     return (
                         <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
                             <View style={{ margin: 10 }}>
-                                <View style={[{ flexDirection: "row" }]} >
-                                    <View style={styles.imgContainer}>
-                                        <Image style={styles.img} source={require('../react.png')}></Image>
-                                    </View>
+                                <View style={styles.avatar}>
+                                    <Avatar
+                                        containerStyle={{}}
+                                        size={75}
+                                        rounded
+                                        source={{
+                                            uri: route.params.item.avaUri,
+                                        }}
 
-                                    <View style={[styles.textContainer, { flexDirection: 'column' }]}>
-                                        <Text style={[styles.title, { color: theme.foreground, flexWrap: 'wrap' }]}>{route.params.item.name}</Text>
-                                        <Text style={[styles.text, { color: theme.foreground, flexWrap: 'wrap' }]}>{route.params.item.courses.length} courses</Text>
-                                    </View>
+                                    />
+                                    <Text style={{ color: theme.foreground, fontSize: 20, fontWeight: 'bold' }}>{route.params.item.name}</Text>
+                                    <Text style={{ color: theme.foreground, fontSize: 12, margin: 5 }}>Online Learning Author</Text>
+                                    <TouchableOpacity style={{
+                                        justifyContent: 'center',
+                                        alignSelf: 'center',
+                                        alignItems: 'center',
+                                        borderColor: '#0084BD',
+                                        borderWidth: 1,
+                                        width: Dimensions.get('window').width * 90 / 100,
+                                        height: 40,
+                                        borderRadius: 5,
+                                        margin: 5
+                                    }}>
+                                        <Text style={{ color: '#0084BD' }}>FOLLOW</Text>
+                                    </TouchableOpacity>
+                                    <Text style={{ color: theme.foreground, fontSize: 12, margin: 5 }}>Follow to notified when new courses are published</Text>
+
                                 </View>
                                 <View style={{
                                     display: 'flex', flexDirection: 'row', height: textHeight, marginBottom: 20
                                 }}>
                                     <View style={{ width: '88%', marginLeft: 10, marginRight: 0 }}>
                                         <Text style={{ color: theme.foreground, height: textHeight }}>
-                                            {route.params.item.description}
+                                            {
+                                                // route.params.item.name
+                                            }
                                         </Text>
                                     </View>
 
@@ -66,18 +86,8 @@ export default function AuthorDetailScreen({ navigation, props, route }) {
                                         ></MaterialCommunityIcons>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ marginBottom: 30 }}>
-                                    <Text style={[styles.title, { fontSize: 20, fontWeight: 'bold', color: theme.foreground }]}>Your Progress: 10%</Text>
-                                    <View style={{ width: Dimensions.get('window').width * 0.4, backgroundColor: 'gray', height: 3, borderRadius: 25 }}>
-                                        <View style={{ width: Dimensions.get('window').width * 0.3 * 0.1, backgroundColor: '#2196F3', height: 3, borderRadius: 25 }}>
 
-                                        </View>
-                                    </View>
-                                </View>
-                                <View>
-                                    <Text style={{ fontSize: 15, marginBottom: 10 }}>Path Courses</Text>
-                                    {renderListItem(route.params.item.courses, theme)}
-                                </View>
+
                             </View>
 
                         </ScrollView>
@@ -117,5 +127,10 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 12,
         opacity: 0.7
-    }
+    },
+    avatar: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 });
