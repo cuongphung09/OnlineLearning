@@ -83,7 +83,7 @@ export default function SignUpScreen({ navigation }) {
                     }}
                     textContentType={'password'}
                 >
-
+                    
                 </TextInput>
                 <TextInput style={{ opacity: rePasswordOpacity, marginBottom: 20 }} value={rePassword} placeholder='Confirm Password'
                     secureTextEntry={true}

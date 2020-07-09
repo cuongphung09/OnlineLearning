@@ -6,6 +6,7 @@ import { TouchableOpacity } from "react-native-gesture-handler"
 import ThemeContext, { themes } from '../../../Context/theme-context'
 const SectionCourses = (props) => {
     const courses = (props.data)
+    // console.log(courses)
     const renderListItem = (courses) => {
         return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />)
     }

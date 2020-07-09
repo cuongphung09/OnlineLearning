@@ -17,7 +17,7 @@ const ListLessonItem = (props) => {
             <View style={styles.imgContainer}>
               <Image
                 style={styles.img}
-                source={require("../../../react.png")}
+                source={{ uri: props.item.imageUrl }}
               ></Image>
             </View>
 
@@ -36,8 +36,7 @@ const ListLessonItem = (props) => {
                     { flex: 1, color: theme.foreground, flexWrap: "wrap" },
                   ]}
                 >
-                  {props.item.level} • {props.item.release} •{" "}
-                  {props.item.duration}
+                  {props.item.totalHours} giờ
                 </Text>
               </View>
             </View>

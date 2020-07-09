@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, Alert, AsyncStorage } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useSafeArea } from "react-native-safe-area-context";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, AsyncStorage } from "react-native";
+// import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+// import { useSafeArea } from "react-native-safe-area-context";
+import PasswordInputText from 'react-native-hide-show-password-input';
 import ThemeContext from '../src/Context/theme-context'
 import AuthContext from '../src/Context/auth-context'
 export default function LoginScreen({ navigation }) {
@@ -21,13 +22,14 @@ export default function LoginScreen({ navigation }) {
             if (isLoggedInTemp === 'true') {
                 navigation.navigate('Main')
             }
-            setLoading(false)
+
             setIsLoggedIn(isLoggedInTemp)
             setToken(tokenTemp)
             setUserInfo(userInfoTemp)
+            setLoading(false)
         }
         fetchData()
-
+        
     }, []);
 
 
@@ -69,7 +71,7 @@ export default function LoginScreen({ navigation }) {
                         {([theme, setTheme]) => {
                             return loading ? (
                                 <View>
-
+                                    <Text>LOADING</Text>
                                 </View>
                             ) : (
                                     <View style={[styles.container, {}]}>
@@ -83,6 +85,7 @@ export default function LoginScreen({ navigation }) {
                                                     setUsername(value)
                                                 }}
                                             ></TextInput>
+
                                             <TextInput style={{ opacity: passwordOpacity, marginBottom: 20, color: theme.foreground }} value={password} placeholder='Password'
                                                 secureTextEntry={true}
                                                 onChangeText={(value) => {
@@ -90,7 +93,11 @@ export default function LoginScreen({ navigation }) {
                                                         setPasswordOpacity(1)
                                                     }
                                                     setPassword(value)
-                                                }}></TextInput>
+                                                }}>
+                                            </TextInput>
+
+
+
                                             <TouchableOpacity style={[styles.button, { color: theme.foreground }]} title='LOGIN' onPress={
                                                 () => submit(setUser)
                                             } >

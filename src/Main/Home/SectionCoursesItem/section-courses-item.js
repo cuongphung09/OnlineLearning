@@ -5,17 +5,17 @@ const SectionCoursesItem = (props) => {
     return (
         <ThemeContext.Consumer>
             {
-                ([theme,setTheme]) => {
+                ([theme, setTheme]) => {
                     return (
-                        <TouchableOpacity style={[styles.container, {  }]} onPress={props.onPress}>
+                        <TouchableOpacity style={[styles.container, {}]} onPress={props.onPress}>
                             <View style={styles.imgContainer}>
-                                <Image style={styles.img} source={require('../../../../react.png')}></Image>
+                                <Image style={styles.img} source={{ uri: props.item.imageUrl }}></Image>
                             </View>
 
                             <View style={styles.textContainer}>
                                 <Text style={[styles.title, { color: theme.foreground }]}>{props.item.title}</Text>
                                 <Text style={[styles.text, { color: theme.foreground }]}>{props.item.author}</Text>
-                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.level} • {props.item.release} • {props.item.duration}</Text>
+                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.totalHours} giờ</Text>
 
                             </View>
                         </TouchableOpacity>

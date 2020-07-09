@@ -24,6 +24,7 @@ export default function ProfileScreen({ navigation, props, route }) {
     return (
         <AuthContext.Consumer>
             {([user, setUser]) => {
+                console.log(user)
                 return (
                     <ThemeContext.Consumer>
                         {

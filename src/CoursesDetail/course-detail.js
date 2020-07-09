@@ -27,7 +27,7 @@ export default function CoursesDetail({ navigation, props, route }) {
               <View>
                 <Video
                   source={{
-                    uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+                    uri: item.promoVidUrl,
                   }}
                   rate={1.0}
                   volume={1.0}
@@ -46,7 +46,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   >
                     <MaterialCommunityIcons
                       name="chevron-down"
-                      color="white"
+                      color='white'
                       size={40}
                       style={{ marginTop: 0 }}
                     ></MaterialCommunityIcons>
@@ -55,7 +55,8 @@ export default function CoursesDetail({ navigation, props, route }) {
               </View>
               <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
                 <Text style={[styles.title, { color: theme.foreground }]}>{item.title}</Text>
-                <ScrollView horizontal={true} style={{ padding: 10 }}>
+                <Text style={[styles.subtitle, { color: theme.foreground }]}>{item.subtitle}</Text>
+                {/* <ScrollView horizontal={true} style={{ padding: 10 }}>
                   <TouchableOpacity style={[styles.button, { backgroundColor: theme.background }]}>
                     <Avatar
                       size={30}
@@ -71,8 +72,9 @@ export default function CoursesDetail({ navigation, props, route }) {
                 </ScrollView>
                 <Text style={{ color: theme.foreground, fontSize: 12, paddingLeft: 10 }}>
                   {item.level} • {item.release} • {item.duration}
-                </Text>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 20 }}>
+                </Text> */}
+
+                {/* <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 20 }}>
                   <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <TouchableOpacity
                       style={{
@@ -130,17 +132,44 @@ export default function CoursesDetail({ navigation, props, route }) {
                     </TouchableOpacity>
                     <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Download</Text>
                   </View>
-                </View>
+                </View> */}
+                <Text style={{ marginLeft: 10, marginTop: 20, fontWeight: 'bold' }}>Bạn sẽ học được</Text>
                 <View style={{
-                  display: 'flex', flexDirection: 'row', height: textHeight, marginBottom: 20
+                  display: 'flex', flexDirection: 'row'
                 }}>
                   <View style={{ width: '88%', marginLeft: 10, marginRight: 0 }}>
                     <Text style={{ color: theme.foreground, height: textHeight }}>
-                      {item.description}
+                      {item.learnWhat.map(item => (
+                        <Text>✓ {item}{"\n"}</Text>
+                      ))}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={{ marginLeft: 10, marginTop: 20, fontWeight: 'bold' }}>Yêu cầu</Text>
+                <View style={{
+                  display: 'flex', flexDirection: 'row'
+                }}>
+                  <View style={{ marginLeft: 10, marginRight: 0 }}>
+                    <Text style={{ color: theme.foreground }}>
+                      {item.requirement.map(item => (
+                        <Text>✓ {item}{"\n"}</Text>
+                      ))}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Mô tả</Text>
+                <View style={{
+                  display: 'flex', flexDirection: 'row',
+                }}>
+                  <View style={{ width: '88%', marginLeft: 10, marginRight: 0 }}>
+                    <Text style={{
+                      color: theme.foreground,
+                    }}>
+                      {item.description}{'\n'}
                     </Text>
                   </View>
 
-                  <TouchableOpacity style={{
+                  {/* <TouchableOpacity style={{
                     display: 'flex', backgroundColor: theme.tagButton, borderRadius: 5,
                     justifyContent: 'center', marginRight: 10, alignItems: 'center'
                   }}
@@ -155,21 +184,33 @@ export default function CoursesDetail({ navigation, props, route }) {
                       size={20}
 
                     ></MaterialCommunityIcons>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
-                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Danh sách bài học</Text>
+                <View style={{
+                  display: 'flex', flexDirection: 'row',
+                }}>
+                  <View style={{ width: '88%', marginLeft: 10, marginRight: 0 }}>
+                    <Text style={{
+                      color: theme.foreground,
+                    }}>
+                      {item.description}
+                    </Text>
+                  </View>
+                </View>
+                {/* <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                   <TouchableOpacity style={{ backgroundColor: theme.tagButton, width: '94%', height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginBottom: 20 }}>
                     <Text style={styles.whiteText, [{ color: theme.foreground }]}>
                       Take a learning check
-          </Text>
+                    </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={{ backgroundColor: theme.tagButton, width: '94%', height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginBottom: 20 }}>
                     <Text style={{ color: theme.foreground }}>
                       View related paths and courses
-          </Text>
+                    </Text>
                   </TouchableOpacity>
-                </View>
-                <TabView
+                </View> */}
+                {/* <TabView
                   navigationState={{ index, routes }}
                   renderScene={renderScene}
                   renderTabBar={
@@ -189,7 +230,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   initialLayout={initialLayout}
                   style={{ backgroundColor: theme.background }}
                   {...theme}
-                />
+                /> */}
               </ScrollView>
             </View>
           )
@@ -235,6 +276,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginTop: 20,
     marginLeft: 10,
+    marginRight: 10
+  },
+  subtitle: {
+    color: "white",
+    fontSize: 15,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10
   },
   button: {
     borderRadius: 50,
