@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
          setIsLoggedIn(isLoggedInTemp)
          setToken(tokenTemp)
          setUserInfo(userInfoTemp)
-         // console.log(JSON.parse(userInfoTemp).id)
+         console.log(tokenTemp)
          let recommend = await fetch(`https://api.itedu.me/user/recommend-course/${JSON.parse(userInfoTemp).id}/10/1`, {
             method: 'GET',
             headers: {
@@ -35,17 +35,29 @@ const HomeScreen = ({ navigation }) => {
             }
          ]
          setData(dataTemp)
-         let demo = await fetch(`https://api.itedu.me/course/detail-with-lesson/b5a93098-3936-4b22-9188-271bd909ebbf`, {
-            method: 'GET',
-            headers: {
-               Accept: 'application/json',
-               'Content-Type': 'application/json',
-               Authorization: `Bearer  ${tokenTemp}`,
-            },
-         })
-         let demoJson = await demo.json();
-         console.log(demoJson)
-
+         // let demo = await fetch(`https://api.itedu.me/course/detail-with-lesson/b5a93098-3936-4b22-9188-271bd909ebbf`, {
+         //    method: 'GET',
+         //    headers: {
+         //       Accept: 'application/json',
+         //       'Content-Type': 'application/json',
+         //       Authorization: `Bearer ${tokenTemp}`,
+         //    },
+         // })
+         // let demoJson = await demo.json();
+         // console.log(demoJson)
+         // let demo = await fetch(`https://api.itedu.me/payment/get-free-courses`, {
+         //    method: 'POST',
+         //    headers: {
+         //       Accept: 'application/json',
+         //       'Content-Type': 'application/json',
+         //       Authorization: `Bearer ${tokenTemp}`,
+         //    },
+         //    body: JSON.stringify({
+         //       "courseId": "b5a93098-3936-4b22-9188-271bd909ebbf"
+         //    })
+         // })
+         // let demoJson = await demo.json();
+         // console.log(demoJson)
       }
       fetchData()
 

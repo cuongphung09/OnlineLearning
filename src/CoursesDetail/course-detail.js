@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ScrollView, AsyncStorage } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Video } from "expo-av";
 import { Avatar } from "react-native-elements";
@@ -10,14 +10,49 @@ export default function CoursesDetail({ navigation, props, route }) {
   const [chevron, setchevron] = useState('chevron-down')
   const { item } = route.params;
   const [index, setIndex] = React.useState(0);
+  const [token, setToken] = useState('')
   const [routes] = React.useState([
     { key: 'first', title: 'CONTENTS' },
     { key: 'second', title: 'TRANSCRIPT' },
   ]);
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
+  // const renderScene = SceneMap({
+  //   first: FirstRoute,
+  //   second: SecondRoute,
+  // });
+  const [learnWhat, setLearnWhat] = useState([])
+  const [requirement, setRequirement] = useState([])
+  const [courseData, setCourseData] = useState()
+  useEffect(() => {
+
+    const getCourseDetail = async () => {
+      const tokenTemp = await AsyncStorage.getItem('token')
+      setToken(tokenTemp)
+      let demo = await fetch(`https://api.itedu.me/course/detail-with-lesson/${item.id}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${tokenTemp}`,
+        },
+      })
+      let demoJson = await demo.json();
+      setCourseData(demoJson.payload)
+      console.log(demoJson.payload, item.id)
+    }
+    getCourseDetail()
+    const learnWhatTemp = item.learnWhat.map((element, index) => ({
+      id: index,
+      item: element
+    }))
+    setLearnWhat(learnWhatTemp)
+    const requirementTemp = item.requirement.map((element, index) => ({
+      id: index,
+      item: element
+    }))
+    setRequirement(requirementTemp)
+  }, []);
+  const courseId = item.id
+
   return (
     <ThemeContext.Consumer>
       {
@@ -139,9 +174,12 @@ export default function CoursesDetail({ navigation, props, route }) {
                 }}>
                   <View style={{ width: '88%', marginLeft: 10, marginRight: 0 }}>
                     <Text style={{ color: theme.foreground, height: textHeight }}>
-                      {item.learnWhat.map(item => (
-                        <Text>✓ {item}{"\n"}</Text>
-                      ))}
+                      {
+                        learnWhat ? (learnWhat.map(item => (
+                          <Text key={item.id}>✓ {item.item}{"\n"}</Text>
+                        ))) :
+                          (<Text></Text>)
+                      }
                     </Text>
                   </View>
                 </View>
@@ -151,8 +189,8 @@ export default function CoursesDetail({ navigation, props, route }) {
                 }}>
                   <View style={{ marginLeft: 10, marginRight: 0 }}>
                     <Text style={{ color: theme.foreground }}>
-                      {item.requirement.map(item => (
-                        <Text>✓ {item}{"\n"}</Text>
+                      {requirement.map(item => (
+                        <Text key={item.id}>✓ {item.item}{"\n"}</Text>
                       ))}
                     </Text>
                   </View>
@@ -237,9 +275,7 @@ export default function CoursesDetail({ navigation, props, route }) {
         }
       }
     </ThemeContext.Consumer>
-
-
-  );
+  )
 }
 const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#212121' }]} >
