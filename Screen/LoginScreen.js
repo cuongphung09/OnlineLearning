@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, AsyncStorage } from "react-native";
 // import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { useSafeArea } from "react-native-safe-area-context";
-import PasswordInputText from 'react-native-hide-show-password-input';
+// import PasswordInputText from 'react-native-hide-show-password-input';
 import ThemeContext from '../src/Context/theme-context'
 import AuthContext from '../src/Context/auth-context'
 export default function LoginScreen({ navigation }) {
