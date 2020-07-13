@@ -16,7 +16,7 @@ const SectionCourses = (props) => {
                 return (
                     <View style={{ marginBottom: 30 }}>
                         <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={[styles.text, { color: theme.foreground }]}>{props.title}</Text>
+                            <Text style={[styles.text, { color: theme.foreground }]}>{props.name}</Text>
                             <TouchableOpacity onPress={props.onPress}>
                                 <Text style={{ color: theme.foreground, opacity: 0.5 }} >
                                     See all ⟩

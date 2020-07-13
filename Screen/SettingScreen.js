@@ -34,7 +34,7 @@ export default function SettingScreen({ navigation }) {
                                             </View>
                                         </View>
                                         <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginBottom: 20 }}>
-                                            <Text style={{ color: theme.foreground, marginRight: 220 }}>Dark Mode</Text>
+                                            <Text style={{ color: theme.foreground, marginRight: 200 }}>Dark Mode</Text>
                                             <Switch
                                                 trackColor={{
                                                     true: theme.foreground,

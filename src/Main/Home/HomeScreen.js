@@ -18,6 +18,7 @@ const HomeScreen = ({ navigation }) => {
          setIsLoggedIn(isLoggedInTemp)
          setToken(tokenTemp)
          setUserInfo(userInfoTemp)
+         // console.log(tokenTemp)
          // console.log(JSON.parse(userInfoTemp).id)
          let recommend = await fetch(`https://api.itedu.me/user/recommend-course/${JSON.parse(userInfoTemp).id}/10/1`, {
             method: 'GET',
@@ -29,46 +30,85 @@ const HomeScreen = ({ navigation }) => {
          let recommendJson = await recommend.json();
          let dataTemp = [
             {
-               id: 1,
-               title: 'Có thể bạn quan tâm',
+               key: 1,
+               id: '',
+               name: 'Có thể bạn quan tâm',
                courses: recommendJson.payload
             }
          ]
-         setData(dataTemp)
-         // let demo = await fetch(`https://api.itedu.me/course/detail-with-lesson/b5a93098-3936-4b22-9188-271bd909ebbf`, {
-         //    method: 'GET',
-         //    headers: {
-         //       Accept: 'application/json',
-         //       'Content-Type': 'application/json',
-         //       Authorization: `Bearer ${tokenTemp}`,
-         //    },
-         // })
-         // let demoJson = await demo.json();
-         // console.log(demoJson)
-         // let demo = await fetch(`https://api.itedu.me/payment/get-free-courses`, {
-         //    method: 'POST',
-         //    headers: {
-         //       Accept: 'application/json',
-         //       'Content-Type': 'application/json',
-         //       Authorization: `Bearer ${tokenTemp}`,
-         //    },
-         //    body: JSON.stringify({
-         //       "courseId": "b5a93098-3936-4b22-9188-271bd909ebbf"
-         //    })
-         // })
-         // let demoJson = await demo.json();
-         // console.log(demoJson)
+         let getCategory = await fetch(`https://api.itedu.me/category/all`, {
+            method: 'GET',
+            headers: {
+               Accept: 'application/json',
+               'Content-Type': 'application/json',
+            },
+         })
+         let count = dataTemp.length + 1
+         let getCategoryJson = (await getCategory.json())
+         getCategoryJson.payload.forEach(async (element) => {
+            // console.log(element.id)
+            element.key = count
+            count++
+            let demo = await fetch(`https://api.itedu.me/course/search`, {
+               method: 'POST',
+               headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  keyword: '',
+                  opt: {
+                     sort: {
+                        attribute: "price",
+                        rule: "ASC"
+                     },
+                     category: [
+                        element.id
+                     ],
+                     time: [
+                        {
+                           min: 0,
+                           max: 1
+                        },
+                        {
+                           min: 3,
+                           max: 6
+                        }
+                     ],
+                     price: [
+                        {
+                           max: 0
+                        },
+                        {
+                           min: 0,
+                           max: 200000
+                        },
+                        {
+                           min: 500000,
+                           max: 1000000
+                        }
+                     ]
+                  },
+                  limit: 10,
+                  offset: 1
+               })
+            })
+            let demoJson = await demo.json();
+            element.courses = demoJson.payload.rows
+            // console.log(demoJson.payload.rows)
+            dataTemp.push(element)
+            setData(dataTemp)
+         })
       }
       fetchData()
 
    }, []);
-   // const data = homeData
    const renderData = (data) => {
-      return data.map(item => <SectionCourses key={item.id}
-         title={item.title}
+      return data.map(item => <SectionCourses key={item.key}
+         name={item.name}
          data={item.courses}
          navigation={navigation} onPress={() => navigation.navigate("ListLesson", {
-            title: item.title
+            name: item.name
             , data: item.courses
          })} />)
    }
