@@ -17,7 +17,7 @@ export default function PathDetailScreen({ navigation, props, route }) {
         return courses.map(item =>
             <View key={item.id}>
                 <Divider style={{ backgroundColor: theme.foreground, height: 1 }} />
-                <ListLessonItem item={item}  onPress={() => navigation.navigate('CoursesDetail', { item: item })} />
+                <ListLessonItem item={{ ...item, imageUrl: 'https://frontendmasters.com/static-assets/learn/og-learning-path-react.jpg' }} onPress={() => navigation.navigate('CoursesDetail', { item: item })} />
 
             </View>
 

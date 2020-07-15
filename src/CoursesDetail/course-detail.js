@@ -24,11 +24,13 @@ export default function CoursesDetail({ navigation, props, route }) {
   const [requirement, setRequirement] = useState([]);
   const [courseData, setCourseData] = useState();
   const [courseDataTraier, setCourseDataTraier] = useState();
+  console.log(item.id)
   useEffect(() => {
     const getCourseDetail = async () => {
       const tokenTemp = await AsyncStorage.getItem("token");
       const userInfoTemp = await AsyncStorage.getItem("userInfo");
-
+      console.log(tokenTemp)
+      console.log(JSON.parse(userInfoTemp).id)
       let paid = await fetch(
         `https://api.itedu.me/course/detail-with-lesson/${item.id}`,
         {
@@ -44,9 +46,7 @@ export default function CoursesDetail({ navigation, props, route }) {
       setCourseData(paidJson.payload);
 
       let demo = await fetch(
-        `https://api.itedu.me/course/get-course-detail/${item.id}/${
-        JSON.parse(userInfoTemp).id
-        }`,
+        `https://api.itedu.me/course/get-course-detail/${item.id}/${JSON.parse(userInfoTemp).id}`,
         {
           method: "GET",
           headers: {
@@ -61,10 +61,10 @@ export default function CoursesDetail({ navigation, props, route }) {
       setToken(tokenTemp);
     };
     getCourseDetail();
-    const learnWhatTemp = item.learnWhat.map((element, index) => ({
+    const learnWhatTemp = item.learnWhat ? item.learnWhat.map((element, index) => ({
       id: index,
       item: element,
-    }));
+    })) : [];
     setLearnWhat(learnWhatTemp);
     const requirementTemp = item.requirement ? item.requirement.map((element, index) => ({
       id: index,
@@ -164,7 +164,9 @@ export default function CoursesDetail({ navigation, props, route }) {
                   type={"custom"}
                   imageSize={20}
                   readonly
-                  // tintColor={theme.background}
+                  tintColor={theme.background}
+                  ratingColor='yellow'
+                  ratingBackgroundColor='#c8c7c8'
                   startingValue={
                     // 3
                     courseDataTraier ? courseDataTraier.ratedNumber : 0
@@ -451,13 +453,13 @@ export default function CoursesDetail({ navigation, props, route }) {
                       uri: courseDataTraier ? courseDataTraier.instructor.avatar : 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
                     }}
                   />
-                  <Text><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.soldNumber : ''}</Text> học viên</Text>
-                  <Text><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.totalCourse : ''}</Text> khóa học</Text>
-                  <Text><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.averagePoint.toFixed(1) : ''}</Text>/5 điểm</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.soldNumber : ''}</Text> học viên</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.totalCourse : ''}</Text> khóa học</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.averagePoint.toFixed(1) : ''}</Text>/5 điểm</Text>
                 </View>
                 <View style={{ marginTop: 10, width: '60%' }}>
-                  <Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.name : ''}</Text>
-                  <Text style={{}}>{courseDataTraier ? (courseDataTraier.instructor.intro ? courseDataTraier.instructor.intro : '(Chưa có bài tự giới thiệu)') : ''}</Text>
+                  <Text style={{ fontWeight: 'bold', color: theme.foreground }}>{courseDataTraier ? courseDataTraier.instructor.name : ''}</Text>
+                  <Text style={{ color: theme.foreground }}>{courseDataTraier ? (courseDataTraier.instructor.intro ? courseDataTraier.instructor.intro : '(Chưa có bài tự giới thiệu)') : ''}</Text>
                 </View>
               </View>
               {/* <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -547,7 +549,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                 style={[styles.container, { backgroundColor: theme.background }]}
               >
                 <Text style={[styles.title, { color: theme.foreground }]}>
-                  {courseDataTraier ? courseDataTraier.title : ""}
+                  {courseDataTraier ? courseDataTraier.title : item.title}
                 </Text>
                 <Text style={[styles.subtitle, { color: theme.foreground }]}>
                   {courseDataTraier ? courseDataTraier.subtitle : ""}
@@ -557,29 +559,33 @@ export default function CoursesDetail({ navigation, props, route }) {
                     type={"custom"}
                     imageSize={20}
                     readonly
-                    // tintColor={theme.background}
+                    tintColor={theme.background}
+                    ratingColor='yellow'
+                    ratingBackgroundColor='#c8c7c8'
                     startingValue={
                       // 3
                       courseDataTraier ? courseDataTraier.ratedNumber : 0
                     }
+                    borderColor={'yellow'}
                   />
                   <Text style={{ color: theme.foreground }}>
                     {" "}
-                  ({courseDataTraier ? courseDataTraier.ratedNumber : ""} bình
+                  ({courseDataTraier ? courseDataTraier.ratedNumber : "0"} bình
                   chọn)
                 </Text>
                 </View>
                 <Text style={{ marginLeft: 10, color: theme.foreground }}>
                   Số lượng học viên:{" "}
-                  {courseDataTraier ? courseDataTraier.soldNumber : ""}
+                  {courseDataTraier ? courseDataTraier.soldNumber : "0"}
                 </Text>
                 <Text style={{ marginLeft: 10, color: theme.foreground }}>
                   Cập nhật mới nhất:{" "}
-                  {convert(
+                  {courseDataTraier ? convert(
                     Date.parse(
                       courseDataTraier ? courseDataTraier.updatedAt : ""
                     ) / 1000
-                  )}
+                  ) : '(chưa cập nhật)'
+                  }
                 </Text>
                 <TouchableOpacity style={{
                   marginTop: 10,
@@ -827,22 +833,28 @@ export default function CoursesDetail({ navigation, props, route }) {
                                   <Text style={{ color: theme.foreground }}>
                                     <Text style={{ fontSize: 20 }}>↳</Text> Bài {ls.numberOrder}. {ls.name}
                                   </Text>
-                                  <TouchableOpacity
-                                    onPress={() => {
-                                      setVidURL(ls.videoUrl);
-                                    }}
-                                  >
-                                    <Text
-                                      style={{
-                                        borderColor: theme.foreground,
-                                        color: theme.foreground,
-                                        borderWidth: 1,
-                                        borderRadius: 5,
+                                  {
+                                    ls.isPreview ? (<TouchableOpacity
+                                      onPress={() => {
+                                        setVidURL(ls.videoUrl);
                                       }}
                                     >
-                                      Xem trước
-                                  </Text>
-                                  </TouchableOpacity>
+                                      <Text
+                                        style={{
+                                          borderColor: theme.foreground,
+                                          color: theme.foreground,
+                                          borderWidth: 1,
+                                          borderRadius: 5,
+                                        }}
+                                      >
+                                        Xem trước
+                                    </Text>
+                                    </TouchableOpacity>)
+                                      :
+                                      (<Text>
+                                        Mua khóa học để xem bài giảng
+                                      </Text>)
+                                  }
                                 </View>
                               );
                             })}
@@ -850,7 +862,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                         );
                       })
                     ) : (
-                        <Text>no</Text>
+                        <Text style={{ color: theme.foreground }}>(không có)</Text>
                       )}
                   </View>
                 </View>
@@ -873,13 +885,13 @@ export default function CoursesDetail({ navigation, props, route }) {
                         uri: courseDataTraier ? courseDataTraier.instructor.avatar : 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
                       }}
                     />
-                    <Text><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.soldNumber : ''}</Text> học viên</Text>
-                    <Text><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.totalCourse : ''}</Text> khóa học</Text>
-                    <Text><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.averagePoint.toFixed(1) : ''}</Text>/5 điểm</Text>
+                    <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.soldNumber : '0'}</Text> học viên</Text>
+                    <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.totalCourse : '0'}</Text> khóa học</Text>
+                    <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.averagePoint.toFixed(1) : '0'}</Text>/5 điểm</Text>
                   </View>
                   <View style={{ marginTop: 10, width: '60%' }}>
-                    <Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.name : ''}</Text>
-                    <Text style={{}}>{courseDataTraier ? (courseDataTraier.instructor.intro ? courseDataTraier.instructor.intro : '(Chưa có bài tự giới thiệu)') : ''}</Text>
+                    <Text style={{ fontWeight: 'bold', color: theme.foreground }}>{courseDataTraier ? courseDataTraier.instructor.name : 'Họ và tên'}</Text>
+                    <Text style={{ color: theme.foreground }}>{courseDataTraier ? (courseDataTraier.instructor.intro ? courseDataTraier.instructor.intro : '(Chưa có bài tự giới thiệu)') : '(Chưa có bài tự giới thiệu)'}</Text>
                   </View>
                 </View>
                 {/* <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>

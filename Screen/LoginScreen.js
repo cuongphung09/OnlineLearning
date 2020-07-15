@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, AsyncStorage } from "react-native";
+import {
+    StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, AsyncStorage, Modal,
+    TouchableHighlight
+} from "react-native";
 // import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { useSafeArea } from "react-native-safe-area-context";
 // import PasswordInputText from 'react-native-hide-show-password-input';
 import ThemeContext from '../src/Context/theme-context'
 import AuthContext from '../src/Context/auth-context'
 export default function LoginScreen({ navigation }) {
+    const [layer, setLayer] = useState(1)
     const [userOpacity, setUserOpacity] = useState(0.7)
     const [passwordOpacity, setPasswordOpacity] = useState(0.7)
+    const [forgetOpacity, setForgetOpacity] = useState(0.7)
     const [username, setUsername] = useState('')
+    const [forget, setForget] = useState('')
     const [password, setPassword] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [token, setToken] = useState('')
     const [userInfo, setUserInfo] = useState()
     const [loading, setLoading] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false);
     useEffect(() => {
         async function fetchData() {
             const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
@@ -29,7 +36,7 @@ export default function LoginScreen({ navigation }) {
             setLoading(false)
         }
         fetchData()
-        
+
     }, []);
 
 
@@ -50,14 +57,15 @@ export default function LoginScreen({ navigation }) {
             Alert.alert('sai tk mk')
         }
         else {
+            setUsername('')
+            setPassword('')
             setUser(responseJson.userInfo)
             AsyncStorage.setItem('isLoggedIn', 'true')
             AsyncStorage.setItem('token', responseJson.token)
             AsyncStorage.setItem('userInfo', JSON.stringify(responseJson.userInfo))
             navigation.navigate('Main')
         }
-        setUsername('')
-        setPassword('')
+
         // await AsyncStorage.removeItem('isLoggedIn')
         // await AsyncStorage.removeItem('token')
         // await AsyncStorage.removeItem('userInfo')
@@ -74,7 +82,7 @@ export default function LoginScreen({ navigation }) {
                                     <Text>LOADING</Text>
                                 </View>
                             ) : (
-                                    <View style={[styles.container, {}]}>
+                                    <View style={[styles.container, { opacity: layer }]}>
                                         <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: theme.foreground }}>Login</Text>
                                         <View style={{ margin: 30, marginBottom: 10 }}>
                                             <TextInput style={{ opacity: userOpacity, marginBottom: 20, color: theme.foreground }} placeholder='Email' value={username}
@@ -105,6 +113,8 @@ export default function LoginScreen({ navigation }) {
                                             </TouchableOpacity>
                                         </View>
                                         <TouchableOpacity onPress={() => {
+                                            setModalVisible(true)
+                                            setLayer(0)
                                             // navigation.navigate('ForgotPassword')
                                             // navigation.navigate('Main')
                                         }}>
@@ -118,7 +128,64 @@ export default function LoginScreen({ navigation }) {
 
                                         </TouchableOpacity>
 
+                                        <View style={styles.centeredView}>
+                                            <Modal
+                                                animationType="slide"
+                                                transparent={true}
+                                                visible={modalVisible}
+                                                onRequestClose={() => {
+                                                    Alert.alert("Modal has been closed.");
+                                                }}
+                                            >
+                                                <View style={styles.centeredView}>
+                                                    <View style={styles.modalView}>
+                                                        <Text style={styles.modalText}>Quên mật khẩu</Text>
+                                                        <TextInput style={{ opacity: forgetOpacity, color: theme.foreground }} placeholder='Email' value={forget}
+                                                            onChangeText={(value) => {
+                                                                if (value !== '') {
+                                                                    setForgetOpacity(1)
+                                                                }
+                                                                setForget(value)
+                                                            }}
+                                                        ></TextInput>
+                                                        <View style={{ flexDirection: 'row' }}>
+                                                            <TouchableHighlight
+                                                                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                                                                onPress={async () => {
+                                                                    const sendEmail = await fetch('https://api.itedu.me/user/forget-pass/send-email', {
+                                                                        method: "POST",
+                                                                        headers: {
+                                                                            Accept: "application/json",
+                                                                            "Content-Type": "application/json",
 
+                                                                        },
+                                                                        body: {
+                                                                            email: forget
+                                                                        }
+                                                                    })
+                                                                    const sendEmailJson = await sendEmail.json()
+                                                                    Alert.alert(sendEmailJson.message)
+                                                                    setModalVisible(!modalVisible);
+                                                                    setLayer(1)
+                                                                }}
+                                                            >
+                                                                <Text style={styles.textStyle}>Xác nhận</Text>
+                                                            </TouchableHighlight>
+                                                            <TouchableHighlight
+                                                                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                                                                onPress={() => {
+                                                                    setModalVisible(!modalVisible);
+                                                                    setLayer(1)
+
+                                                                }}
+                                                            >
+                                                                <Text style={styles.textStyle}>Hủy</Text>
+                                                            </TouchableHighlight>
+                                                        </View>
+                                                    </View>
+                                                </View>
+                                            </Modal>
+                                        </View>
                                     </View>
                                     // </ImageBackground>
                                 )
@@ -144,5 +211,40 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         height: 50,
         justifyContent: 'center'
-    }
+    },
+    centeredView: {
+        // flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 50
+    },
+    modalView: {
+
+        width: '90%',
+        margin: 150,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    openButton: {
+        backgroundColor: "#F194FF",
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        margin: 10
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
 });

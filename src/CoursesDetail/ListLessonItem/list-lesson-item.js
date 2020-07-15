@@ -36,7 +36,7 @@ const ListLessonItem = (props) => {
                     { flex: 1, color: theme.foreground, flexWrap: "wrap" },
                   ]}
                 >
-                  {props.item.totalHours} giờ
+                  {props.item.totalHours || props.item.duration} giờ
                 </Text>
               </View>
             </View>

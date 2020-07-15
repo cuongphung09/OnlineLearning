@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, ScrollView, Alert } from "react-native";
 import ImageButton from "../../Common/image-button";
 import SmallerImageButton from "../../Common/smaller-imagee-button";
@@ -10,6 +10,46 @@ import listCourses from './listCourse-data'
 import PathItem from './pathItem/path-item'
 import pathData from './path-data'
 export default function BrowseScreen({ navigation }) {
+  const [categoryData, setCategoryData] = useState()
+  const randomBackground = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU",
+    "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
+    "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+    "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+    "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+  ]
+  useEffect(() => {
+    async function getCategory() {
+      let getCategory = await fetch(`https://api.itedu.me/category/all`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      let getCategoryJson = (await getCategory.json())
+      let count = 0;
+      getCategoryJson.payload.forEach(element => {
+        element.key = count
+        count++
+      })
+      setCategoryData(getCategoryJson.payload)
+    }
+    getCategory()
+  }, []);
+  const renderCategory = (data) => {
+    return data ? data.map(item => <SmallerImageButton
+      key={item.key}
+      title={item.name}
+      onPress={() =>
+        navigation.navigate("ListLesson", { title: item.name, id: item.id, source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
+      }
+      source={{
+        uri: randomBackground[Math.floor(Math.random() * randomBackground.length)]
+      }}
+    />) : <View></View>
+  }
   const authors = authorsData
   const path = pathData
   const language = [
@@ -41,7 +81,7 @@ export default function BrowseScreen({ navigation }) {
   const renderAuthor = (authors, theme, navigation) => {
     return authors.map(author =>
       <TouchableOpacity key={author.id} style={styles.avatar} onPress={
-        ()=>{navigation.navigate('Author',{item: author})}
+        () => { navigation.navigate('Author', { item: author }) }
       }>
         <Avatar
           containerStyle={{ margin: 10 }}
@@ -76,7 +116,7 @@ export default function BrowseScreen({ navigation }) {
               <View style={styles.imageButton}>
                 <ImageButton
                   title="NEW RELEASE"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'NEW RELEASE', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg', data: listCourses[0].courses })}
+                  onPress={() => navigation.navigate("ListLesson", { title: 'NEW RELEASE', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg' })}
                   source={{
                     uri:
                       "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
@@ -84,7 +124,7 @@ export default function BrowseScreen({ navigation }) {
                 />
                 <ImageButton
                   title="RECOMENDED FOR YOU"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'RECOMENDED FOR YOU', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU', data: listCourses[1].courses })}
+                  onPress={() => navigation.navigate("ListLesson", { title: 'RECOMENDED FOR YOU', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU' })}
                   source={{
                     uri:
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
@@ -92,7 +132,10 @@ export default function BrowseScreen({ navigation }) {
                 />
               </View>
               <ScrollView horizontal={true} style={{ padding: 10 }}>
-                <SmallerImageButton
+                {
+                  renderCategory(categoryData)
+                }
+                {/* <SmallerImageButton
                   title="CONFERENCES"
                   onPress={() => {
                     navigation.navigate("ListLesson", { title: 'CONFERENCES', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU' })
@@ -151,7 +194,7 @@ export default function BrowseScreen({ navigation }) {
                     uri:
                       "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
                   }}
-                />
+                /> */}
               </ScrollView>
               <View>
                 <Text style={[styles.title, { color: theme.foreground }]}>Popular Skills</Text>

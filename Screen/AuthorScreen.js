@@ -10,7 +10,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ListLessonItem from '../src/CoursesDetail/ListLessonItem/list-lesson-item'
 
 export default function AuthorDetailScreen({ navigation, props, route }) {
-    console.log(route.params)
     const [textHeight, setTextHeight] = useState(80)
     const [chevron, setchevron] = useState('chevron-down')
     // const renderListItem = (courses, theme) => {

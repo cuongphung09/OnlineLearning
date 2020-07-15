@@ -5,37 +5,14 @@ import headerRight from "../../Component/headerRight"
 import ThemeContext from '../../../src/Context/theme-context'
 // import homeData from './home-data'
 import { render } from "react-dom"
+import { add } from "react-native-reanimated"
 const HomeScreen = ({ navigation }) => {
    const [isLoggedIn, setIsLoggedIn] = useState(false)
    const [token, setToken] = useState('')
    const [userInfo, setUserInfo] = useState()
    const [data, setData] = useState([])
    useEffect(() => {
-      async function fetchData() {
-         const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
-         const tokenTemp = await AsyncStorage.getItem('token')
-         const userInfoTemp = await AsyncStorage.getItem('userInfo')
-         setIsLoggedIn(isLoggedInTemp)
-         setToken(tokenTemp)
-         setUserInfo(userInfoTemp)
-         // console.log(tokenTemp)
-         // console.log(JSON.parse(userInfoTemp).id)
-         let recommend = await fetch(`https://api.itedu.me/user/recommend-course/${JSON.parse(userInfoTemp).id}/10/1`, {
-            method: 'GET',
-            headers: {
-               Accept: 'application/json',
-               'Content-Type': 'application/json',
-            },
-         })
-         let recommendJson = await recommend.json();
-         let dataTemp = [
-            {
-               key: 1,
-               id: '',
-               name: 'Có thể bạn quan tâm',
-               courses: recommendJson.payload
-            }
-         ]
+      async function getCategory() {
          let getCategory = await fetch(`https://api.itedu.me/category/all`, {
             method: 'GET',
             headers: {
@@ -43,10 +20,11 @@ const HomeScreen = ({ navigation }) => {
                'Content-Type': 'application/json',
             },
          })
-         let count = dataTemp.length + 1
+         let count = 2
          let getCategoryJson = (await getCategory.json())
-         getCategoryJson.payload.forEach(async (element) => {
-            // console.log(element.id)
+         let addData = []
+         let payload = getCategoryJson.payload
+         payload.map(async (element) => {
             element.key = count
             count++
             let demo = await fetch(`https://api.itedu.me/course/search`, {
@@ -94,14 +72,38 @@ const HomeScreen = ({ navigation }) => {
                })
             })
             let demoJson = await demo.json();
-            element.courses = demoJson.payload.rows
-            // console.log(demoJson.payload.rows)
-            dataTemp.push(element)
-            setData(dataTemp)
+
          })
       }
+      async function fetchData() {
+         const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
+         const tokenTemp = await AsyncStorage.getItem('token')
+         const userInfoTemp = await AsyncStorage.getItem('userInfo')
+         setIsLoggedIn(isLoggedInTemp)
+         setToken(tokenTemp)
+         setUserInfo(userInfoTemp)
+         // console.log(tokenTemp)
+         // console.log(JSON.parse(userInfoTemp).id)
+         let recommend = await fetch(`https://api.itedu.me/user/recommend-course/${JSON.parse(userInfoTemp).id}/10/1`, {
+            method: 'GET',
+            headers: {
+               Accept: 'application/json',
+               'Content-Type': 'application/json',
+            },
+         })
+         let recommendJson = await recommend.json();
+         let dataTemp = [
+            {
+               key: 1,
+               id: '',
+               name: 'Có thể bạn quan tâm',
+               courses: recommendJson.payload
+            }
+         ]
+         setData(dataTemp)
+      }
       fetchData()
-
+      getCategory()
    }, []);
    const renderData = (data) => {
       return data.map(item => <SectionCourses key={item.key}

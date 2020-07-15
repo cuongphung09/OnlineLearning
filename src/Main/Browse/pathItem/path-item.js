@@ -5,16 +5,16 @@ const PathItem = (props) => {
     return (
         <ThemeContext.Consumer>
             {
-                ([theme,setTheme]) => {
+                ([theme, setTheme]) => {
                     return (
-                        <TouchableOpacity style={[styles.container, {  }]} onPress={props.onPress}>
+                        <TouchableOpacity style={[styles.container, {}]} onPress={props.onPress}>
                             <View style={styles.imgContainer}>
                                 <Image style={styles.img} source={require('../../../../react.png')}></Image>
                             </View>
 
                             <View style={styles.textContainer}>
                                 <Text style={[styles.title, { color: theme.foreground }]}>{props.item.name}</Text>
-                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.courses.length} {props.item.courses.length>1?'courses':'course'}</Text>
+                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.courses.length} {props.item.courses.length > 1 ? 'courses' : 'course'}</Text>
                                 {/* <Text style={[styles.text, { color: theme.foreground }]}>{props.item.level} • {props.item.release} • {props.item.duration}</Text> */}
 
                             </View>
