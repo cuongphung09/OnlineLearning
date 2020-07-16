@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Button, ScrollView, Alert } from "react-native";
+import { StyleSheet, Text, View, Button, ScrollView, Alert, AsyncStorage } from "react-native";
 import ImageButton from "../../Common/image-button";
 import SmallerImageButton from "../../Common/smaller-imagee-button";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -11,6 +11,8 @@ import PathItem from './pathItem/path-item'
 import pathData from './path-data'
 export default function BrowseScreen({ navigation }) {
   const [categoryData, setCategoryData] = useState()
+  const [newRelease, setNewRelease] = useState()
+  const [favorite, setFavorite] = useState()
   const randomBackground = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU",
     "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
@@ -20,6 +22,7 @@ export default function BrowseScreen({ navigation }) {
     "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
   ]
   useEffect(() => {
+
     async function getCategory() {
       let getCategory = await fetch(`https://api.itedu.me/category/all`, {
         method: 'GET',
@@ -37,6 +40,51 @@ export default function BrowseScreen({ navigation }) {
       setCategoryData(getCategoryJson.payload)
     }
     getCategory()
+    async function getNewRelease() {
+      let getNewRelease = await fetch(`https://api.itedu.me/course/top-new`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "limit": 10,
+          "page": 1
+        })
+      })
+      let getNewReleaseJson = (await getNewRelease.json())
+      let count = 0;
+      getNewReleaseJson.payload.forEach(element => {
+        element.key = count
+        count++
+      })
+      setNewRelease(getNewReleaseJson.payload)
+    }
+    getNewRelease()
+
+    async function getFavorite() {
+      const userInfoTemp = await AsyncStorage.getItem("userInfo");
+     
+      let getFavorite = await fetch(`https://api.itedu.me/course/courses-user-favorite-categories`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "userId": JSON.parse(userInfoTemp).id
+        })
+      })
+      let getFavoriteJson = (await getFavorite.json())
+      let count = 0;
+      getFavoriteJson.payload.forEach(element => {
+        element.key = count
+        count++
+      })
+      setFavorite(getFavoriteJson.payload)
+    }
+    getFavorite()
+    // console.log(favorite)
   }, []);
   const renderCategory = (data) => {
     return data ? data.map(item => <SmallerImageButton
@@ -115,22 +163,23 @@ export default function BrowseScreen({ navigation }) {
             <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
               <View style={styles.imageButton}>
                 <ImageButton
-                  title="NEW RELEASE"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'NEW RELEASE', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg' })}
+                  title="KHÓA HỌC MỚI NHẤT"
+                  onPress={() => navigation.navigate("ListLesson", { title: 'KHÓA HỌC MỚI NHẤT', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg', data: newRelease })}
                   source={{
                     uri:
                       "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
                   }}
                 />
                 <ImageButton
-                  title="RECOMENDED FOR YOU"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'RECOMENDED FOR YOU', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU' })}
+                  title="KHÓA HỌC ĐƯỢC GỢI Ý"
+                  onPress={() => navigation.navigate("ListLesson", { title: 'KHÓA HỌC ĐƯỢC GỢI Ý', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU', data: favorite })}
                   source={{
                     uri:
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
                   }}
                 />
               </View>
+              <Text style={[styles.title, { color: theme.foreground }]}>Danh mục</Text>
               <ScrollView horizontal={true} style={{ padding: 10 }}>
                 {
                   renderCategory(categoryData)
@@ -197,13 +246,13 @@ export default function BrowseScreen({ navigation }) {
                 /> */}
               </ScrollView>
               <View>
-                <Text style={[styles.title, { color: theme.foreground }]}>Popular Skills</Text>
+                <Text style={[styles.title, { color: theme.foreground }]}>Ngôn ngữ nổi bật</Text>
                 <ScrollView horizontal={true} style={{ padding: 10 }}>
                   {renderLanguage(language, theme)}
                 </ScrollView>
               </View>
               <View>
-                <Text style={[styles.title, { color: theme.foreground }]}>Top Authors</Text>
+                <Text style={[styles.title, { color: theme.foreground }]}>Giảng viên nổi bật</Text>
                 <ScrollView horizontal={true} style={{ padding: 10 }}>
                   {renderAuthor(authors, theme, navigation)}
                 </ScrollView>
@@ -215,7 +264,7 @@ export default function BrowseScreen({ navigation }) {
 
                 <View style={{ marginBottom: 30, marginLeft: 10 }}>
                   <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={[styles.text, { color: theme.foreground }]}>Path</Text>
+                    <Text style={[styles.text, { color: theme.foreground }]}>Lộ trình</Text>
                     <TouchableOpacity onPress={() => { navigation.navigate('Path') }} >
                       <Text style={{ color: theme.foreground, opacity: 0.5 }} >
                         See all ⟩

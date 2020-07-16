@@ -19,7 +19,7 @@ const SectionCourses = (props) => {
                             <Text style={[styles.text, { color: theme.foreground }]}>{props.name}</Text>
                             <TouchableOpacity onPress={props.onPress}>
                                 <Text style={{ color: theme.foreground, opacity: 0.5 }} >
-                                    See all ⟩
+                                    Xem tất cả ⟩
                                 </Text>
                             </TouchableOpacity>
                         </View>

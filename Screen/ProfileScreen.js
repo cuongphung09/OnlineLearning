@@ -46,13 +46,13 @@ export default function ProfileScreen({ navigation, props, route }) {
                                             </Text>
                                         </View>
                                         <View style={styles.activity}>
-                                            <Text style={{ fontSize: 15, color: theme.foreground, marginBottom: 30, fontWeight: 'bold' }}>Activity insights (lasts 30 days)</Text>
-                                            <Text style={[styles.darkText, { color: theme.foreground }]}>TOTAL ACTIVE DAYS</Text>
+                                            <Text style={{ fontSize: 15, color: theme.foreground, marginBottom: 30, fontWeight: 'bold' }}>Hoạt động gần đây (trong vòng 30 ngày)</Text>
+                                            <Text style={[styles.darkText, { color: theme.foreground }]}>Số ngày hoạt động</Text>
                                             <Text style={[styles.lightText, { color: theme.foreground }]}>0</Text>
-                                            <Text style={[styles.darkText, { color: theme.foreground }]}>MOST ACTIVE TIME OF DAYS</Text>
-                                            <Text style={[styles.lightText, { color: theme.foreground }]}>7:00 AM</Text>
-                                            <Text style={[styles.darkText, { color: theme.foreground }]}>MOST VIEWED SUBJECTS</Text>
-                                            <Text style={[styles.lightText, { color: theme.foreground }]}>N/A</Text>
+                                            <Text style={[styles.darkText, { color: theme.foreground }]}>Thời gian thường xuyên hoạt động</Text>
+                                            <Text style={[styles.lightText, { color: theme.foreground }]}>7:00 sáng</Text>
+                                            <Text style={[styles.darkText, { color: theme.foreground }]}>Các khóa học được xem nhiều nhất</Text>
+                                            <Text style={[styles.lightText, { color: theme.foreground }]}>(không có)</Text>
                                         </View>
 
                                     </View>

@@ -16,6 +16,8 @@ import ThemeContext from "../Context/theme-context";
 export default function CoursesDetail({ navigation, props, route }) {
   const [textHeight, setTextHeight] = useState(75);
   const [chevron, setchevron] = useState("chevron-down");
+  const [introHeight, setIntroHeight] = useState(75);
+  const [chevronIntro, setchevronIntro] = useState("chevron-down");
   const { item } = route.params;
   const [vidURL, setVidURL] = useState(item.promoVidUrl);
   const [index, setIndex] = React.useState(0);
@@ -24,13 +26,13 @@ export default function CoursesDetail({ navigation, props, route }) {
   const [requirement, setRequirement] = useState([]);
   const [courseData, setCourseData] = useState();
   const [courseDataTraier, setCourseDataTraier] = useState();
-  console.log(item.id)
+  // console.log(item.id)
   useEffect(() => {
     const getCourseDetail = async () => {
       const tokenTemp = await AsyncStorage.getItem("token");
       const userInfoTemp = await AsyncStorage.getItem("userInfo");
-      console.log(tokenTemp)
-      console.log(JSON.parse(userInfoTemp).id)
+      // console.log(tokenTemp)
+      // console.log(JSON.parse(userInfoTemp).id)
       let paid = await fetch(
         `https://api.itedu.me/course/detail-with-lesson/${item.id}`,
         {
@@ -350,22 +352,22 @@ export default function CoursesDetail({ navigation, props, route }) {
                   </Text>
                 </View>
 
-                {/* <TouchableOpacity style={{
-                    display: 'flex', backgroundColor: theme.tagButton, borderRadius: 5,
-                    justifyContent: 'center', marginRight: 10, alignItems: 'center'
+                <TouchableOpacity style={{
+                  display: 'flex', backgroundColor: theme.tagButton, borderRadius: 5,
+                  justifyContent: 'center', marginRight: 10, alignItems: 'center'
+                }}
+                  onPress={() => {
+                    textHeight === 75 ? setTextHeight(null) : setTextHeight(75)
+                    chevron === 'chevron-down' ? setchevron('chevron-up') : setchevron('chevron-down')
                   }}
-                    onPress={() => {
-                      textHeight === 75 ? setTextHeight(null) : setTextHeight(75)
-                      chevron === 'chevron-down' ? setchevron('chevron-up') : setchevron('chevron-down')
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name={chevron}
-                      color={theme.foreground}
-                      size={20}
+                >
+                  <MaterialCommunityIcons
+                    name={chevron}
+                    color={theme.foreground}
+                    size={20}
 
-                    ></MaterialCommunityIcons>
-                  </TouchableOpacity> */}
+                  ></MaterialCommunityIcons>
+                </TouchableOpacity>
               </View>
               <Text
                 style={{
@@ -766,10 +768,10 @@ export default function CoursesDetail({ navigation, props, route }) {
                     flexDirection: "row",
                   }}
                 >
-                  <View style={{ width: "88%", marginLeft: 10, marginRight: 0 }}>
+                  <View style={{ width: "88%", marginLeft: 10, marginRight: 0, height: textHeight }}>
                     <Text
                       style={{
-                        color: theme.foreground,
+                        color: theme.foreground, height: textHeight
                       }}
                     >
                       {item.description}
@@ -777,7 +779,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                     </Text>
                   </View>
 
-                  {/* <TouchableOpacity style={{
+                  <TouchableOpacity style={{
                     display: 'flex', backgroundColor: theme.tagButton, borderRadius: 5,
                     justifyContent: 'center', marginRight: 10, alignItems: 'center'
                   }}
@@ -792,7 +794,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                       size={20}
 
                     ></MaterialCommunityIcons>
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
                 </View>
                 <Text
                   style={{
@@ -830,28 +832,30 @@ export default function CoursesDetail({ navigation, props, route }) {
                                     marginLeft: 10,
                                   }}
                                 >
-                                  <Text style={{ color: theme.foreground }}>
+                                  <Text style={{ color: theme.foreground, width: '60%' }}>
                                     <Text style={{ fontSize: 20 }}>↳</Text> Bài {ls.numberOrder}. {ls.name}
                                   </Text>
                                   {
-                                    ls.isPreview ? (<TouchableOpacity
-                                      onPress={() => {
-                                        setVidURL(ls.videoUrl);
-                                      }}
-                                    >
-                                      <Text
-                                        style={{
-                                          borderColor: theme.foreground,
-                                          color: theme.foreground,
-                                          borderWidth: 1,
-                                          borderRadius: 5,
+                                    ls.isPreview ? (
+                                      <TouchableOpacity
+                                        onPress={() => {
+                                          setVidURL(ls.videoUrl);
                                         }}
                                       >
-                                        Xem trước
+                                        <Text
+                                          style={{
+                                            borderColor: theme.foreground,
+                                            color: theme.foreground,
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+
+                                          }}
+                                        >
+                                          Xem trước
                                     </Text>
-                                    </TouchableOpacity>)
+                                      </TouchableOpacity>)
                                       :
-                                      (<Text>
+                                      (<Text style={{ width: '40%' }}>
                                         Mua khóa học để xem bài giảng
                                       </Text>)
                                   }
@@ -891,8 +895,36 @@ export default function CoursesDetail({ navigation, props, route }) {
                   </View>
                   <View style={{ marginTop: 10, width: '60%' }}>
                     <Text style={{ fontWeight: 'bold', color: theme.foreground }}>{courseDataTraier ? courseDataTraier.instructor.name : 'Họ và tên'}</Text>
-                    <Text style={{ color: theme.foreground }}>{courseDataTraier ? (courseDataTraier.instructor.intro ? courseDataTraier.instructor.intro : '(Chưa có bài tự giới thiệu)') : '(Chưa có bài tự giới thiệu)'}</Text>
+                    <Text style={{ color: theme.foreground, height: introHeight }}>{courseDataTraier ? (courseDataTraier.instructor.intro ? (<Text >{courseDataTraier.instructor.intro}</Text>) : '(Chưa có bài tự giới thiệu)') : '(Chưa có bài tự giới thiệu)'}</Text>
+
                   </View>
+                  {courseDataTraier ?
+                    (courseDataTraier.instructor.intro ?
+                      (
+                        <TouchableOpacity style={{
+                          display: 'flex', backgroundColor: theme.tagButton, borderRadius: 5,
+                          justifyContent: 'center', marginRight: 10, alignItems: 'center'
+                        }}
+                          onPress={() => {
+                            introHeight === 75 ? setIntroHeight(null) : setIntroHeight(75)
+                            chevronIntro === 'chevron-down' ? setchevronIntro('chevron-up') : setchevronIntro('chevron-down')
+                          }}
+                        >
+                          <MaterialCommunityIcons
+                            name={chevronIntro}
+                            color={theme.foreground}
+                            size={20}
+
+                          ></MaterialCommunityIcons>
+                        </TouchableOpacity>
+
+                      )
+                      :
+                      <View></View>)
+                    :
+                    <View></View>
+                  }
+
                 </View>
                 {/* <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                   <TouchableOpacity style={{ backgroundColor: theme.tagButton, width: '94%', height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginBottom: 20 }}>
@@ -931,7 +963,7 @@ export default function CoursesDetail({ navigation, props, route }) {
             </View>
           );
         }}
-      </ThemeContext.Consumer>
+      </ThemeContext.Consumer >
     );
 }
 const initialLayout = { width: Dimensions.get("window").width };

@@ -50,9 +50,9 @@ export default class CustomMenu extends Component {
                       />
                     </TouchableOpacity>
                   }>
-                  <MenuItem onPress={this.option1Click} ><Text style={{ color: theme.foreground }}>Settings</Text></MenuItem>
-                  <MenuItem onPress={this.option2Click}><Text style={{ color: theme.foreground }}>Send feedback</Text></MenuItem>
-                  <MenuItem onPress={this.option3Click} ><Text style={{ color: theme.foreground }}>Contact support</Text></MenuItem>
+                  <MenuItem onPress={this.option1Click} ><Text style={{ color: theme.foreground }}>Cài đặt</Text></MenuItem>
+                  <MenuItem onPress={this.option2Click}><Text style={{ color: theme.foreground }}>Gửi phản hồi</Text></MenuItem>
+                  <MenuItem onPress={this.option3Click} ><Text style={{ color: theme.foreground }}>Liên hệ hỗ trợ</Text></MenuItem>
                 </Menu>
               </View>
             )

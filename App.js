@@ -89,7 +89,7 @@ function Home({ navigation }) {
                   })}
                 >
                   <HomeStack.Screen
-                    name="Home"
+                    name="Trang chủ"
                     component={HomeScreen}
                   ></HomeStack.Screen>
                 </HomeStack.Navigator>
@@ -157,7 +157,7 @@ function Download({ navigation }) {
                 })}
               >
                 <DownloadStack.Screen
-                  name="Download"
+                  name="Tải về"
                   component={DownloadScreen}
                 ></DownloadStack.Screen>
               </DownloadStack.Navigator>
@@ -225,7 +225,7 @@ function Browse({ navigation }) {
                   })}
                 >
                   <BrowseStack.Screen
-                    name="Browse"
+                    name="Duyệt"
                     component={BrowseScreen}
                   ></BrowseStack.Screen>
                 </BrowseStack.Navigator>
@@ -260,7 +260,7 @@ function Main({ navigation }) {
                   name="Home"
                   component={Home}
                   options={{
-                    tabBarLabel: "Home",
+                    tabBarLabel: "Trang chủ",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons
                         name="home-outline"
@@ -274,7 +274,7 @@ function Main({ navigation }) {
                   name="Download"
                   component={Download}
                   options={{
-                    tabBarLabel: "Download",
+                    tabBarLabel: "Tải về",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons
                         name="download"
@@ -288,7 +288,7 @@ function Main({ navigation }) {
                   name="Browse"
                   component={Browse}
                   options={{
-                    tabBarLabel: "Browse",
+                    tabBarLabel: "Duyệt",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons
                         name="grid"
@@ -299,10 +299,10 @@ function Main({ navigation }) {
                   }}
                 />
                 <Tab.Screen
-                  name="Search"
+                  name="Tìm kiếm"
                   component={Search}
                   options={{
-                    tabBarLabel: "Search",
+                    tabBarLabel: "Tìm kiếm",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons
                         name="magnify"
@@ -383,7 +383,7 @@ export default function App() {
                   name="Profile"
                   component={ProfileScreen}
                   options={{
-                    title: "Profile",
+                    title: "Trang cá nhân",
                     headerStyle: {
                       backgroundColor: theme.header,
                     },
@@ -435,7 +435,7 @@ export default function App() {
                   name="Setting"
                   component={SettingScreen}
                   options={{
-                    title: "Settings",
+                    title: "Cài đặt",
                     headerShown: true,
                     headerStyle: {
                       backgroundColor: theme.header,

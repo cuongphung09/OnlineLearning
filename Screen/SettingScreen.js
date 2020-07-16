@@ -34,7 +34,7 @@ export default function SettingScreen({ navigation }) {
                                             </View>
                                         </View>
                                         <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginBottom: 20 }}>
-                                            <Text style={{ color: theme.foreground, marginRight: 200 }}>Dark Mode</Text>
+                                            <Text style={{ color: theme.foreground, marginRight: 170 }}>Chế độ tối màu</Text>
                                             <Switch
                                                 trackColor={{
                                                     true: theme.foreground,
@@ -73,7 +73,7 @@ export default function SettingScreen({ navigation }) {
                                                 navigation.navigate('LoginScreen')
                                             }}
                                         >
-                                            <Text style={{ color: '#0084BD' }}>SIGN OUT</Text>
+                                            <Text style={{ color: '#0084BD' }}>Đăng xuất</Text>
                                         </TouchableOpacity>
 
                                     </View>

@@ -4,6 +4,7 @@ import ListLessonItem from '../ListLessonItem/list-lesson-item'
 import ImageButton from "../../Common/image-button"
 import ThemeContext from '../../Context/theme-context'
 const ListLesson = ({ route, navigation, props }) => {
+    // console.log(route.params.data)
     const [courseData, setCourseData] = useState()
     useEffect(() => {
         async function getCategory() {

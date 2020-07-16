@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
     StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, AsyncStorage, Modal,
-    TouchableHighlight
+    TouchableHighlight, Item, Icon, Input
 } from "react-native";
-// import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { useSafeArea } from "react-native-safe-area-context";
 // import PasswordInputText from 'react-native-hide-show-password-input';
+import PasswordTextBox from '../src/Component/passwordTextBox'
 import ThemeContext from '../src/Context/theme-context'
 import AuthContext from '../src/Context/auth-context'
 export default function LoginScreen({ navigation }) {
+    const [secure, setSsecure] = useState(true)
+    const [icon, setIcon] = useState('eye-off')
     const [layer, setLayer] = useState(1)
     const [userOpacity, setUserOpacity] = useState(0.7)
     const [passwordOpacity, setPasswordOpacity] = useState(0.7)
@@ -54,7 +57,7 @@ export default function LoginScreen({ navigation }) {
         })
         let responseJson = await response.json();
         if (responseJson.message !== "OK") {
-            Alert.alert('sai tk mk')
+            Alert.alert('Sai tài khoản hoặc mật khẩu')
         }
         else {
             setUsername('')
@@ -65,10 +68,6 @@ export default function LoginScreen({ navigation }) {
             AsyncStorage.setItem('userInfo', JSON.stringify(responseJson.userInfo))
             navigation.navigate('Main')
         }
-
-        // await AsyncStorage.removeItem('isLoggedIn')
-        // await AsyncStorage.removeItem('token')
-        // await AsyncStorage.removeItem('userInfo')
     }
     const background = { uri: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&w=1000&q=80' }
     return (
@@ -79,11 +78,11 @@ export default function LoginScreen({ navigation }) {
                         {([theme, setTheme]) => {
                             return loading ? (
                                 <View>
-                                    <Text>LOADING</Text>
+                                    <Text>Đang tải</Text>
                                 </View>
                             ) : (
                                     <View style={[styles.container, { opacity: layer }]}>
-                                        <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: theme.foreground }}>Login</Text>
+                                        <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: theme.foreground }}>Đăng nhập</Text>
                                         <View style={{ margin: 30, marginBottom: 10 }}>
                                             <TextInput style={{ opacity: userOpacity, marginBottom: 20, color: theme.foreground }} placeholder='Email' value={username}
                                                 onChangeText={(value) => {
@@ -94,22 +93,41 @@ export default function LoginScreen({ navigation }) {
                                                 }}
                                             ></TextInput>
 
-                                            <TextInput style={{ opacity: passwordOpacity, marginBottom: 20, color: theme.foreground }} value={password} placeholder='Password'
-                                                secureTextEntry={true}
+                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start' }}>
+                                                <TextInput style={{ opacity: passwordOpacity, marginBottom: 20, color: theme.foreground }} value={password} placeholder='Mật khẩu'
+                                                    secureTextEntry={secure}
+                                                    onChangeText={(value) => {
+                                                        if (value !== '') {
+                                                            setPasswordOpacity(1)
+                                                        }
+                                                        setPassword(value)
+                                                    }}>
+                                                </TextInput>
+                                                <MaterialCommunityIcons size={25} name={icon}
+                                                    onPress={() => {
+                                                        setSsecure(!secure)
+                                                        setIcon(icon === 'eye' ? 'eye-off' : 'eye')
+                                                    }}></MaterialCommunityIcons>
+                                            </View>
+
+                                            {/* <Item>
+                                                <Icon active name={icon} />
+                                                {/* <Label>{label}</Label> 
+                                            <Input secureTextEntry={password} secureTextEntry={true}
                                                 onChangeText={(value) => {
                                                     if (value !== '') {
                                                         setPasswordOpacity(1)
                                                     }
                                                     setPassword(value)
-                                                }}>
-                                            </TextInput>
-
+                                                }} />
+                                            <Icon name={icon} onPress={() => changeIcon()} />
+                                            </Item> */}
 
 
                                             <TouchableOpacity style={[styles.button, { color: theme.foreground }]} title='LOGIN' onPress={
                                                 () => submit(setUser)
                                             } >
-                                                <Text style={{ fontSize: 20, color: 'white' }}>Login</Text>
+                                                <Text style={{ fontSize: 20, color: 'white' }}>Đăng nhập</Text>
                                             </TouchableOpacity>
                                         </View>
                                         <TouchableOpacity onPress={() => {
@@ -118,13 +136,13 @@ export default function LoginScreen({ navigation }) {
                                             // navigation.navigate('ForgotPassword')
                                             // navigation.navigate('Main')
                                         }}>
-                                            <Text style={[{ alignSelf: 'center', opacity: 0.5 }]}>Forget Password</Text>
+                                            <Text style={[{ alignSelf: 'center', opacity: 0.5 }]}>Quên mật khẩu</Text>
                                         </TouchableOpacity>
 
                                         <TouchableOpacity onPress={() => {
                                             navigation.navigate('SignUpScreen')
                                         }}>
-                                            <Text style={[{ alignSelf: 'center', opacity: 0.9 }]}>Don't have account? Sign up</Text>
+                                            <Text style={[{ alignSelf: 'center', opacity: 0.9 }]}>Bạn chưa có tài khoản? Đăng ký ngay</Text>
 
                                         </TouchableOpacity>
 
@@ -194,7 +212,7 @@ export default function LoginScreen({ navigation }) {
                     </ThemeContext.Consumer>
                 )
             }}
-        </AuthContext.Consumer>
+        </AuthContext.Consumer >
     )
 
 }
