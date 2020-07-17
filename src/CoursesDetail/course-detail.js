@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   ScrollView,
   AsyncStorage,
+  ProgressBarAndroid
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Video } from "expo-av";
 import { Rating, Avatar } from "react-native-elements";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import ThemeContext from "../Context/theme-context";
+import RatingDetail from '../Component/ratingDetail'
 export default function CoursesDetail({ navigation, props, route }) {
   const [textHeight, setTextHeight] = useState(75);
   const [chevron, setchevron] = useState("chevron-down");
@@ -60,6 +62,19 @@ export default function CoursesDetail({ navigation, props, route }) {
       );
       let demoJson = await demo.json();
       setCourseDataTraier(demoJson.payload);
+      // let ratingDetail = await fetch(
+      //   `https://api.itedu.me/course/get-rating/${item.id}`,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       Accept: "application/json",
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${tokenTemp}`,
+      //     },
+      //   }
+      // );
+      // let ratingDetailJson = await ratingDetail.json();
+      // console.log(ratingDetailJson);
       setToken(tokenTemp);
     };
     getCourseDetail();
@@ -109,7 +124,9 @@ export default function CoursesDetail({ navigation, props, route }) {
   return courseData ? (
     <ThemeContext.Consumer>
       {([theme, setTheme]) => {
+
         return (
+
           <View
             style={{
               marginTop: 30,
@@ -171,7 +188,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   ratingBackgroundColor='#c8c7c8'
                   startingValue={
                     // 3
-                    courseDataTraier ? courseDataTraier.ratedNumber : 0
+                    courseDataTraier ? parseFloat(courseDataTraier.averagePoint) : 0
                   }
                 />
                 <Text style={{ color: theme.foreground }}>
@@ -385,7 +402,6 @@ export default function CoursesDetail({ navigation, props, route }) {
                 }}
               >
                 <View style={{ width: "95%", marginLeft: 10, marginRight: 0 }}>
-                  {/* <Text>TRAILER</Text> */}
                   {courseDataTraier ? (
                     courseDataTraier.section.map((element) => {
                       return (
@@ -463,6 +479,54 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <Text style={{ fontWeight: 'bold', color: theme.foreground }}>{courseDataTraier ? courseDataTraier.instructor.name : ''}</Text>
                   <Text style={{ color: theme.foreground }}>{courseDataTraier ? (courseDataTraier.instructor.intro ? courseDataTraier.instructor.intro : '(Chưa có bài tự giới thiệu)') : ''}</Text>
                 </View>
+              </View>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontWeight: "bold",
+                  color: theme.foreground,
+                }}
+              >
+                Đánh giá từ học viên
+                </Text>
+              <View style={{ width: "95%", marginLeft: 10, marginRight: 0, flex: 1, flexDirection: 'row', marginBottom: 30 }}>
+                <View style={{ marginTop: 10, width: '45%', justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
+                  <Text style={{ color: theme.foreground, fontSize: 60 }}>{2.7}</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{}}>({courseDataTraier ? courseDataTraier.ratings.ratingList.length : '0'}</Text> bình chọn)</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.soldNumber : '0'}</Text> điểm nội dung</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.totalCourse : '0'}</Text> điểm hình thức</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseDataTraier ? courseDataTraier.instructor.averagePoint.toFixed(1) : '0'}</Text> điểm truyền đạt</Text>
+                </View>
+                <View style={{ marginTop: 10, width: '55%' }}>
+                  <RatingDetail data={courseDataTraier ? courseDataTraier.ratings : {}} navigation={navigation} />
+                </View>
+                {courseDataTraier ?
+                  (courseDataTraier.instructor.intro ?
+                    (
+                      <TouchableOpacity style={{
+                        display: 'flex', backgroundColor: theme.tagButton, borderRadius: 5,
+                        justifyContent: 'center', marginRight: 10, alignItems: 'center'
+                      }}
+                        onPress={() => {
+                          introHeight === 75 ? setIntroHeight(null) : setIntroHeight(75)
+                          chevronIntro === 'chevron-down' ? setchevronIntro('chevron-up') : setchevronIntro('chevron-down')
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          name={chevronIntro}
+                          color={theme.foreground}
+                          size={20}
+
+                        ></MaterialCommunityIcons>
+                      </TouchableOpacity>
+
+                    )
+                    :
+                    <View></View>)
+                  :
+                  <View></View>
+                }
+
               </View>
               {/* <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                   <TouchableOpacity style={{ backgroundColor: theme.tagButton, width: '94%', height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginBottom: 20 }}>
@@ -566,7 +630,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                     ratingBackgroundColor='#c8c7c8'
                     startingValue={
                       // 3
-                      courseDataTraier ? courseDataTraier.ratedNumber : 0
+                      courseDataTraier ? parseFloat(courseDataTraier.averagePoint) : 0
                     }
                     borderColor={'yellow'}
                   />
@@ -618,6 +682,12 @@ export default function CoursesDetail({ navigation, props, route }) {
                     let joinJson = await join.json();
                   }}
                 >
+                  {/* {
+                    console.log('START')
+                  }
+                  {
+                    console.log(courseDataTraier)
+                  } */}
                   <Text style={{ color: '#0084BD' }}>Tham gia ngay</Text>
                 </TouchableOpacity>
                 {/* <ScrollView horizontal={true} style={{ padding: 10 }}>
@@ -926,6 +996,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   }
 
                 </View>
+
                 {/* <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                   <TouchableOpacity style={{ backgroundColor: theme.tagButton, width: '94%', height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginBottom: 20 }}>
                     <Text style={styles.whiteText, [{ color: theme.foreground }]}>

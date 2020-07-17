@@ -25,7 +25,7 @@ const ListLessonItem = (props) => {
               <Text style={[styles.title, { color: theme.foreground }]}>
                 {props.item.title}
               </Text>
-
+              
               <Text style={[styles.text, { color: theme.foreground }]}>
                 {props.item.author}
               </Text>

@@ -13,8 +13,9 @@ const SectionCoursesItem = (props) => {
                             </View>
 
                             <View style={styles.textContainer}>
+                                {/* {console.log(props.item)} */}
                                 <Text style={[styles.title, { color: theme.foreground }]}>{props.item.title}</Text>
-                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.author}</Text>
+                                {/* <Text style={[styles.text, { color: theme.foreground }]}>{props.item.author}</Text> */}
                                 <Text style={[styles.text, { color: theme.foreground }]}>{props.item.totalHours} giờ</Text>
 
                             </View>

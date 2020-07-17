@@ -82,7 +82,7 @@ const HomeScreen = ({ navigation }) => {
          setIsLoggedIn(isLoggedInTemp)
          setToken(tokenTemp)
          setUserInfo(userInfoTemp)
-         // console.log(tokenTemp)
+         console.log(tokenTemp)
          // console.log(JSON.parse(userInfoTemp).id)
          let recommend = await fetch(`https://api.itedu.me/user/recommend-course/${JSON.parse(userInfoTemp).id}/10/1`, {
             method: 'GET',
@@ -114,6 +114,20 @@ const HomeScreen = ({ navigation }) => {
             , data: item.courses
          })} />)
    }
+   const getUser = async () => {
+      const tokenTemp = await AsyncStorage.getItem('token')
+      let get = await fetch('https://api.itedu.me/user/me', {
+         method: 'GET',
+         headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${tokenTemp}`,
+         },
+      })
+      let userInfo = await get.json()
+      console.log(userInfo)
+   }
+   
    return (
       <ThemeContext.Consumer>
          {([theme, setTheme]) => {
