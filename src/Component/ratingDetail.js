@@ -16,11 +16,43 @@ const RatingDetail = (route, props) => {
                 ([theme, setTheme]) => {
                     return (
                         <View style={{ alignItems: 'flex-start', flex: 1 }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
                                 <Text style={{ color: 'rgb(244,193,80)', fontSize: 20 }}>5</Text>
                                 <Icon color='rgb(244,193,80)' name='star'></Icon>
                                 <View style={{ backgroundColor: '#f5f5f5', width: '80%', height: 5, borderRadius: 5 }}>
-                                    <View style={{ backgroundColor: '#f5f5f5', width: `${star ? star[0] : '0'}%`, height: 5, borderRadius: 5 }}>
+                                    <View style={{ backgroundColor: 'rgb(244,193,80)', width: `${star ? star[0] : '0'}%`, height: 5, borderRadius: 5 }}>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                                <Text style={{ color: 'rgb(244,193,80)', fontSize: 20 }}>4</Text>
+                                <Icon color='rgb(244,193,80)' name='star'></Icon>
+                                <View style={{ backgroundColor: '#f5f5f5', width: '80%', height: 5, borderRadius: 5 }}>
+                                    <View style={{ backgroundColor: 'rgb(244,193,80)', width: `${star ? star[1] : '0'}%`, height: 5, borderRadius: 5 }}>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                                <Text style={{ color: 'rgb(244,193,80)', fontSize: 20 }}>3</Text>
+                                <Icon color='rgb(244,193,80)' name='star'></Icon>
+                                <View style={{ backgroundColor: '#f5f5f5', width: '80%', height: 5, borderRadius: 5 }}>
+                                    <View style={{ backgroundColor: 'rgb(244,193,80)', width: `${star ? star[2] : '0'}%`, height: 5, borderRadius: 5 }}>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                                <Text style={{ color: 'rgb(244,193,80)', fontSize: 20 }}>2</Text>
+                                <Icon color='rgb(244,193,80)' name='star'></Icon>
+                                <View style={{ backgroundColor: '#f5f5f5', width: '80%', height: 5, borderRadius: 5 }}>
+                                    <View style={{ backgroundColor: 'rgb(244,193,80)', width: `${star ? star[3] : '0'}%`, height: 5, borderRadius: 5 }}>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                                <Text style={{ color: 'rgb(244,193,80)', fontSize: 20 }}>1</Text>
+                                <Icon color='rgb(244,193,80)' name='star'></Icon>
+                                <View style={{ backgroundColor: '#f5f5f5', width: '80%', height: 5, borderRadius: 5 }}>
+                                    <View style={{ backgroundColor: 'rgb(244,193,80)', width: `${star ? star[4] : '0'}%`, height: 5, borderRadius: 5 }}>
                                     </View>
                                 </View>
                             </View>

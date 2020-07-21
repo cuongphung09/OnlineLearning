@@ -20,7 +20,7 @@ export default function SignUpScreen({ navigation }) {
 
 
     }, []);
-    const submit = async () => {
+    const submit = async (navigation) => {
         console.log({
             name: name,
             email: email,
@@ -61,8 +61,10 @@ export default function SignUpScreen({ navigation }) {
                         "email": email,
                     }),
                 })
+                Alert.alert('Đăng ký thành công. Hãy kiểm tra email của bạn!')
+                navigation.navigate('LoginScreen')
             }
-            else{
+            else {
                 Alert.alert(responseJson.message)
             }
         }
@@ -136,7 +138,7 @@ export default function SignUpScreen({ navigation }) {
                     keyboardType={'number-pad'}
                 ></TextInput>
                 <TouchableOpacity style={[styles.button, {}]} title='LOGIN' onPress={
-                    () => submit()
+                    () => submit(navigation)
                 } >
                     <Text style={{ fontSize: 20, color: 'white' }}>Đăng ký</Text>
                 </TouchableOpacity>

@@ -82,7 +82,7 @@ const HomeScreen = ({ navigation }) => {
          setIsLoggedIn(isLoggedInTemp)
          setToken(tokenTemp)
          setUserInfo(userInfoTemp)
-         console.log(tokenTemp)
+         // console.log(tokenTemp)
          // console.log(JSON.parse(userInfoTemp).id)
          let recommend = await fetch(`https://api.itedu.me/user/recommend-course/${JSON.parse(userInfoTemp).id}/10/1`, {
             method: 'GET',
@@ -125,7 +125,7 @@ const HomeScreen = ({ navigation }) => {
          },
       })
       let userInfo = await get.json()
-      console.log(userInfo)
+      // console.log(userInfo)
    }
    
    return (

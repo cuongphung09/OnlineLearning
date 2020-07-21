@@ -177,9 +177,9 @@ export default function LoginScreen({ navigation }) {
                                                                             "Content-Type": "application/json",
 
                                                                         },
-                                                                        body: {
+                                                                        body: JSON.stringify({
                                                                             email: forget
-                                                                        }
+                                                                        })
                                                                     })
                                                                     const sendEmailJson = await sendEmail.json()
                                                                     Alert.alert(sendEmailJson.message)

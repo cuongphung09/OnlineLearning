@@ -17,11 +17,11 @@ const SectionCourses = (props) => {
                     <View style={{ marginBottom: 30 }}>
                         <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                             <Text style={[styles.text, { color: theme.foreground }]}>{props.name}</Text>
-                            <TouchableOpacity onPress={props.onPress}>
+                            {props.name ? (<TouchableOpacity onPress={props.onPress}>
                                 <Text style={{ color: theme.foreground, opacity: 0.5 }} >
                                     Xem tất cả ⟩
                                 </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity>) : (<View></View>)}
                         </View>
                         <ScrollView horizontal={true}>
                             {renderListItem(courses)}
