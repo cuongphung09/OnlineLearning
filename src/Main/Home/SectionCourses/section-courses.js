@@ -8,7 +8,7 @@ const SectionCourses = (props) => {
     const courses = (props.data)
     // console.log(courses)
     const renderListItem = (courses) => {
-        return courses.map(item => <SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />)
+        return courses.map(item => (item.title) ? (<SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />) : (<View key={item.id}></View>))
     }
     return (
         <ThemeContext.Consumer>

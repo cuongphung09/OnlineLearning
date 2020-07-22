@@ -1,11 +1,7 @@
 import SectionCourses from "./SectionCourses/section-courses"
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, ImageBackground, TouchableOpacity, Text, ScrollView, AsyncStorage } from 'react-native'
-import headerRight from "../../Component/headerRight"
 import ThemeContext from '../../../src/Context/theme-context'
-// import homeData from './home-data'
-import { render } from "react-dom"
-import { add } from "react-native-reanimated"
 const HomeScreen = ({ navigation }) => {
    const [isLoggedIn, setIsLoggedIn] = useState(false)
    const [token, setToken] = useState('')
@@ -78,7 +74,9 @@ const HomeScreen = ({ navigation }) => {
       async function fetchData() {
          const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
          const tokenTemp = await AsyncStorage.getItem('token')
+
          const userInfoTemp = await AsyncStorage.getItem('userInfo')
+         console.log(userInfoTemp)
          setIsLoggedIn(isLoggedInTemp)
          setToken(tokenTemp)
          setUserInfo(userInfoTemp)
@@ -127,7 +125,7 @@ const HomeScreen = ({ navigation }) => {
       let userInfo = await get.json()
       // console.log(userInfo)
    }
-   
+
    return (
       <ThemeContext.Consumer>
          {([theme, setTheme]) => {

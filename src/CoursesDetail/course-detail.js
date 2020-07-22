@@ -7,14 +7,21 @@ import {
   TouchableOpacity,
   ScrollView,
   AsyncStorage,
+  Alert,
+  StatusBar,
 } from "react-native";
+import { WebView } from 'react-native-webview';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Video } from "expo-av";
+// import { Constants, Video } from 'expo';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import VideoPlayer from 'expo-video-player'
+import { Video } from 'expo-av'
 import { Rating, Avatar } from "react-native-elements";
 import ThemeContext from "../Context/theme-context";
 import RatingDetail from '../Component/ratingDetail'
 import SectionCourse from '../Main/Home/SectionCourses/section-courses'
 export default function CoursesDetail({ navigation, props, route }) {
+  const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [rere, setrere] = useState(false)
   const [textHeight, setTextHeight] = useState(75);
   const [chevron, setchevron] = useState("chevron-down");
@@ -28,6 +35,13 @@ export default function CoursesDetail({ navigation, props, route }) {
   const [requirement, setRequirement] = useState([]);
   const [courseData, setCourseData] = useState();
   const [paid, setPaid] = useState();
+  const [likeStatus, setLikeStatus] = useState(false)
+  const [FScreen, setFScreen] = useState(false)
+  const width = Dimensions.get('window').width
+  const height = Dimensions.get('window').height
+  const [w, setw] = useState(width)
+  const [h, setH] = useState(200)
+  console.log(item.id)
   useEffect(() => {
     const getCourseDetail = async () => {
       const tokenTemp = await AsyncStorage.getItem("token");
@@ -54,6 +68,19 @@ export default function CoursesDetail({ navigation, props, route }) {
         }
       );
       let demoJson = await demo.json();
+      let like = await fetch(
+        `https://api.itedu.me/user/get-course-like-status/${item.id}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenTemp}`,
+          },
+        }
+      );
+      let likeJson = await like.json();
+      setLikeStatus(likeJson.likeStatus)
       setCourseData(demoJson.payload);
       setToken(tokenTemp);
     };
@@ -113,26 +140,43 @@ export default function CoursesDetail({ navigation, props, route }) {
             }}
           >
             <View>
-              <Video
-                source={{
-                  uri: vidURL,
+              <VideoPlayer
+                videoProps={
+                  {
+                    source: {
+                      uri: vidURL,
+                    },
+                    shouldPlay: true,
+                    resizeMode: Video.RESIZE_MODE_CONTAIN,
+                    // : 'absolute'
+                  }
+                }
+
+                isPortrait={true}
+                playFromPositionMillis={0}
+                inFullscreen={FScreen}
+                showControlsOnLoad={true}
+                showFullscreenButton={true}
+                width={FScreen ? 700 : 360}
+                height={FScreen ? 330 : 200}
+                switchToLandscape={async () => {
+                  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
+                  setFScreen(true)
                 }}
-                rate={1.0}
-                volume={1.0}
-                isMuted={false}
-                resizeMode="cover"
-                shouldPlay={false}
-                isLooping={false}
-                style={{
-                  height: 200,
-                  width: Dimensions.get("window").width,
-                  position: "absolute",
+                switchToPortrait={async () => {
+                  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
+                  setFScreen(false)
                 }}
-                useNativeControls={true}
+
+
               />
+
               <View style={{ position: "absolute" }}>
                 <TouchableOpacity
                   onPress={() => {
+
+                    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
+                    setFScreen(false)
                     navigation.goBack();
                   }}
                 >
@@ -154,6 +198,7 @@ export default function CoursesDetail({ navigation, props, route }) {
               <Text style={[styles.subtitle, { color: theme.foreground }]}>
                 {courseData ? courseData.subtitle : ""}
               </Text>
+              
               <View style={styles.rating}>
                 <Rating
                   type={"custom"}
@@ -212,10 +257,11 @@ export default function CoursesDetail({ navigation, props, route }) {
                           }
                         );
                         let joinJson = await join.json();
+                        Alert.alert(joinJson.messsage)
                         setrere(true)
                       }}
                     >
-                      <Text style={{ color: '#0084BD' }}>Tham gia ngay</Text>
+                      <Text style={{ color: '#0084BD' }}>Mua ngay với giá {courseData ? courseData.price : '0'} đồng</Text>
                     </TouchableOpacity>
                   ) : (
                       <View>
@@ -225,6 +271,80 @@ export default function CoursesDetail({ navigation, props, route }) {
                     <View></View>
                   )
               }
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 20 }}>
+                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: 50,
+                      height: 50,
+                      borderRadius: 50,
+                      backgroundColor: theme.tagButton,
+                    }}
+                    onPress={async () => {
+                      let dolike = await fetch(`https://api.itedu.me/user/like-course`, {
+                        method: "POST",
+                        headers: {
+                          Accept: "application/json",
+                          "Content-Type": "application/json",
+                          Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                          courseId: item.id
+                        })
+                      })
+                      let dolikeJson = await dolike.json()
+                      setLikeStatus(dolikeJson.likeStatus)
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="heart"
+                      color={likeStatus ? 'red' : theme.foreground}
+                      size={30}
+                    ></MaterialCommunityIcons>
+                  </TouchableOpacity>
+                  <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Yêu thích</Text>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: 50,
+                      height: 50,
+                      borderRadius: 50,
+                      backgroundColor: theme.tagButton,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="access-point-network"
+                      color={theme.foreground}
+                      size={30}
+                    ></MaterialCommunityIcons>
+                  </TouchableOpacity>
+                  <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Add to Chanel</Text>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: 50,
+                      height: 50,
+                      borderRadius: 50,
+                      backgroundColor: theme.tagButton,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="download"
+                      color={theme.foreground}
+                      size={30}
+                    ></MaterialCommunityIcons>
+                  </TouchableOpacity>
+                  <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Download</Text>
+                </View>
+              </View>
               <Text
                 style={{
                   marginLeft: 10,
@@ -290,6 +410,7 @@ export default function CoursesDetail({ navigation, props, route }) {
               >
                 Mô tả
               </Text>
+
               {item.description ? (
                 <View
                   style={{
@@ -347,7 +468,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   flexDirection: "row",
                 }}
               >
-                <View style={{ width: "95%", marginLeft: 10, marginRight: 0 }}>
+                <View style={{ width: "95%", marginLeft: 10, marginRight: 0, height: 'auto' }}>
                   {courseData ? (
                     courseData.section.map((element) => {
                       return (
@@ -421,7 +542,9 @@ export default function CoursesDetail({ navigation, props, route }) {
                                             </Text>)
                                           )
                                       )
-                                  ) : (<View></View>)
+                                  ) : (<Text style={{ width: '40%' }}>
+                                    Phiên đăng nhập hết hạn
+                                  </Text>)
                                 }
                               </View>
                             );
@@ -456,7 +579,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.soldNumber : '0'}</Text> học viên</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.totalCourse : '0'}</Text> khóa học</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.averagePoint.toFixed(1) : '0'}</Text>/5 điểm</Text>
-                  {console.log(courseData ? courseData.id : '')}
+                  {/* {console.log(courseData ? courseData.id : '')} */}
                 </View>
                 <View style={{ marginTop: 10, width: '60%' }}>
                   <Text style={{ fontWeight: 'bold', color: theme.foreground }}>{courseData ? courseData.instructor.name : 'Họ và tên'}</Text>
@@ -507,9 +630,9 @@ export default function CoursesDetail({ navigation, props, route }) {
                 <View style={{ marginTop: 10, width: '45%', justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
                   <Text style={{ color: theme.foreground, fontSize: 60 }}>{courseData ? courseData.averagePoint : '0'}</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{}}>({courseData ? courseData.ratings.ratingList.length : '0'}</Text> bình chọn)</Text>
-                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0].contentPoint) : '0'}</Text> điểm nội dung</Text>
-                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0].formalityPoint) : '0'}</Text> điểm hình thức</Text>
-                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0].presentationPoint) : '0'}</Text> điểm truyền đạt</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].contentPoint : '0') : '0'}</Text> điểm nội dung</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].formalityPoint : '0') : '0'}</Text> điểm hình thức</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].presentationPoint : '0') : '0'}</Text> điểm truyền đạt</Text>
                 </View>
                 <View style={{ marginTop: 10, width: '55%' }}>
                   <RatingDetail data={courseData ? courseData.ratings : {}} navigation={navigation} />
@@ -524,12 +647,15 @@ export default function CoursesDetail({ navigation, props, route }) {
               >
                 Khóa học cùng chủ đề
                 </Text>
-              <SectionCourse
-                navigation={navigation}
-                name={''}
-                data={courseData ? courseData.coursesLikeCategory : []}
-
-              />
+              {courseData ? ((courseData.likeCategory !== [] ? (
+                <View style={{ marginLeft: 10 }}>
+                  <SectionCourse
+                    navigation={navigation}
+                    name={''}
+                    data={courseData ? courseData.coursesLikeCategory : []}
+                  />
+                </View>
+              ) : (<View style={{ marginLeft: 10 }}><Text>(không có)</Text></View>))) : (<View style={{ marginLeft: 10 }}><Text>(không có)</Text></View>)}
               <Text
                 style={{
                   marginLeft: 10,
@@ -539,12 +665,16 @@ export default function CoursesDetail({ navigation, props, route }) {
               >
                 Khóa học được dạy bởi {courseData ? courseData.instructor.name : ''}
               </Text>
-              <SectionCourse
-                navigation={navigation}
-                name={''}
-                data={courseData ? courseData.instructor.courses : []}
+              {courseData ? (courseData.instructor.courses !== [] ? (
+                <View style={{ marginLeft: 10 }}>
+                  <SectionCourse
+                    navigation={navigation}
+                    name={''}
+                    data={courseData ? courseData.instructor.courses : []}
+                  />
+                </View>
+              ) : (<View style={{ marginLeft: 10 }}><Text>(không có)</Text></View>)) : (<View style={{ marginLeft: 10 }}><Text>(không có)</Text></View>)}
 
-              />
             </ScrollView>
           </View>
         );
@@ -557,9 +687,6 @@ const initialLayout = { width: Dimensions.get("window").width };
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#212121",
-
-    marginTop: 200,
-    // position: 'relative'
   },
   rating: {
     justifyContent: "flex-start",

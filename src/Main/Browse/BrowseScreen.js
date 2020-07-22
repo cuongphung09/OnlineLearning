@@ -64,7 +64,7 @@ export default function BrowseScreen({ navigation }) {
 
     async function getFavorite() {
       const userInfoTemp = await AsyncStorage.getItem("userInfo");
-     
+
       let getFavorite = await fetch(`https://api.itedu.me/course/courses-user-favorite-categories`, {
         method: 'POST',
         headers: {
@@ -87,6 +87,7 @@ export default function BrowseScreen({ navigation }) {
     // console.log(favorite)
   }, []);
   const renderCategory = (data) => {
+    // console.log(data)
     return data ? data.map(item => <SmallerImageButton
       key={item.key}
       title={item.name}

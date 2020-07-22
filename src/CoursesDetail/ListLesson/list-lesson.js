@@ -4,7 +4,6 @@ import ListLessonItem from '../ListLessonItem/list-lesson-item'
 import ImageButton from "../../Common/image-button"
 import ThemeContext from '../../Context/theme-context'
 const ListLesson = ({ route, navigation, props }) => {
-    // console.log(route.params.data)
     const [courseData, setCourseData] = useState()
     useEffect(() => {
         async function getCategory() {
@@ -17,35 +16,15 @@ const ListLesson = ({ route, navigation, props }) => {
                 body: JSON.stringify({
                     keyword: '',
                     opt: {
-                        sort: {
-                            attribute: "price",
-                            rule: "ASC"
-                        },
+
                         category: [
                             route.params.id
                         ],
                         time: [
-                            {
-                                min: 0,
-                                max: 1
-                            },
-                            {
-                                min: 3,
-                                max: 6
-                            }
+
                         ],
                         price: [
-                            {
-                                max: 0
-                            },
-                            {
-                                min: 0,
-                                max: 200000
-                            },
-                            {
-                                min: 500000,
-                                max: 1000000
-                            }
+
                         ]
                     },
                     limit: 10,
@@ -62,8 +41,9 @@ const ListLesson = ({ route, navigation, props }) => {
         setData()
     }, []);
     const courses = route.params.data ? route.params.data : courseData
+    // console.log(courses)
     const renderListItem = (courses) => {
-        return courses ? courses.map(item => <ListLessonItem item={item} key={item.id} onPress={() => navigation.navigate('CoursesDetail', { item: item })} />) : (<View></View>)
+        return courses ? courses.map(item => item.title ? (<ListLessonItem item={item} key={item.id} onPress={() => navigation.navigate('CoursesDetail', { item: item })} />) : (<View key={item.id}></View>)) : (<View></View>)
     }
     return (
         <ThemeContext.Consumer>
