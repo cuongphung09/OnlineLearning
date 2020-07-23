@@ -92,7 +92,7 @@ export default function BrowseScreen({ navigation }) {
       key={item.key}
       title={item.name}
       onPress={() =>
-        navigation.navigate("ListLesson", { title: item.name, id: item.id, source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
+        navigation.navigate("ListCourses", { title: item.name, id: item.id, source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
       }
       source={{
         uri: randomBackground[Math.floor(Math.random() * randomBackground.length)]
@@ -165,7 +165,7 @@ export default function BrowseScreen({ navigation }) {
               <View style={styles.imageButton}>
                 <ImageButton
                   title="KHÓA HỌC MỚI NHẤT"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'KHÓA HỌC MỚI NHẤT', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg', data: newRelease })}
+                  onPress={() => navigation.navigate("ListCourses", { title: 'KHÓA HỌC MỚI NHẤT', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg', data: newRelease })}
                   source={{
                     uri:
                       "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
@@ -173,7 +173,7 @@ export default function BrowseScreen({ navigation }) {
                 />
                 <ImageButton
                   title="KHÓA HỌC ĐƯỢC GỢI Ý"
-                  onPress={() => navigation.navigate("ListLesson", { title: 'KHÓA HỌC ĐƯỢC GỢI Ý', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU', data: favorite })}
+                  onPress={() => navigation.navigate("ListCourses", { title: 'KHÓA HỌC ĐƯỢC GỢI Ý', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU', data: favorite })}
                   source={{
                     uri:
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
@@ -185,66 +185,6 @@ export default function BrowseScreen({ navigation }) {
                 {
                   renderCategory(categoryData)
                 }
-                {/* <SmallerImageButton
-                  title="CONFERENCES"
-                  onPress={() => {
-                    navigation.navigate("ListLesson", { title: 'CONFERENCES', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU' })
-                  }}
-                  source={{
-                    uri:
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU",
-                  }}
-                />
-                <SmallerImageButton
-                  title="IT OPS"
-                  onPress={() => {
-                    navigation.navigate("ListLesson", { title: 'IT OPS', source: 'https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg' })
-                  }}
-                  source={{
-                    uri:
-                      "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
-                  }}
-                />
-                <SmallerImageButton
-                  title="<Software> DEVELOPMENT"
-                  onPress={() =>
-                    navigation.navigate("ListLesson", { title: '<Software> DEVELOPMENT', source: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU' })
-                  }
-                  source={{
-                    uri:
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
-                  }}
-                />
-                <SmallerImageButton
-                  title="Information AND CYBER SECURITY"
-                  onPress={() =>
-                    navigation.navigate("ListLesson", { title: 'Information AND CYBER SECURITY', source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
-                  }
-                  source={{
-                    uri:
-                      "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
-                  }}
-                />
-                <SmallerImageButton
-                  title="DATA PROFESSIONAL"
-                  onPress={() =>
-                    navigation.navigate("ListLesson", { title: 'DATA PROFESSIONAL', source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
-                  }
-                  source={{
-                    uri:
-                      "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
-                  }}
-                />
-                <SmallerImageButton
-                  title="BUSINESS PROFESSIONAL"
-                  onPress={() =>
-                    navigation.navigate("ListLesson", { title: 'BUSINESS PROFESSIONAL', source: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' })
-                  }
-                  source={{
-                    uri:
-                      "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
-                  }}
-                /> */}
               </ScrollView>
               <View>
                 <Text style={[styles.title, { color: theme.foreground }]}>Ngôn ngữ nổi bật</Text>

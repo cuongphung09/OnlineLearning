@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View, Button, ProgressBarAndroid } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import ThemeContext from '../src/Context/theme-context'
+import ThemeContext from '../Context/theme-context'
 export default function SplashScreen({ navigation }) {
     const [count, setCount] = useState(0)
     useEffect(() => {
@@ -20,8 +20,8 @@ export default function SplashScreen({ navigation }) {
         <ThemeContext.Consumer>
             {([theme, setTheme]) => {
                 return (
-                    <View 
-                    style={[styles.container, {backgroundColor: theme.background}]}
+                    <View
+                        style={[styles.container, { backgroundColor: theme.background }]}
                     >
                         <Text style={{ fontSize: 30, fontWeight: 'bold', color: theme.foreground, textAlign: 'center', marginBottom: 100 }}>Welcome to Online Learning App</Text>
                         <ProgressBarAndroid styleAttr="Horizontal" color="#2196F3" style={{ width: 200 }} />
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         width: 200
-    }, 
+    },
 
 });

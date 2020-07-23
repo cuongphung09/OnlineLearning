@@ -6,9 +6,9 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { useSafeArea } from "react-native-safe-area-context";
 // import PasswordInputText from 'react-native-hide-show-password-input';
-import PasswordTextBox from '../src/Component/passwordTextBox'
-import ThemeContext from '../src/Context/theme-context'
-import AuthContext from '../src/Context/auth-context'
+import PasswordTextBox from '../../Component/passwordTextBox'
+import ThemeContext from '../../Context/theme-context'
+import AuthContext from '../../Context/auth-context'
 export default function LoginScreen({ navigation }) {
     const [secure, setSsecure] = useState(true)
     const [icon, setIcon] = useState('eye-off')

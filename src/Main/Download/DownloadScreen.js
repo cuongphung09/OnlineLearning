@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import  ThemeContext  from "../src/Context/theme-context";
+import  ThemeContext  from "../../Context/theme-context";
 
 export default function DownloadScreen({ navigation }) {
   return (

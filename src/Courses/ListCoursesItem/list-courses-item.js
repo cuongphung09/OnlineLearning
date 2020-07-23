@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import ThemeContext from "../../Context/theme-context";
-const ListLessonItem = (props) => {
+const ListCoursesItem = (props) => {
   return (
     <ThemeContext.Consumer>
       {([theme, setTheme]) => {
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
-export default ListLessonItem;
+export default ListCoursesItem;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { View, StyleSheet, Text, Image, ScrollView, Alert, Dimensions } from "react-native"
-import ListLessonItem from '../ListLessonItem/list-lesson-item'
+import ListLessonItem from '../ListCoursesItem/list-courses-item'
 import ImageButton from "../../Common/image-button"
 import ThemeContext from '../../Context/theme-context'
-const ListLesson = ({ route, navigation, props }) => {
+const ListCourses = ({ route, navigation, props }) => {
     const [courseData, setCourseData] = useState()
     useEffect(() => {
         async function getCategory() {
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     }
 })
-export default ListLesson
+export default ListCourses

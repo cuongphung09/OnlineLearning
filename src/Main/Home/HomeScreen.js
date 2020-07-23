@@ -107,7 +107,7 @@ const HomeScreen = ({ navigation }) => {
       return data.map(item => <SectionCourses key={item.key}
          name={item.name}
          data={item.courses}
-         navigation={navigation} onPress={() => navigation.navigate("ListLesson", {
+         navigation={navigation} onPress={() => navigation.navigate("ListCourses", {
             name: item.name
             , data: item.courses
          })} />)

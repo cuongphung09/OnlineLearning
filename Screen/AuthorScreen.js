@@ -7,21 +7,11 @@ import { Avatar } from "react-native-elements";
 import ThemeContext, { themes } from '../src/Context/theme-context'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ScrollView } from 'react-native-gesture-handler';
-import ListLessonItem from '../src/CoursesDetail/ListLessonItem/list-lesson-item'
+import ListLessonItem from '../src/Courses/ListCoursesItem/list-courses-item'
 
 export default function AuthorDetailScreen({ navigation, props, route }) {
     const [textHeight, setTextHeight] = useState(80)
     const [chevron, setchevron] = useState('chevron-down')
-    // const renderListItem = (courses, theme) => {
-    //     return courses.map(item =>
-    //         <View key={item.id}>
-    //             <Divider style={{ backgroundColor: theme.foreground, height: 1 }} />
-    //             <ListLessonItem item={item}  onPress={() => navigation.navigate('CoursesDetail', { item: item })} />
-
-    //         </View>
-
-    //     )
-    // }
     return (
         <ThemeContext.Consumer>
             {

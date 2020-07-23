@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
-import ThemeContext from '../src/Context/theme-context'
+import ThemeContext from '../../Context/theme-context'
 export default function SearchScreen({ navigation }) {
   return (
     <ThemeContext.Consumer>

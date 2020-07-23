@@ -1,7 +1,7 @@
 import React, { useContext, useState, createContext, useMemo, useEffect } from "react";
 import { Avatar } from "react-native-elements";
 import { StyleSheet, View, AsyncStorage } from "react-native";
-import Search from "./Screen/SearchScreen";
+import Search from "./src/Main/Search/SearchScreen";
 import SettingScreen from "./Screen/SettingScreen";
 import ProfileScreen from "./Screen/ProfileScreen";
 import "react-native-gesture-handler";
@@ -10,21 +10,21 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 // const Tab = createBottomTabNavigator();
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import ListLesson from "./src/CoursesDetail/ListLesson/list-lesson";
-import DownloadScreen from "./Screen/DownloadScreen";
+import ListCourses from "./src/Courses/ListCourses/list-course";
+import DownloadScreen from "./src/Main/Download/DownloadScreen";
 import BrowseScreen from "./src/Main/Browse/BrowseScreen";
 import CoursesDetail from "./src/CoursesDetail/course-detail";
 import CustomMenuIcon from "./src/Component/pop-up-menu";
 import HomeScreen from "./src/Main/Home/HomeScreen";
-import SplashScreen from "./Screen/SplashScreen";
-import LoginScreen from "./Screen/LoginScreen";
+import SplashScreen from "./src/Splash/SplashScreen";
+import LoginScreen from "./src/Auth/Login/LoginScreen";
 
 import ThemeContext, { themes } from "./src/Context/theme-context";
 import PathScreen from "./Screen/PathScreen";
 import PathDetailScreen from "./Screen/PathDetailScreen";
 import AuthorDetailScreen from "./Screen/AuthorScreen";
 import AuthContext, { users } from "./src/Context/auth-context";
-import SignUpScreen from "./Screen/SignUpScreen";
+import SignUpScreen from "./src/Auth/Register/SignUpScreen";
 // import AuthContext from './src/Context/auth-context'
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -413,8 +413,8 @@ export default function App() {
                   }}
                 />
                 <Stack.Screen
-                  name="ListLesson"
-                  component={ListLesson}
+                  name="ListCourses"
+                  component={ListCourses}
                   options={{
                     title: "",
                     headerStyle: {

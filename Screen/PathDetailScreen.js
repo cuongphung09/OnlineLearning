@@ -6,7 +6,7 @@ import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
 import ThemeContext, { themes } from '../src/Context/theme-context'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ScrollView } from 'react-native-gesture-handler';
-import ListLessonItem from '../src/CoursesDetail/ListLessonItem/list-lesson-item'
+import ListLessonItem from '../src/Courses/ListCoursesItem/list-courses-item'
 import { render } from 'react-dom';
 
 export default function PathDetailScreen({ navigation, props, route }) {

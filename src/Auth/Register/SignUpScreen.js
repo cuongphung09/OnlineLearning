@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, AsyncStorage, TextInput, TouchableOpacity, Alert } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ThemeContext from "../src/Context/theme-context";
-import AuthContext from "../src/Context/auth-context";
+import ThemeContext from "../../Context/theme-context";
+import AuthContext from "../../Context/auth-context";
 
 export default function SignUpScreen({ navigation }) {
 

@@ -21,7 +21,6 @@ import ThemeContext from "../Context/theme-context";
 import RatingDetail from '../Component/ratingDetail'
 import SectionCourse from '../Main/Home/SectionCourses/section-courses'
 export default function CoursesDetail({ navigation, props, route }) {
-  const [orientationIsLandscape, setOrientationIsLandscape] = useState(false);
   const [rere, setrere] = useState(false)
   const [textHeight, setTextHeight] = useState(75);
   const [chevron, setchevron] = useState("chevron-down");
@@ -29,7 +28,6 @@ export default function CoursesDetail({ navigation, props, route }) {
   const [chevronIntro, setchevronIntro] = useState("chevron-down");
   const { item } = route.params;
   const [vidURL, setVidURL] = useState(item.promoVidUrl);
-  const [index, setIndex] = React.useState(0);
   const [token, setToken] = useState("");
   const [learnWhat, setLearnWhat] = useState([]);
   const [requirement, setRequirement] = useState([]);
@@ -37,11 +35,6 @@ export default function CoursesDetail({ navigation, props, route }) {
   const [paid, setPaid] = useState();
   const [likeStatus, setLikeStatus] = useState(false)
   const [FScreen, setFScreen] = useState(false)
-  const width = Dimensions.get('window').width
-  const height = Dimensions.get('window').height
-  const [w, setw] = useState(width)
-  const [h, setH] = useState(200)
-  console.log(item.id)
   useEffect(() => {
     const getCourseDetail = async () => {
       const tokenTemp = await AsyncStorage.getItem("token");
@@ -148,7 +141,6 @@ export default function CoursesDetail({ navigation, props, route }) {
                     },
                     shouldPlay: true,
                     resizeMode: Video.RESIZE_MODE_CONTAIN,
-                    // : 'absolute'
                   }
                 }
 
@@ -198,7 +190,7 @@ export default function CoursesDetail({ navigation, props, route }) {
               <Text style={[styles.subtitle, { color: theme.foreground }]}>
                 {courseData ? courseData.subtitle : ""}
               </Text>
-              
+
               <View style={styles.rating}>
                 <Rating
                   type={"custom"}
@@ -227,7 +219,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   courseData ? convert(Date.parse(courseData.updatedAt) / 1000) : "NaN"
                 }
               </Text>
-              {
+              {/* {
                 paid ? (
                   !paid.isInstructorOwnCourse && !paid.isUserOwnCourse ? (
                     <TouchableOpacity style={{
@@ -237,7 +229,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                       alignItems: 'center',
                       borderColor: '#0084BD',
                       borderWidth: 1,
-                      width: Dimensions.get('window').width * 90 / 100,
+                      width: 360 * 90 / 100,
                       height: 40,
                       borderRadius: 5
                     }}
@@ -270,7 +262,11 @@ export default function CoursesDetail({ navigation, props, route }) {
                 ) : (
                     <View></View>
                   )
-              }
+              } */}
+              <Text style={{ color: '#0084BD', fontSize: 20, marginLeft: 10 }}>{courseData ? (courseData.price === 0 ? 'Miễn phí' : (courseData.price.toLocaleString(undefined, { minimumFractionDigits: 2 })
+                .concat(' VND'))) : ''}
+              </Text>
+
               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 20 }}>
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <TouchableOpacity
@@ -301,30 +297,82 @@ export default function CoursesDetail({ navigation, props, route }) {
                     <MaterialCommunityIcons
                       name="heart"
                       color={likeStatus ? 'red' : theme.foreground}
-                      size={30}
+                      size={20}
                     ></MaterialCommunityIcons>
                   </TouchableOpacity>
                   <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Yêu thích</Text>
                 </View>
-                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <TouchableOpacity
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: 50,
-                      height: 50,
-                      borderRadius: 50,
-                      backgroundColor: theme.tagButton,
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name="access-point-network"
-                      color={theme.foreground}
-                      size={30}
-                    ></MaterialCommunityIcons>
-                  </TouchableOpacity>
-                  <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Add to Chanel</Text>
-                </View>
+                {
+                  paid ? (
+                    !paid.isInstructorOwnCourse && !paid.isUserOwnCourse ? (
+                      <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <TouchableOpacity
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            backgroundColor: theme.tagButton,
+                          }}
+                          onPress={async () => {
+                            let join = await fetch(
+                              `https://api.itedu.me/payment/get-free-courses`,
+                              {
+                                method: "POST",
+                                headers: {
+                                  Accept: "application/json",
+                                  "Content-Type": "application/json",
+                                  Authorization: `Bearer ${token}`,
+                                },
+                                body: JSON.stringify({
+                                  courseId: item.id
+                                })
+                              }
+                            );
+                            let joinJson = await join.json();
+                            Alert.alert(joinJson.messsage)
+                            setrere(true)
+                          }}
+                        >
+                          <MaterialCommunityIcons
+                            name="cart"
+                            color={theme.foreground}
+                            size={20}
+                          ></MaterialCommunityIcons>
+                        </TouchableOpacity>
+                        <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Mua ngay</Text>
+                      </View>
+
+                    ) : (
+                        <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                          <TouchableOpacity
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: 50,
+                              height: 50,
+                              borderRadius: 50,
+                              backgroundColor: theme.tagButton,
+                            }}
+                            onPress={async () => {
+
+                            }}
+                          >
+                            <MaterialCommunityIcons
+                              name="play"
+                              color={theme.foreground}
+                              size={30}
+                            ></MaterialCommunityIcons>
+                          </TouchableOpacity>
+                          <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Tiếp tục học</Text>
+                        </View>
+                      )
+                  ) : (
+                      <View><Text></Text></View>
+                    )
+                }
+
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <TouchableOpacity
                     style={{
@@ -339,10 +387,10 @@ export default function CoursesDetail({ navigation, props, route }) {
                     <MaterialCommunityIcons
                       name="download"
                       color={theme.foreground}
-                      size={30}
+                      size={20}
                     ></MaterialCommunityIcons>
                   </TouchableOpacity>
-                  <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Download</Text>
+                  <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Tải về</Text>
                 </View>
               </View>
               <Text
@@ -393,7 +441,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <Text style={{ color: theme.foreground }}>
                     {requirement.length !== 0 ? (
                       requirement.map((item) => (
-                        <Text key={item.id}>✓ {item.item}</Text>
+                        <Text key={item.id}>✓ {item.item}{'\n'}</Text>
                       ))
                     ) : (
                         <Text>(không có)</Text>
@@ -465,100 +513,64 @@ export default function CoursesDetail({ navigation, props, route }) {
               <View
                 style={{
                   display: "flex",
-                  flexDirection: "row",
+                  flexDirection: "row"
                 }}
               >
                 <View style={{ width: "95%", marginLeft: 10, marginRight: 0, height: 'auto' }}>
                   {courseData ? (
                     courseData.section.map((element) => {
+                      // console.log(element)
                       return (
                         <View key={element.numberOrder}>
                           <Text style={{ color: theme.foreground, fontWeight: '700' }}>
                             Phần {element.numberOrder}. {element.name}
                           </Text>
-                          {element.lesson.map((ls) => {
-                            return (
-                              <View
-                                key={ls.numberOrder}
-                                style={{
-                                  flex: 1,
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                  marginLeft: 10,
-                                  // width: '65%'
-                                }}
-                              >
-                                <Text style={{ color: theme.foreground, width: '60%' }}>
-                                  <Text style={{ fontSize: 20 }}>↳</Text> Bài {ls.numberOrder}. {ls.name}
-                                </Text>
+                          {
+                            element.lesson.map((ls) => {
+                              return (
+                                <View
+                                  key={ls.numberOrder}
+                                  style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    marginLeft: 10,
+                                    // width: '65%'
+                                  }}
+                                >
+                                  <TouchableOpacity disabled={!ls.isPreview}
+                                    onPress={() => {
+                                      setVidURL(ls.videoUrl)
+                                    }}>
+                                    <Text
+                                      style={{
 
-                                {
-                                  paid ? (
-                                    paid.isInstructorOwnCourse || paid.isUserOwnCourse ? (
-                                      <TouchableOpacity
-                                        onPress={() => {
-                                          setVidURL(ls.videoUrl);
-                                        }}
-                                      >
-                                        <Text
-                                          style={{
-                                            borderColor: theme.foreground,
-                                            color: theme.foreground,
-                                            borderWidth: 1,
-                                            borderRadius: 5,
+                                        height: 'auto'
+                                      }}
+                                    >
+                                      <Text style={{ color: ls.isPreview ? '#0084BD' : theme.foreground, }}>
+                                        <Text style={{ fontSize: 20 }}></Text> Bài {ls.numberOrder}. {ls.name}
+                                      </Text>
+                                    </Text>
+                                  </TouchableOpacity>
 
-                                          }}
-                                        >
-                                          Xem bài giảng
-                                                                      </Text>
-                                      </TouchableOpacity>)
-                                      :
-
-                                      (
-                                        ls.isPreview ? (
-                                          <TouchableOpacity
-                                            onPress={() => {
-                                              setVidURL(ls.videoUrl);
-                                            }}
-                                          >
-                                            <Text
-                                              style={{
-                                                borderColor: theme.foreground,
-                                                color: theme.foreground,
-                                                borderWidth: 1,
-                                                borderRadius: 5,
-
-                                              }}
-                                            >
-                                              Xem trước
-                                                                      </Text>
-                                          </TouchableOpacity>
-                                        )
-                                          :
-                                          (
-                                            (<Text style={{ width: '40%' }}>
-                                              Mua khóa học để xem bài giảng
-                                            </Text>)
-                                          )
-                                      )
-                                  ) : (<Text style={{ width: '40%' }}>
-                                    Phiên đăng nhập hết hạn
-                                  </Text>)
-                                }
-                              </View>
-                            );
-                          })}
+                                </View>
+                              );
+                            })
+                          }
                         </View>
                       );
                     })
                   ) : (
                       <Text>(không có)</Text>
-                    )}
+                    )
+                  }
                 </View>
               </View>
               <Text
                 style={{
+                  marginTop: 10,
                   marginLeft: 10,
                   fontWeight: "bold",
                   color: theme.foreground,
@@ -567,7 +579,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                 Thông tin giáo viên
                   </Text>
               <View style={{ width: "95%", marginLeft: 10, marginRight: 0, flex: 1, flexDirection: 'row', marginBottom: 30 }}>
-                <View style={{ marginTop: 10, width: '40%', justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
+                <View style={{ marginTop: 10, width: '40%', justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
                   <Avatar
                     containerStyle={{}}
                     size={80}
