@@ -1,6 +1,6 @@
 import React, { useContext, useState, createContext, useMemo, useEffect } from "react";
-import { Avatar } from "react-native-elements";
-import { StyleSheet, View, AsyncStorage } from "react-native";
+import { Avatar, Icon } from "react-native-elements";
+import { StyleSheet, View, AsyncStorage, Button } from "react-native";
 import Search from "./src/Main/Search/SearchScreen";
 import SettingScreen from "./Screen/SettingScreen";
 import ProfileScreen from "./Screen/ProfileScreen";
@@ -25,6 +25,7 @@ import PathDetailScreen from "./Screen/PathDetailScreen";
 import AuthorDetailScreen from "./Screen/AuthorScreen";
 import AuthContext, { users } from "./src/Context/auth-context";
 import SignUpScreen from "./src/Auth/Register/SignUpScreen";
+import { TouchableOpacity } from "react-native-gesture-handler";
 // import AuthContext from './src/Context/auth-context'
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -388,7 +389,18 @@ export default function App() {
                       backgroundColor: theme.header,
                     },
                     headerTintColor: theme.foreground,
+                    // headerRight: ({ navigation }) => (
+                    //   <View>
+                    //     <TouchableOpacity
+                    //       onPress={() => navigation.navigate('Main')}
+                    //       style={styles.headerIconRight}
+                    //     >
+                    //       <MaterialCommunityIcons name="home" color={theme.foreground} size={26} />
+                    //     </TouchableOpacity>
+                    //   </View>
+                    // ),
                   }}
+
                 />
                 <Stack.Screen
                   name="Path"

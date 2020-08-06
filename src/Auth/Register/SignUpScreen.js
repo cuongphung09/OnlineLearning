@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, AsyncStorage, TextInput, TouchableOpacity, Aler
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ThemeContext from "../../Context/theme-context";
 import AuthContext from "../../Context/auth-context";
+import { REST_API } from "../../../config/api";
 
 export default function SignUpScreen({ navigation }) {
 
@@ -13,21 +14,18 @@ export default function SignUpScreen({ navigation }) {
     const [phoneOpacity, setPhoneOpacity] = useState(0.7)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [checkEmail, setCheckEmail] = useState('none')
     const [password, setPassword] = useState('')
+    const [checkPassword, setCheckPassword] = useState('none')
     const [rePassword, setRePassword] = useState('')
+    const [checkRePassword, setCheckRePassword] = useState('none')
     const [phone, setPhone] = useState('')
+    const [checkPhone, setCheckPhone] = useState('none')
     useEffect(() => {
 
 
     }, []);
     const submit = async (navigation) => {
-        console.log({
-            name: name,
-            email: email,
-            password: password,
-            rePassword: rePassword,
-            phone: phone
-        })
         if (password !== rePassword) {
             Alert.alert('Xác nhận mật khẩu không trùng khớp')
             console.log(validateEmail(email))
@@ -36,31 +34,19 @@ export default function SignUpScreen({ navigation }) {
             Alert.alert('Email không hợp lệ')
         }
         else {
-            let response = await fetch('https://api.itedu.me/user/register', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "username": name,
-                    "email": email,
-                    "phone": phone,
-                    "password": password
-                }),
+            const info = JSON.stringify({
+                "username": name,
+                "email": email,
+                "phone": phone,
+                "password": password
             })
-            let responseJson = await response.json()
-            if (responseJson.message === 'OK') {
-                let sendEmail = await fetch('https://api.itedu.me/user/send-activate-email', {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        "email": email,
-                    }),
+            let register = await REST_API.register(info)
+            if (register.message === 'OK') {
+                let info = JSON.stringify({
+                    email: email
                 })
+                let sendEmail = await REST_API.sendActivateEmail(info)
+                console.log(sendEmail)
                 Alert.alert('Đăng ký thành công. Hãy kiểm tra email của bạn!')
                 navigation.navigate('LoginScreen')
             }
@@ -80,11 +66,29 @@ export default function SignUpScreen({ navigation }) {
             return true
         }
     }
+    const validatePassword = (text) => {
+        let vnf_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+        if (vnf_regex.test(text) === false) {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    const validatePhone = (text) => {
+        let vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+        if (vnf_regex.test(text) === false) {
+            return false
+        }
+        else {
+            return true
+        }
+    }
     return (
         <View style={[styles.container, {}]}>
-            <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>Đăng ký</Text>
-            <View style={{ margin: 30, marginBottom: 10 }}>
-                <TextInput style={{ opacity: nameOpacity, marginBottom: 20 }} placeholder='Họ và tên' value={name}
+            <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginTop: 30 }}>Đăng ký</Text>
+            <View style={{ margin: 30, marginTop: 10 }}>
+                <TextInput style={{ opacity: nameOpacity, marginTop: 20 }} placeholder='Họ và tên' value={name}
                     onChangeText={(value) => {
                         if (value !== '') {
                             setNameOpacity(1)
@@ -93,50 +97,60 @@ export default function SignUpScreen({ navigation }) {
                     }}
                     textContentType={'name'}
                 ></TextInput>
-                <TextInput style={{ opacity: emailOpacity, marginBottom: 20 }} placeholder='Email' value={email}
+                <TextInput style={{ opacity: emailOpacity, marginTop: 20 }} placeholder='Email' value={email}
                     autoCapitalize={"none"}
                     onChangeText={(value) => {
                         if (value !== '') {
                             setEmailOpacity(1)
                         }
+                        validateEmail(value) ? setCheckEmail('none') : setCheckEmail('flex')
                         setEmail(value)
 
                     }}
                     textContentType={'emailAddress'}
                 ></TextInput>
-                <TextInput style={{ opacity: passwordOpacity, marginBottom: 20 }} value={password} placeholder='Mật khẩu'
+                <Text style={{ display: checkEmail, color: 'red', fontSize: 10 }}>Email chưa đúng định dạng</Text>
+                <TextInput style={{ opacity: passwordOpacity, marginTop: 20 }} value={password} placeholder='Mật khẩu'
                     secureTextEntry={true}
                     onChangeText={(value) => {
                         if (value !== '') {
                             setPasswordOpacity(1)
                         }
                         setPassword(value)
+                        validatePassword(value) ? setCheckPassword('none') : setCheckPassword('flex')
                     }}
                     textContentType={'password'}
                 >
 
                 </TextInput>
-                <TextInput style={{ opacity: rePasswordOpacity, marginBottom: 20 }} value={rePassword} placeholder='Xác nhận mật khẩu'
+                <Text style={{ display: checkPassword, color: 'red', fontSize: 10 }}>Mật khẩu phải có độ dài từ 8-16 kí tự, chứa ít nhất một kí tự số, một kí tự viết hoa và một kí tự viết thường</Text>
+                <TextInput style={{ opacity: rePasswordOpacity, marginTop: 20 }} value={rePassword} placeholder='Xác nhận mật khẩu'
                     secureTextEntry={true}
                     onChangeText={(value) => {
+                        password === value ? setCheckRePassword('none') : setCheckRePassword('flex')
                         if (value !== '') {
                             setRePasswordOpacity(1)
                         }
                         setRePassword(value)
+
                     }}
                     textContentType={'password'}
                 >
                 </TextInput>
-                <TextInput style={{ opacity: phoneOpacity, marginBottom: 20 }} placeholder='Số điện thoại' value={phone}
+                <Text style={{ display: checkRePassword, color: 'red', fontSize: 10 }}>Xác nhận mật khẩu phải trùng khớp với mật khẩu</Text>
+                <TextInput style={{ opacity: phoneOpacity, marginTop: 20 }} placeholder='Số điện thoại' value={phone}
                     onChangeText={(value) => {
+                        validatePhone(value) ? setCheckPhone('none') : setCheckPhone('flex')
                         if (value !== '') {
                             setPhoneOpacity(1)
                         }
                         setPhone(value)
+
                     }}
                     textContentType={'telephoneNumber'}
                     keyboardType={'number-pad'}
                 ></TextInput>
+                <Text style={{ display: checkPhone, color: 'red', fontSize: 10 }}>Số điện thoại chưa đúng định dạng</Text>
                 <TouchableOpacity style={[styles.button, {}]} title='LOGIN' onPress={
                     () => submit(navigation)
                 } >

@@ -4,11 +4,11 @@ import {
     TouchableHighlight, Item, Icon, Input
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-// import { useSafeArea } from "react-native-safe-area-context";
-// import PasswordInputText from 'react-native-hide-show-password-input';
 import PasswordTextBox from '../../Component/passwordTextBox'
 import ThemeContext from '../../Context/theme-context'
 import AuthContext from '../../Context/auth-context'
+import { REST_API } from "../../../config/api";
+
 export default function LoginScreen({ navigation }) {
     const [secure, setSsecure] = useState(true)
     const [icon, setIcon] = useState('eye-off')
@@ -32,7 +32,6 @@ export default function LoginScreen({ navigation }) {
             if (isLoggedInTemp === 'true') {
                 navigation.navigate('Main')
             }
-
             setIsLoggedIn(isLoggedInTemp)
             setToken(tokenTemp)
             setUserInfo(userInfoTemp)
@@ -44,29 +43,23 @@ export default function LoginScreen({ navigation }) {
 
 
     const submit = async (setUser) => {
-        let response = await fetch('https://api.itedu.me/user/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: username,
-                password: password,
-            }),
+        const info = JSON.stringify({
+            email: username,
+            password: password,
         })
-        let responseJson = await response.json();
-        if (responseJson.message !== "OK") {
-            Alert.alert('Sai tài khoản hoặc mật khẩu')
-        }
-        else {
+        const login = await REST_API.login(info)
+        console.log(login)
+        if (login.message === 'OK') {
             setUsername('')
             setPassword('')
-            setUser(responseJson.userInfo)
+            setUser(login.userInfo)
             AsyncStorage.setItem('isLoggedIn', 'true')
-            AsyncStorage.setItem('token', responseJson.token)
-            AsyncStorage.setItem('userInfo', JSON.stringify(responseJson.userInfo))
+            AsyncStorage.setItem('token', login.token)
+            AsyncStorage.setItem('userInfo', JSON.stringify(login.userInfo))
             navigation.navigate('Main')
+        }
+        else {
+            Alert.alert('Sai tài khoản hoặc mật khẩu')
         }
     }
     const background = { uri: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&w=1000&q=80' }
@@ -109,21 +102,6 @@ export default function LoginScreen({ navigation }) {
                                                         setIcon(icon === 'eye' ? 'eye-off' : 'eye')
                                                     }}></MaterialCommunityIcons>
                                             </View>
-
-                                            {/* <Item>
-                                                <Icon active name={icon} />
-                                                {/* <Label>{label}</Label> 
-                                            <Input secureTextEntry={password} secureTextEntry={true}
-                                                onChangeText={(value) => {
-                                                    if (value !== '') {
-                                                        setPasswordOpacity(1)
-                                                    }
-                                                    setPassword(value)
-                                                }} />
-                                            <Icon name={icon} onPress={() => changeIcon()} />
-                                            </Item> */}
-
-
                                             <TouchableOpacity style={[styles.button, { color: theme.foreground }]} title='LOGIN' onPress={
                                                 () => submit(setUser)
                                             } >
@@ -133,8 +111,6 @@ export default function LoginScreen({ navigation }) {
                                         <TouchableOpacity onPress={() => {
                                             setModalVisible(true)
                                             setLayer(0)
-                                            // navigation.navigate('ForgotPassword')
-                                            // navigation.navigate('Main')
                                         }}>
                                             <Text style={[{ alignSelf: 'center', opacity: 0.5 }]}>Quên mật khẩu</Text>
                                         </TouchableOpacity>
@@ -151,9 +127,6 @@ export default function LoginScreen({ navigation }) {
                                                 animationType="slide"
                                                 transparent={true}
                                                 visible={modalVisible}
-                                                onRequestClose={() => {
-                                                    Alert.alert("Modal has been closed.");
-                                                }}
                                             >
                                                 <View style={styles.centeredView}>
                                                     <View style={styles.modalView}>
@@ -170,21 +143,14 @@ export default function LoginScreen({ navigation }) {
                                                             <TouchableHighlight
                                                                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                                                                 onPress={async () => {
-                                                                    const sendEmail = await fetch('https://api.itedu.me/user/forget-pass/send-email', {
-                                                                        method: "POST",
-                                                                        headers: {
-                                                                            Accept: "application/json",
-                                                                            "Content-Type": "application/json",
-
-                                                                        },
-                                                                        body: JSON.stringify({
-                                                                            email: forget
-                                                                        })
+                                                                    const info = JSON.stringify({
+                                                                        email: forget
                                                                     })
-                                                                    const sendEmailJson = await sendEmail.json()
-                                                                    Alert.alert(sendEmailJson.message)
+                                                                    const forgetPassword = await REST_API.forgetPassword(info)
+                                                                    Alert.alert(forgetPassword.message)
                                                                     setModalVisible(!modalVisible);
                                                                     setLayer(1)
+
                                                                 }}
                                                             >
                                                                 <Text style={styles.textStyle}>Xác nhận</Text>

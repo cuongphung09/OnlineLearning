@@ -8,7 +8,9 @@ const SectionCourses = (props) => {
     const courses = (props.data)
     // console.log(courses)
     const renderListItem = (courses) => {
+
         return courses.map(item => (item.title) ? (<SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />) : (<View key={item.id}></View>))
+
     }
     return (
         <ThemeContext.Consumer>
@@ -16,16 +18,19 @@ const SectionCourses = (props) => {
                 return (
                     <View style={{ marginBottom: 30 }}>
                         <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={[styles.text, { color: theme.foreground }]}>{props.name}</Text>
+                            <Text style={[styles.text, { color: theme.foreground, width: '70%' }]}>{props.name}</Text>
                             {props.name ? (<TouchableOpacity onPress={props.onPress}>
                                 <Text style={{ color: theme.foreground, opacity: 0.5 }} >
                                     Xem tất cả ⟩
                                 </Text>
                             </TouchableOpacity>) : (<View></View>)}
                         </View>
-                        <ScrollView horizontal={true}>
-                            {renderListItem(courses)}
-                        </ScrollView>
+                        {
+                            courses.length === 0 ? (<Text style={{ color: theme.foreground, marginLeft: 10, opacity: 0.7}}>(Không có khóa học)</Text>) :
+                                (<ScrollView horizontal={true}>
+                                    {renderListItem(courses)}
+                                </ScrollView>)
+                        }
                     </View>
                 )
             }}

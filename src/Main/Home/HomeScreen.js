@@ -2,75 +2,76 @@ import SectionCourses from "./SectionCourses/section-courses"
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, ImageBackground, TouchableOpacity, Text, ScrollView, AsyncStorage } from 'react-native'
 import ThemeContext from '../../../src/Context/theme-context'
+import { REST_API } from "../../../config/api"
 const HomeScreen = ({ navigation }) => {
    const [isLoggedIn, setIsLoggedIn] = useState(false)
    const [token, setToken] = useState('')
    const [userInfo, setUserInfo] = useState()
    const [data, setData] = useState([])
    useEffect(() => {
-      async function getCategory() {
-         let getCategory = await fetch(`https://api.itedu.me/category/all`, {
-            method: 'GET',
-            headers: {
-               Accept: 'application/json',
-               'Content-Type': 'application/json',
-            },
-         })
-         let count = 2
-         let getCategoryJson = (await getCategory.json())
-         let addData = []
-         let payload = getCategoryJson.payload
-         payload.map(async (element) => {
-            element.key = count
-            count++
-            let demo = await fetch(`https://api.itedu.me/course/search`, {
-               method: 'POST',
-               headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-               },
-               body: JSON.stringify({
-                  keyword: '',
-                  opt: {
-                     sort: {
-                        attribute: "price",
-                        rule: "ASC"
-                     },
-                     category: [
-                        element.id
-                     ],
-                     time: [
-                        {
-                           min: 0,
-                           max: 1
-                        },
-                        {
-                           min: 3,
-                           max: 6
-                        }
-                     ],
-                     price: [
-                        {
-                           max: 0
-                        },
-                        {
-                           min: 0,
-                           max: 200000
-                        },
-                        {
-                           min: 500000,
-                           max: 1000000
-                        }
-                     ]
-                  },
-                  limit: 10,
-                  offset: 1
-               })
-            })
-            let demoJson = await demo.json();
+      // async function getCategory() {
+      //    let getCategory = await fetch(`https://api.itedu.me/category/all`, {
+      //       method: 'GET',
+      //       headers: {
+      //          Accept: 'application/json',
+      //          'Content-Type': 'application/json',
+      //       },
+      //    })
+      //    let count = 2
+      //    let getCategoryJson = (await getCategory.json())
+      //    let addData = []
+      //    let payload = getCategoryJson.payload
+      //    payload.map(async (element) => {
+      //       element.key = count
+      //       count++
+      //       let demo = await fetch(`https://api.itedu.me/course/search`, {
+      //          method: 'POST',
+      //          headers: {
+      //             Accept: 'application/json',
+      //             'Content-Type': 'application/json',
+      //          },
+      //          body: JSON.stringify({
+      //             keyword: '',
+      //             opt: {
+      //                sort: {
+      //                   attribute: "price",
+      //                   rule: "ASC"
+      //                },
+      //                category: [
+      //                   element.id
+      //                ],
+      //                time: [
+      //                   {
+      //                      min: 0,
+      //                      max: 1
+      //                   },
+      //                   {
+      //                      min: 3,
+      //                      max: 6
+      //                   }
+      //                ],
+      //                price: [
+      //                   {
+      //                      max: 0
+      //                   },
+      //                   {
+      //                      min: 0,
+      //                      max: 200000
+      //                   },
+      //                   {
+      //                      min: 500000,
+      //                      max: 1000000
+      //                   }
+      //                ]
+      //             },
+      //             limit: 10,
+      //             offset: 1
+      //          })
+      //       })
+      //       let demoJson = await demo.json();
 
-         })
-      }
+      //    })
+      // }
       async function fetchData() {
          const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
          const tokenTemp = await AsyncStorage.getItem('token')
@@ -80,28 +81,47 @@ const HomeScreen = ({ navigation }) => {
          setIsLoggedIn(isLoggedInTemp)
          setToken(tokenTemp)
          setUserInfo(userInfoTemp)
-         // console.log(tokenTemp)
-         // console.log(JSON.parse(userInfoTemp).id)
-         let recommend = await fetch(`https://api.itedu.me/user/recommend-course/${JSON.parse(userInfoTemp).id}/10/1`, {
-            method: 'GET',
-            headers: {
-               Accept: 'application/json',
-               'Content-Type': 'application/json',
-            },
+         const recommend = await REST_API.getRecommendCourse()
+         const favoriteInfo = JSON.stringify({
+            userId: JSON.parse(userInfoTemp).id
          })
-         let recommendJson = await recommend.json();
+         const favorite = await REST_API.getFavoriteCourse(favoriteInfo)
+         const newInfo = JSON.stringify({
+            limit: 10,
+            page: 1
+         })
+         const newCourse = await REST_API.getNewestCourse(newInfo)
+         const topCourse = await REST_API.getTopCourse(newInfo)
          let dataTemp = [
             {
                key: 1,
                id: '',
-               name: 'Có thể bạn quan tâm',
-               courses: recommendJson.payload
+               name: 'Khóa học gợi ý cho bạn',
+               courses: recommend.payload
+            },
+            {
+               key: 2,
+               id: '',
+               name: 'Khóa học của tôi',
+               courses: favorite.payload?favorite.payload:[]
+            },
+            {
+               key: 3,
+               id: '',
+               name: 'Khóa học mới nhất',
+               courses: newCourse.payload?newCourse.payload:[]
+            },
+            {
+               key: 4,
+               id: '',
+               name: 'Khóa học nổi bật',
+               courses: topCourse.payload?topCourse.payload:[]
             }
          ]
          setData(dataTemp)
       }
       fetchData()
-      getCategory()
+      // getCategory()
    }, []);
    const renderData = (data) => {
       return data.map(item => <SectionCourses key={item.key}
