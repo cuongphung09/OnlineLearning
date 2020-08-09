@@ -26,10 +26,10 @@ const SectionCourses = (props) => {
                             </TouchableOpacity>) : (<View></View>)}
                         </View>
                         {
-                            courses.length === 0 ? (<Text style={{ color: theme.foreground, marginLeft: 10, opacity: 0.7}}>(Không có khóa học)</Text>) :
+                            courses ? (courses.length === 0 ? (<Text style={{ color: theme.foreground, marginLeft: 10, opacity: 0.7 }}>(Không có khóa học)</Text>) :
                                 (<ScrollView horizontal={true}>
                                     {renderListItem(courses)}
-                                </ScrollView>)
+                                </ScrollView>)) : (<></>)
                         }
                     </View>
                 )

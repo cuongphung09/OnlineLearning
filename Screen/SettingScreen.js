@@ -44,12 +44,14 @@ export default function SettingScreen({ navigation }) {
                                                 value={darkValue}
                                                 onValueChange={() => {
                                                     if (!darkValue) {
-                                                        setTheme(themes.dark),
-                                                            setDarkValue(true)
+                                                        setTheme(themes.dark)
+                                                        setDarkValue(true)
+                                                        AsyncStorage.setItem('theme','dark')
                                                     }
                                                     else {
                                                         setTheme(themes.light)
                                                         setDarkValue(false)
+                                                        AsyncStorage.setItem('theme','light')
                                                     }
                                                 }}
                                             />

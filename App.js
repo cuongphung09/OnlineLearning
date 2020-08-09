@@ -327,6 +327,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState('')
   const [userInfo, setUserInfo] = useState()
+
   const [theme, setTheme] = useState(themes.light);
   const [user, setUser] = useState(null)
   useEffect(() => {
@@ -334,14 +335,18 @@ export default function App() {
       const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
       const tokenTemp = await AsyncStorage.getItem('token')
       const userInfoTemp = await AsyncStorage.getItem('userInfo')
+      const themeTemp = await AsyncStorage.getItem('theme')
+      if (themeTemp === null) {
+        setTheme(themes.light)
+      }
+      else {
+        themeTemp === 'light' ? setTheme(themes.light) : setTheme(themes.dark)
+      }
       setIsLoggedIn(isLoggedInTemp)
       setToken(tokenTemp)
       setUserInfo(userInfoTemp)
       setLoading(false)
       setUser(JSON.parse(userInfoTemp))
-      // await AsyncStorage.removeItem('isLoggedIn')
-      // await AsyncStorage.removeItem('token')
-      // await AsyncStorage.removeItem('userInfo')
     }
     fetchData()
   }, []);

@@ -71,10 +71,10 @@ export default function LoginScreen({ navigation }) {
                         {([theme, setTheme]) => {
                             return loading ? (
                                 <View>
-                                    <Text>Đang tải</Text>
+                                    <Text style={{ color: theme.foreground }}>Đang tải</Text>
                                 </View>
                             ) : (
-                                    <View style={[styles.container, { opacity: layer }]}>
+                                    <View style={[styles.container, { opacity: layer, backgroundColor: theme.background }]}>
                                         <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: theme.foreground }}>Đăng nhập</Text>
                                         <View style={{ margin: 30, marginBottom: 10 }}>
                                             <TextInput style={{ opacity: userOpacity, marginBottom: 20, color: theme.foreground }} placeholder='Email' value={username}
@@ -96,7 +96,7 @@ export default function LoginScreen({ navigation }) {
                                                         setPassword(value)
                                                     }}>
                                                 </TextInput>
-                                                <MaterialCommunityIcons size={25} name={icon}
+                                                <MaterialCommunityIcons size={25} name={icon} color={theme.foreground}
                                                     onPress={() => {
                                                         setSsecure(!secure)
                                                         setIcon(icon === 'eye' ? 'eye-off' : 'eye')
@@ -112,26 +112,26 @@ export default function LoginScreen({ navigation }) {
                                             setModalVisible(true)
                                             setLayer(0)
                                         }}>
-                                            <Text style={[{ alignSelf: 'center', opacity: 0.5 }]}>Quên mật khẩu</Text>
+                                            <Text style={[{ alignSelf: 'center', opacity: 0.5, color: theme.foreground }]}>Quên mật khẩu</Text>
                                         </TouchableOpacity>
 
                                         <TouchableOpacity onPress={() => {
                                             navigation.navigate('SignUpScreen')
                                         }}>
-                                            <Text style={[{ alignSelf: 'center', opacity: 0.9 }]}>Bạn chưa có tài khoản? Đăng ký ngay</Text>
+                                            <Text style={[{ alignSelf: 'center', opacity: 0.9, color: theme.foreground }]}>Bạn chưa có tài khoản? Đăng ký ngay</Text>
 
                                         </TouchableOpacity>
 
-                                        <View style={styles.centeredView}>
+                                        <View style={styles.centeredView, { backgroundColor: theme.background }}>
                                             <Modal
-                                                animationType="slide"
+                                                animationType="fade"
                                                 transparent={true}
                                                 visible={modalVisible}
                                             >
-                                                <View style={styles.centeredView}>
-                                                    <View style={styles.modalView}>
-                                                        <Text style={styles.modalText}>Quên mật khẩu</Text>
-                                                        <TextInput style={{ opacity: forgetOpacity, color: theme.foreground }} placeholder='Email' value={forget}
+                                                <View style={[styles.centeredView, { backgroundColor: theme.background, width: '100%', height: '100%' }]}>
+                                                    <View style={[styles.modalView, { backgroundColor: theme.foreground }]}>
+                                                        <Text style={[styles.modalText, { color: theme.background }]}>Quên mật khẩu</Text>
+                                                        <TextInput style={{ opacity: forgetOpacity, color: theme.background }} placeholder='Nhập Email' value={forget}
                                                             onChangeText={(value) => {
                                                                 if (value !== '') {
                                                                     setForgetOpacity(1)
@@ -153,7 +153,7 @@ export default function LoginScreen({ navigation }) {
 
                                                                 }}
                                                             >
-                                                                <Text style={styles.textStyle}>Xác nhận</Text>
+                                                                <Text style={[styles.textStyle, { color: theme.foreground }]}>Xác nhận</Text>
                                                             </TouchableHighlight>
                                                             <TouchableHighlight
                                                                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
         // flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 50
     },
     modalView: {
 

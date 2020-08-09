@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1075264511640",
+    "firebase_url": "https://online-learning-8ff74.firebaseio.com",
+    "project_id": "online-learning-8ff74",
+    "storage_bucket": "online-learning-8ff74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075264511640:android:12a9d4456f1f1895f87aed",
+        "android_client_info": {
+          "package_name": "online.learning_1612074"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075264511640-09ii1ptfepe7vdu4irvs83r4spdv20o7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJUlrUnvIAq9sWD0o9OLd9k6dfpNfi6Y4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075264511640-09ii1ptfepe7vdu4irvs83r4spdv20o7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

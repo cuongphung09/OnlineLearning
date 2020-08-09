@@ -46,6 +46,8 @@ class API {
         this.getRecommendCourse = this.getRecommendCourse.bind(this)
         this.getFavoriteCourse = this.getFavoriteCourse.bind(this)
         this.getTopCourse = this.getTopCourse.bind(this)
+        this.saveUserInfo = this.saveUserInfo.bind(this)
+        this.getInfo = this.getInfo.bind(this)
     }
     login = async (info) => {
         return await this.instance
@@ -159,6 +161,37 @@ class API {
         const userInfo = await AsyncStorage.getItem('userInfo');
         return await this.instance
             .post(`/course/top-rate`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+    }
+    saveUserInfo = async (info) => {
+        return await this.instance
+            .put(`/user/update-profile`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+        return true
+    }
+    getInfo = async () => {
+        return await this.instance
+            .get(`/user/me`)
             .then((response) => {
                 return response.data || error_exception()
             })
