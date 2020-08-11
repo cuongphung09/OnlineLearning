@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Button, ProgressBarAndroid } from "react-native";
+import { StyleSheet, Text, View, Button, ProgressBarAndroid, AsyncStorage } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ThemeContext from '../Context/theme-context'
@@ -10,9 +10,10 @@ export default function SplashScreen({ navigation }) {
         interval = setInterval(() => {
             setCount(count => count + 1);
         }, 1);
-        if (count >= 100) {
+        if (count > 99) {
             clearInterval(interval)
-            navigation.navigate('LoginScreen')
+            // navigation.navigate('LoginScreen')
+
         }
         return () => clearInterval(interval);
     }, [count]);
@@ -25,7 +26,7 @@ export default function SplashScreen({ navigation }) {
                     >
                         <Text style={{ fontSize: 30, fontWeight: 'bold', color: theme.foreground, textAlign: 'center', marginBottom: 100 }}>Welcome to Online Learning App</Text>
                         <ProgressBarAndroid styleAttr="Horizontal" color="#2196F3" style={{ width: 200 }} />
-                        {/* <Text style={{color: theme.foreground}}>Loading {count}%</Text> */}
+                        <Text style={{ color: theme.foreground }}>Loading {count}%</Text>
                     </View>
                 )
             }}

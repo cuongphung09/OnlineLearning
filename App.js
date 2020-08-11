@@ -327,26 +327,34 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState('')
   const [userInfo, setUserInfo] = useState()
-
+  const [count, setCount] = useState(0)
   const [theme, setTheme] = useState(themes.light);
+  const loadTheme = async () => {
+    const themeTemp = await AsyncStorage.getItem('theme')
+    if (themeTemp === null) {
+      setTheme(themes.light)
+    }
+    else {
+      themeTemp === 'light' ? setTheme(themes.light) : setTheme(themes.dark)
+    }
+  }
+  loadTheme()
   const [user, setUser] = useState(null)
   useEffect(() => {
     async function fetchData() {
-      const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
-      const tokenTemp = await AsyncStorage.getItem('token')
-      const userInfoTemp = await AsyncStorage.getItem('userInfo')
-      const themeTemp = await AsyncStorage.getItem('theme')
-      if (themeTemp === null) {
-        setTheme(themes.light)
-      }
-      else {
-        themeTemp === 'light' ? setTheme(themes.light) : setTheme(themes.dark)
-      }
-      setIsLoggedIn(isLoggedInTemp)
-      setToken(tokenTemp)
-      setUserInfo(userInfoTemp)
-      setLoading(false)
-      setUser(JSON.parse(userInfoTemp))
+
+      var timer = setInterval(async () => {
+        const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
+        const tokenTemp = await AsyncStorage.getItem('token')
+        const userInfoTemp = await AsyncStorage.getItem('userInfo')
+        setIsLoggedIn(isLoggedInTemp)
+        setToken(tokenTemp)
+        setUserInfo(userInfoTemp)
+        setLoading(false)
+        setUser(JSON.parse(userInfoTemp))
+      }, 
+      2962
+      )
     }
     fetchData()
   }, []);

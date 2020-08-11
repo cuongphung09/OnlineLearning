@@ -48,6 +48,12 @@ class API {
         this.getTopCourse = this.getTopCourse.bind(this)
         this.saveUserInfo = this.saveUserInfo.bind(this)
         this.getInfo = this.getInfo.bind(this)
+        this.checkPaid = this.checkPaid.bind(this)
+        this.getCourseDetail = this.getCourseDetail.bind(this)
+        this.getLikeStatus = this.getLikeStatus.bind(this)
+        this.LikeCourse = this.LikeCourse.bind(this)
+        this.getFreeCourse = this.getFreeCourse.bind(this)
+        
     }
     login = async (info) => {
         return await this.instance
@@ -203,6 +209,86 @@ class API {
                     return error_exception()
                 }
             })
+    }
+    checkPaid = async (id) => {
+        return await this.instance
+            .get(`/user/check-own-course/${id}`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    getCourseDetail = async (itemId, userId) => {
+        return await this.instance
+            .get(`/course/get-course-detail/${itemId}/${userId}`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    getLikeStatus = async (itemId) => {
+        return await this.instance
+            .get(`/user/get-course-like-status/${itemId}`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    LikeCourse = async (info) => {
+        return await this.instance
+            .post(`/user/like-course`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    getFreeCourse = async (info) => {
+        return await this.instance
+            .post(`/payment/get-free-courses`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
     }
 }
 const REST_API = new API()

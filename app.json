@@ -2,6 +2,7 @@
   "expo": {
     "name": "1612074-OnlineLearning",
     "slug": "1612074-OnlineLearning",
+    "scheme":"accounts.google.com",
     "platforms": [
       "ios",
       "android",

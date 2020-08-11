@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
     StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, AsyncStorage, Modal,
-    TouchableHighlight, Item, Icon, Input
+    TouchableHighlight, Image, Platform
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import PasswordTextBox from '../../Component/passwordTextBox'
 import ThemeContext from '../../Context/theme-context'
 import AuthContext from '../../Context/auth-context'
 import { REST_API } from "../../../config/api";
-
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri, useAuthRequest, useAutoDiscovery, Prompt, ResponseType } from 'expo-auth-session';
+import * as Google from 'expo-google-app-auth';
+const useProxy = Platform.select({ web: false, default: true });
 export default function LoginScreen({ navigation }) {
     const [secure, setSsecure] = useState(true)
     const [icon, setIcon] = useState('eye-off')
@@ -24,7 +27,55 @@ export default function LoginScreen({ navigation }) {
     const [userInfo, setUserInfo] = useState()
     const [loading, setLoading] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
+    const discovery = useAutoDiscovery('https://accounts.google.com');
+    // Request
+    const [request, response, promptAsync] = useAuthRequest(
+        {
+            // responseType: ResponseType.Token,
+            clientId: '1075264511640-09ii1ptfepe7vdu4irvs83r4spdv20o7.apps.googleusercontent.com',
+            redirectUri: makeRedirectUri({
+                // For usage in bare and standalone
+                native: 'com.googleusercontent.apps.GOOGLE_GUID:/oauthredirect',
+                useProxy,
+            }),
+            scopes: ['openid', 'profile'],
+
+            // Optionally should the user be prompted to select or switch accounts
+            prompt: Prompt.SelectAccount,
+
+            // Optional
+            extraParams: {
+                /// Change language
+                // hl: 'fr',
+                /// Select the user
+                login_hint: 'user@gmail.com',
+            },
+        },
+        discovery
+    );
+    // async function signInWithGoogleAsync() {
+    //     try {
+    //       const result = await Google.logInAsync({
+    //         behavior: 'web',
+    //         // iosClientId: IOS_CLIENT_ID,
+    //         androidClientId: AND_CLIENT_ID,
+    //         scopes: ['profile', 'email'],
+    //       });
+    
+    //       if (result.type === 'success') {
+    //         return result.accessToken;
+    //       } else {
+    //         return { cancelled: true };
+    //       }
+    //     } catch (e) {
+    //       return { error: true };
+    //     }
+    //   }
     useEffect(() => {
+        if (response?.type === 'success') {
+            const { code } = response.params;
+            console.log(response)
+        }
         async function fetchData() {
             const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
             const tokenTemp = await AsyncStorage.getItem('token')
@@ -39,7 +90,7 @@ export default function LoginScreen({ navigation }) {
         }
         fetchData()
 
-    }, []);
+    }, [response]);
 
 
     const submit = async (setUser) => {
@@ -121,7 +172,14 @@ export default function LoginScreen({ navigation }) {
                                             <Text style={[{ alignSelf: 'center', opacity: 0.9, color: theme.foreground }]}>Bạn chưa có tài khoản? Đăng ký ngay</Text>
 
                                         </TouchableOpacity>
-
+                                        <TouchableOpacity style={[{ alignSelf: 'center', margin: 20 }]}
+                                            onPress={() => {
+                                                promptAsync({ useProxy });
+                                            }}
+                                        >
+                                            {/* <MaterialCommunityIcons name='google' size={20}></MaterialCommunityIcons> */}
+                                            <Image source={require('../../../assets/btn_google_light.png')} style={{ width: 50, height: 50 }} />
+                                        </TouchableOpacity>
                                         <View style={styles.centeredView, { backgroundColor: theme.background }}>
                                             <Modal
                                                 animationType="fade"

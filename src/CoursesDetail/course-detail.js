@@ -20,8 +20,8 @@ import { Rating, Avatar } from "react-native-elements";
 import ThemeContext from "../Context/theme-context";
 import RatingDetail from '../Component/ratingDetail'
 import SectionCourse from '../Main/Home/SectionCourses/section-courses'
+import { REST_API } from "../../config/api";
 export default function CoursesDetail({ navigation, props, route }) {
-  const [rere, setrere] = useState(false)
   const [textHeight, setTextHeight] = useState(75);
   const [chevron, setchevron] = useState("chevron-down");
   const [introHeight, setIntroHeight] = useState(75);
@@ -39,42 +39,12 @@ export default function CoursesDetail({ navigation, props, route }) {
     const getCourseDetail = async () => {
       const tokenTemp = await AsyncStorage.getItem("token");
       const userInfoTemp = await AsyncStorage.getItem("userInfo");
-      let pay = await fetch(`https://api.itedu.me/user/check-own-course/${item.id}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenTemp}`,
-        },
-      })
-      let payJson = await pay.json()
-      setPaid((payJson.payload))
-      let demo = await fetch(
-        `https://api.itedu.me/course/get-course-detail/${item.id}/${JSON.parse(userInfoTemp).id}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenTemp}`,
-          },
-        }
-      );
-      let demoJson = await demo.json();
-      let like = await fetch(
-        `https://api.itedu.me/user/get-course-like-status/${item.id}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenTemp}`,
-          },
-        }
-      );
-      let likeJson = await like.json();
-      setLikeStatus(likeJson.likeStatus)
-      setCourseData(demoJson.payload);
+      let pay = await REST_API.checkPaid(item.id)
+      setPaid(pay.payload)
+      let demo = await REST_API.getCourseDetail(item.id, JSON.parse(userInfoTemp).id)
+      let like = await REST_API.getLikeStatus(item.id)
+      setLikeStatus(like.likeStatus)
+      setCourseData(demo.payload);
       setToken(tokenTemp);
     };
     getCourseDetail();
@@ -111,14 +81,19 @@ export default function CoursesDetail({ navigation, props, route }) {
       var year = date.getFullYear();
       var month = months_arr[date.getMonth()];
       var day = date.getDate();
-      // var hours = date.getHours();
-      // var minutes = "0" + date.getMinutes();
-      // var seconds = "0" + date.getSeconds();
       var convdataTime = `${day}/${month}/${year}`;
       return convdataTime;
     } else {
       return "";
     }
+  }
+  const likeCourse = async () => {
+    let dolike = await REST_API.LikeCourse(
+      JSON.stringify({
+        courseId: item.id
+      })
+    )
+    setLikeStatus(dolike.likeStatus)
   }
   return (
     <ThemeContext.Consumer>
@@ -139,7 +114,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                     source: {
                       uri: vidURL,
                     },
-                    shouldPlay: true,
+                    shouldPlay: false,
                     resizeMode: Video.RESIZE_MODE_CONTAIN,
                   }
                 }
@@ -192,7 +167,8 @@ export default function CoursesDetail({ navigation, props, route }) {
               </Text>
 
               <View style={styles.rating}>
-                <Rating
+                {console.log(courseData)}
+                {/* <Rating
                   type={"custom"}
                   imageSize={20}
                   readonly
@@ -202,7 +178,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   startingValue={
                     courseData ? parseFloat(courseData.averagePoint) : 0
                   }
-                />
+                /> */}
                 <Text style={{ color: theme.foreground }}>
                   {" "}
                   ({courseData ? courseData.ratedNumber : "0"} bình
@@ -219,50 +195,6 @@ export default function CoursesDetail({ navigation, props, route }) {
                   courseData ? convert(Date.parse(courseData.updatedAt) / 1000) : "NaN"
                 }
               </Text>
-              {/* {
-                paid ? (
-                  !paid.isInstructorOwnCourse && !paid.isUserOwnCourse ? (
-                    <TouchableOpacity style={{
-                      marginTop: 10,
-                      justifyContent: 'center',
-                      alignSelf: 'center',
-                      alignItems: 'center',
-                      borderColor: '#0084BD',
-                      borderWidth: 1,
-                      width: 360 * 90 / 100,
-                      height: 40,
-                      borderRadius: 5
-                    }}
-                      onPress={async () => {
-                        let join = await fetch(
-                          `https://api.itedu.me/payment/get-free-courses`,
-                          {
-                            method: "POST",
-                            headers: {
-                              Accept: "application/json",
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${token}`,
-                            },
-                            body: JSON.stringify({
-                              courseId: item.id
-                            })
-                          }
-                        );
-                        let joinJson = await join.json();
-                        Alert.alert(joinJson.messsage)
-                        setrere(true)
-                      }}
-                    >
-                      <Text style={{ color: '#0084BD' }}>Mua ngay với giá {courseData ? courseData.price : '0'} đồng</Text>
-                    </TouchableOpacity>
-                  ) : (
-                      <View>
-                      </View>
-                    )
-                ) : (
-                    <View></View>
-                  )
-              } */}
               <Text style={{ color: '#0084BD', fontSize: 20, marginLeft: 10 }}>{courseData ? (courseData.price === 0 ? 'Miễn phí' : (courseData.price.toLocaleString(undefined, { minimumFractionDigits: 2 })
                 .concat(' VND'))) : ''}
               </Text>
@@ -278,20 +210,8 @@ export default function CoursesDetail({ navigation, props, route }) {
                       borderRadius: 50,
                       backgroundColor: theme.tagButton,
                     }}
-                    onPress={async () => {
-                      let dolike = await fetch(`https://api.itedu.me/user/like-course`, {
-                        method: "POST",
-                        headers: {
-                          Accept: "application/json",
-                          "Content-Type": "application/json",
-                          Authorization: `Bearer ${token}`,
-                        },
-                        body: JSON.stringify({
-                          courseId: item.id
-                        })
-                      })
-                      let dolikeJson = await dolike.json()
-                      setLikeStatus(dolikeJson.likeStatus)
+                    onPress={() => {
+                      likeCourse()
                     }}
                   >
                     <MaterialCommunityIcons
@@ -315,24 +235,15 @@ export default function CoursesDetail({ navigation, props, route }) {
                             borderRadius: 50,
                             backgroundColor: theme.tagButton,
                           }}
+
+
                           onPress={async () => {
-                            let join = await fetch(
-                              `https://api.itedu.me/payment/get-free-courses`,
-                              {
-                                method: "POST",
-                                headers: {
-                                  Accept: "application/json",
-                                  "Content-Type": "application/json",
-                                  Authorization: `Bearer ${token}`,
-                                },
-                                body: JSON.stringify({
-                                  courseId: item.id
-                                })
-                              }
-                            );
-                            let joinJson = await join.json();
-                            Alert.alert(joinJson.messsage)
-                            setrere(true)
+                            let join = await REST_API.getFreeCourse(
+                              JSON.stringify({
+                                courseId: item.id
+                              })
+                            )
+                            Alert.alert(join.messsage)
                           }}
                         >
                           <MaterialCommunityIcons
@@ -591,7 +502,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.soldNumber : '0'}</Text> học viên</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.totalCourse : '0'}</Text> khóa học</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.averagePoint.toFixed(1) : '0'}</Text>/5 điểm</Text>
-                  {/* {console.log(courseData ? courseData.id : '')} */}
+
                 </View>
                 <View style={{ marginTop: 10, width: '60%' }}>
                   <Text style={{ fontWeight: 'bold', color: theme.foreground }}>{courseData ? courseData.instructor.name : 'Họ và tên'}</Text>
@@ -647,7 +558,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].presentationPoint : '0') : '0'}</Text> điểm truyền đạt</Text>
                 </View>
                 <View style={{ marginTop: 10, width: '55%' }}>
-                  <RatingDetail data={courseData ? courseData.ratings : {}} navigation={navigation} />
+                  {/* <RatingDetail data={courseData ? courseData.ratings : {}} navigation={navigation} /> */}
                 </View>
               </View>
               <Text
