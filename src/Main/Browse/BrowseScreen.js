@@ -9,6 +9,7 @@ import authorsData from './authors-data'
 import listCourses from './listCourse-data'
 import PathItem from './pathItem/path-item'
 import pathData from './path-data'
+import { REST_API } from "../../../config/api";
 export default function BrowseScreen({ navigation }) {
   const [categoryData, setCategoryData] = useState()
   const [newRelease, setNewRelease] = useState()
@@ -24,14 +25,7 @@ export default function BrowseScreen({ navigation }) {
   useEffect(() => {
 
     async function getCategory() {
-      let getCategory = await fetch(`https://api.itedu.me/category/all`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-      let getCategoryJson = (await getCategory.json())
+      let getCategory = await REST_API.getAllCategory()
       let count = 0;
       getCategoryJson.payload.forEach(element => {
         element.key = count

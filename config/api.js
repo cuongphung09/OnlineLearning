@@ -40,6 +40,7 @@ class API {
             }
         )
         this.login = this.login.bind(this)
+        this.loginGoogle = this.loginGoogle.bind(this)
         this.register = this.register.bind(this)
         this.forgetPassword = this.forgetPassword.bind(this)
         this.sendActivateEmail = this.sendActivateEmail.bind(this)
@@ -53,11 +54,27 @@ class API {
         this.getLikeStatus = this.getLikeStatus.bind(this)
         this.LikeCourse = this.LikeCourse.bind(this)
         this.getFreeCourse = this.getFreeCourse.bind(this)
-        
+        this.getAllCategory = this.getAllCategory.bind(this)
+
     }
     login = async (info) => {
         return await this.instance
             .post(`/user/login`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+    }
+    loginGoogle = async (info) => {
+        return await this.instance
+            .post(`/user/login-google-mobile`, info)
             .then((response) => {
                 return response.data || error_exception()
             })
@@ -290,6 +307,39 @@ class API {
             })
 
     }
+    getAllCategory = async (info) => {
+        return await this.instance
+            .get(`/category/all`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    searchv2 = async (info) => {
+        return await this.instance
+            .post(`/course/searchV2`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+
 }
 const REST_API = new API()
 

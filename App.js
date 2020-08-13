@@ -63,7 +63,7 @@ function Home({ navigation }) {
                           size={25}
                           rounded
                           source={{
-                            uri: user.avatar,
+                            uri: user ? user.avatar : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpngtree.com%2Ffreepng%2Fvector-avatar-icon_4013749.html%23%3A~%3Atext%3DCategory%3A%2520vectors&psig=AOvVaw1AvfhcjpwpyTD60vNCO9CF&ust=1597384181082000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPD5rfe9l-sCFQAAAAAdAAAAABAD',
                           }}
                           onPress={() => navigation.navigate("Profile")}
                         />
@@ -131,7 +131,7 @@ function Download({ navigation }) {
                         size={25}
                         rounded
                         source={{
-                          uri: user.avatar,
+                          uri: user ? user.avatar : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpngtree.com%2Ffreepng%2Fvector-avatar-icon_4013749.html%23%3A~%3Atext%3DCategory%3A%2520vectors&psig=AOvVaw1AvfhcjpwpyTD60vNCO9CF&ust=1597384181082000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPD5rfe9l-sCFQAAAAAdAAAAABAD',
                         }}
                         onPress={() => navigation.navigate("Profile")}
                       />
@@ -199,7 +199,7 @@ function Browse({ navigation }) {
                           size={25}
                           rounded
                           source={{
-                            uri: user.avatar,
+                            uri: user ? user.avatar : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpngtree.com%2Ffreepng%2Fvector-avatar-icon_4013749.html%23%3A~%3Atext%3DCategory%3A%2520vectors&psig=AOvVaw1AvfhcjpwpyTD60vNCO9CF&ust=1597384181082000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPD5rfe9l-sCFQAAAAAdAAAAABAD',
                           }}
                           onPress={() => navigation.navigate("Profile")}
                         />
@@ -312,6 +312,7 @@ function Main({ navigation }) {
                       />
                     ),
                   }}
+                  // navigation={navigation}
                 />
               </Tab.Navigator>
             );
@@ -352,8 +353,8 @@ export default function App() {
         setUserInfo(userInfoTemp)
         setLoading(false)
         setUser(JSON.parse(userInfoTemp))
-      }, 
-      2962
+      },
+        2962
       )
     }
     fetchData()

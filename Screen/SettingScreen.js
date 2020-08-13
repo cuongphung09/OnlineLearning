@@ -25,12 +25,12 @@ export default function SettingScreen({ navigation }) {
                                                 size={40}
                                                 rounded
                                                 source={{
-                                                    uri: user.avatar,
+                                                    uri: user ? user.avatar : '',
                                                 }}
                                             />
                                             <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ color: theme.foreground, fontSize: 16, marginLeft: 20 }}>{user.name}</Text>
-                                                <Text style={{ color: theme.foreground, fontSize: 12, marginLeft: 20, opacity: 0.5 }}>{user.email}</Text>
+                                                <Text style={{ color: theme.foreground, fontSize: 16, marginLeft: 20 }}>{user ?user.name: ''}</Text>
+                                                <Text style={{ color: theme.foreground, fontSize: 12, marginLeft: 20, opacity: 0.5 }}>{user?user.email:''}</Text>
                                             </View>
                                         </View>
                                         <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginBottom: 20 }}>

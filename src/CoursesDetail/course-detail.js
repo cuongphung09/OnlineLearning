@@ -167,7 +167,7 @@ export default function CoursesDetail({ navigation, props, route }) {
               </Text>
 
               <View style={styles.rating}>
-                {console.log(courseData)}
+                {/* {console.log(courseData)} */}
                 {/* <Rating
                   type={"custom"}
                   imageSize={20}

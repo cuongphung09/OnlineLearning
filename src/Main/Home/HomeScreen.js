@@ -9,73 +9,10 @@ const HomeScreen = ({ navigation }) => {
    const [userInfo, setUserInfo] = useState()
    const [data, setData] = useState([])
    useEffect(() => {
-      // async function getCategory() {
-      //    let getCategory = await fetch(`https://api.itedu.me/category/all`, {
-      //       method: 'GET',
-      //       headers: {
-      //          Accept: 'application/json',
-      //          'Content-Type': 'application/json',
-      //       },
-      //    })
-      //    let count = 2
-      //    let getCategoryJson = (await getCategory.json())
-      //    let addData = []
-      //    let payload = getCategoryJson.payload
-      //    payload.map(async (element) => {
-      //       element.key = count
-      //       count++
-      //       let demo = await fetch(`https://api.itedu.me/course/search`, {
-      //          method: 'POST',
-      //          headers: {
-      //             Accept: 'application/json',
-      //             'Content-Type': 'application/json',
-      //          },
-      //          body: JSON.stringify({
-      //             keyword: '',
-      //             opt: {
-      //                sort: {
-      //                   attribute: "price",
-      //                   rule: "ASC"
-      //                },
-      //                category: [
-      //                   element.id
-      //                ],
-      //                time: [
-      //                   {
-      //                      min: 0,
-      //                      max: 1
-      //                   },
-      //                   {
-      //                      min: 3,
-      //                      max: 6
-      //                   }
-      //                ],
-      //                price: [
-      //                   {
-      //                      max: 0
-      //                   },
-      //                   {
-      //                      min: 0,
-      //                      max: 200000
-      //                   },
-      //                   {
-      //                      min: 500000,
-      //                      max: 1000000
-      //                   }
-      //                ]
-      //             },
-      //             limit: 10,
-      //             offset: 1
-      //          })
-      //       })
-      //       let demoJson = await demo.json();
-
-      //    })
-      // }
       async function fetchData() {
          const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
          const tokenTemp = await AsyncStorage.getItem('token')
-
+         console.log(tokenTemp)
          const userInfoTemp = await AsyncStorage.getItem('userInfo')
          console.log(userInfoTemp)
          setIsLoggedIn(isLoggedInTemp)

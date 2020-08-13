@@ -45,48 +45,49 @@ export default function LoginScreen({ navigation }) {
 
             // Optional
             extraParams: {
-                /// Change language
-                // hl: 'fr',
-                /// Select the user
-                login_hint: 'user@gmail.com',
             },
         },
         discovery
     );
-    // async function signInWithGoogleAsync() {
-    //     try {
-    //       const result = await Google.logInAsync({
-    //         behavior: 'web',
-    //         // iosClientId: IOS_CLIENT_ID,
-    //         androidClientId: AND_CLIENT_ID,
-    //         scopes: ['profile', 'email'],
-    //       });
-    
-    //       if (result.type === 'success') {
-    //         return result.accessToken;
-    //       } else {
-    //         return { cancelled: true };
-    //       }
-    //     } catch (e) {
-    //       return { error: true };
-    //     }
-    //   }
-    useEffect(() => {
-        if (response?.type === 'success') {
-            const { code } = response.params;
-            console.log(response)
+
+    async function loginGG(code) {
+
+        const info = JSON.stringify({
+            "user": {
+                "email": "",
+                "id": code
+            }
+        })
+        console.log(code)
+        const login = await REST_API.loginGoogle(info)
+        console.log(login)
+        if (login.message === 'OK') {
+            setUsername('')
+            setPassword('')
+            // setUser(login.userInfo)
+            AsyncStorage.setItem('isLoggedIn', 'true')
+            AsyncStorage.setItem('token', login.token)
+            AsyncStorage.setItem('userInfo', JSON.stringify(login.userInfo))
+            navigation.navigate('Main')
         }
+    }
+    useEffect(() => {
+
         async function fetchData() {
             const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
             const tokenTemp = await AsyncStorage.getItem('token')
             const userInfoTemp = await AsyncStorage.getItem('userInfo')
-            if (isLoggedInTemp === 'true') {
+            if (isLoggedInTemp === 'true' && userInfoTemp !== null) {
                 navigation.navigate('Main')
             }
             setIsLoggedIn(isLoggedInTemp)
             setToken(tokenTemp)
             setUserInfo(userInfoTemp)
             setLoading(false)
+        }
+        if (response?.type === 'success') {
+            const { code } = response.params;
+            loginGG(code)
         }
         fetchData()
 
@@ -99,8 +100,7 @@ export default function LoginScreen({ navigation }) {
             password: password,
         })
         const login = await REST_API.login(info)
-        console.log(login)
-        if (login.message === 'OK') {
+        if (login.message === 'OK' && login.userInfo !== null) {
             setUsername('')
             setPassword('')
             setUser(login.userInfo)
@@ -113,7 +113,8 @@ export default function LoginScreen({ navigation }) {
             Alert.alert('Sai tài khoản hoặc mật khẩu')
         }
     }
-    const background = { uri: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&w=1000&q=80' }
+
+    // const background = { uri: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&w=1000&q=80' }
     return (
         <AuthContext.Consumer>
             {([user, setUser]) => {
@@ -178,7 +179,7 @@ export default function LoginScreen({ navigation }) {
                                             }}
                                         >
                                             {/* <MaterialCommunityIcons name='google' size={20}></MaterialCommunityIcons> */}
-                                            <Image source={require('../../../assets/btn_google_light.png')} style={{ width: 50, height: 50 }} />
+                                            {/* <Image source={require('../../../assets/btn_google_light.png')} style={{ width: 50, height: 50 }} /> */}
                                         </TouchableOpacity>
                                         <View style={styles.centeredView, { backgroundColor: theme.background }}>
                                             <Modal
