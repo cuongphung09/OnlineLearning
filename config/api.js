@@ -55,7 +55,7 @@ class API {
         this.LikeCourse = this.LikeCourse.bind(this)
         this.getFreeCourse = this.getFreeCourse.bind(this)
         this.getAllCategory = this.getAllCategory.bind(this)
-
+        this.getInstructor = this.getInstructor.bind(this)
     }
     login = async (info) => {
         return await this.instance
@@ -326,6 +326,22 @@ class API {
     searchv2 = async (info) => {
         return await this.instance
             .post(`/course/searchV2`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    getInstructor = async (id) => {
+        return await this.instance
+            .get(`/instructor/detail/${id}`)
             .then((response) => {
                 return response.data || error_exception()
             })

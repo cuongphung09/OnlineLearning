@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Dimensions, ProgressBarAndroid } from 'react-native';
 import { Divider } from "react-native-elements";
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,16 +8,33 @@ import ThemeContext, { themes } from '../src/Context/theme-context'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ScrollView } from 'react-native-gesture-handler';
 import ListLessonItem from '../src/Courses/ListCoursesItem/list-courses-item'
+import SectionCourse from '../src/Main/Home/SectionCourses/section-courses'
+import { REST_API } from '../config/api';
 
 export default function AuthorDetailScreen({ navigation, props, route }) {
+    const id = route.params.item.id
+    // console.log(id)
     const [textHeight, setTextHeight] = useState(80)
     const [chevron, setchevron] = useState('chevron-down')
+    const [authorData, setAuthorData] = useState()
+    useEffect(() => {
+        const loadData = async (id) => {
+            const instructor = await REST_API.getInstructor(id)
+            if (instructor.message === 'OK') {
+                setAuthorData(instructor.payload)
+            }
+        }
+        loadData(id)
+    }, [])
     return (
         <ThemeContext.Consumer>
             {
                 ([theme, setTheme]) => {
                     return (
                         <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
+                            {
+                                // console.log(authorData)
+                            }
                             <View style={{ margin: 10 }}>
                                 <View style={styles.avatar}>
                                     <Avatar
@@ -25,13 +42,17 @@ export default function AuthorDetailScreen({ navigation, props, route }) {
                                         size={75}
                                         rounded
                                         source={{
-                                            uri: route.params.item.avaUri,
+                                            uri: route.params.item.avatar,
                                         }}
 
                                     />
                                     <Text style={{ color: theme.foreground, fontSize: 20, fontWeight: 'bold' }}>{route.params.item.name}</Text>
-                                    <Text style={{ color: theme.foreground, fontSize: 12, margin: 5 }}>Online Learning Author</Text>
-                                    <TouchableOpacity style={{
+                                    <Text style={{ color: theme.foreground, fontSize: 12, margin: 5 }}>
+                                        {
+                                            authorData ? authorData.major : ''
+                                        }
+                                    </Text>
+                                    {/* <TouchableOpacity style={{
                                         justifyContent: 'center',
                                         alignSelf: 'center',
                                         alignItems: 'center',
@@ -41,19 +62,22 @@ export default function AuthorDetailScreen({ navigation, props, route }) {
                                         height: 40,
                                         borderRadius: 5,
                                         margin: 5
-                                    }}>
+                                    }}
+
+                                    >
                                         <Text style={{ color: '#0084BD' }}>FOLLOW</Text>
                                     </TouchableOpacity>
-                                    <Text style={{ color: theme.foreground, fontSize: 12, margin: 5 }}>Follow to notified when new courses are published</Text>
+                                    <Text style={{ color: theme.foreground, fontSize: 12, margin: 5 }}>Follow to notified when new courses are published</Text> */}
 
                                 </View>
                                 <View style={{
                                     display: 'flex', flexDirection: 'row', height: textHeight, marginBottom: 20
                                 }}>
                                     <View style={{ width: '88%', marginLeft: 10, marginRight: 0 }}>
+                                        <Text style={{ color: theme.foreground, fontWeight: 'bold' }}>Tự giới thiệu</Text>
                                         <Text style={{ color: theme.foreground, height: textHeight }}>
                                             {
-                                                // route.params.item.name
+                                                authorData ? authorData.intro : ''
                                             }
                                         </Text>
                                     </View>
@@ -75,8 +99,62 @@ export default function AuthorDetailScreen({ navigation, props, route }) {
                                         ></MaterialCommunityIcons>
                                     </TouchableOpacity>
                                 </View>
+                                <Text
+                                    style={{
+                                        marginLeft: 10,
+                                        marginTop: 20,
+                                        fontWeight: "bold",
+                                        color: theme.foreground,
+                                    }}
+                                >
+                                    Kỹ năng
+                                </Text>
+                                <View
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                    }}
+                                >
+                                    <View style={{ width: "88%", marginLeft: 10, marginRight: 0 }}>
+                                        <Text style={{ color: theme.foreground }}>
+                                            {
+                                                authorData ? (
+                                                    authorData.skills.length !== 0 ? (
+                                                        authorData.skills.map((item, index) => (
+                                                            <Text key={index}>✓ {item}{"\n"}</Text>
+                                                        ))
+                                                    ) : (
+                                                            <Text>(không có)</Text>
+                                                        )
+                                                ) : (
+                                                        <Text></Text>
+                                                    )
+                                            }
 
-
+                                            {
+                                                // console.log(authorData)
+                                            }
+                                        </Text>
+                                    </View>
+                                </View>
+                                <Text
+                                    style={{
+                                        marginLeft: 10,
+                                        fontWeight: "bold",
+                                        color: theme.foreground,
+                                    }}
+                                >
+                                    Khóa học được dạy bởi giảng viên {route.params.item.name}
+                                </Text>
+                                {authorData ? ((authorData.courses !== [] ? (
+                                    <View style={{ marginLeft: 10 }}>
+                                        <SectionCourse
+                                            navigation={navigation}
+                                            name={''}
+                                            data={authorData ? authorData.courses : []}
+                                        />
+                                    </View>
+                                ) : (<View style={{ marginLeft: 10 }}><Text>(không có)</Text></View>))) : (<View style={{ marginLeft: 10 }}><Text>(không có)</Text></View>)}
                             </View>
 
                         </ScrollView>

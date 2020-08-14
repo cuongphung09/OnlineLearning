@@ -9,6 +9,8 @@ import {
   AsyncStorage,
   Alert,
   StatusBar,
+  Image,
+  Share
 } from "react-native";
 import { WebView } from 'react-native-webview';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -21,6 +23,8 @@ import ThemeContext from "../Context/theme-context";
 import RatingDetail from '../Component/ratingDetail'
 import SectionCourse from '../Main/Home/SectionCourses/section-courses'
 import { REST_API } from "../../config/api";
+import Youtube from "../Component/youtube"
+import * as FileSystem from 'expo-file-system';
 export default function CoursesDetail({ navigation, props, route }) {
   const [textHeight, setTextHeight] = useState(75);
   const [chevron, setchevron] = useState("chevron-down");
@@ -38,10 +42,12 @@ export default function CoursesDetail({ navigation, props, route }) {
   useEffect(() => {
     const getCourseDetail = async () => {
       const tokenTemp = await AsyncStorage.getItem("token");
+      console.log(tokenTemp)
       const userInfoTemp = await AsyncStorage.getItem("userInfo");
       let pay = await REST_API.checkPaid(item.id)
       setPaid(pay.payload)
       let demo = await REST_API.getCourseDetail(item.id, JSON.parse(userInfoTemp).id)
+      // console.log(item.id, JSON.parse(userInfoTemp).id)
       let like = await REST_API.getLikeStatus(item.id)
       setLikeStatus(like.likeStatus)
       setCourseData(demo.payload);
@@ -95,6 +101,26 @@ export default function CoursesDetail({ navigation, props, route }) {
     )
     setLikeStatus(dolike.likeStatus)
   }
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          `https://itedu.me/course-detail/${courseData.id}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <ThemeContext.Consumer>
       {([theme, setTheme]) => {
@@ -107,36 +133,49 @@ export default function CoursesDetail({ navigation, props, route }) {
               paddingBottom: 30,
             }}
           >
+            {/* {console.log(courseData.imageUrl)} */}
             <View>
-              <VideoPlayer
-                videoProps={
-                  {
-                    source: {
-                      uri: vidURL,
-                    },
-                    shouldPlay: false,
-                    resizeMode: Video.RESIZE_MODE_CONTAIN,
-                  }
-                }
+              {
+                vidURL === null ? (
+                  <View>
+                    <Image style={[styles.img], { height: 200 }} source={{ uri: courseData ? courseData.imageUrl : null }}></Image>
+                    {/* <Text>ABC</Text> */}
+                  </View>
 
-                isPortrait={true}
-                playFromPositionMillis={0}
-                inFullscreen={FScreen}
-                showControlsOnLoad={true}
-                showFullscreenButton={true}
-                width={FScreen ? 700 : 360}
-                height={FScreen ? 330 : 200}
-                switchToLandscape={async () => {
-                  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
-                  setFScreen(true)
-                }}
-                switchToPortrait={async () => {
-                  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
-                  setFScreen(false)
-                }}
+                ) : (
+                    <View style={{ height: 200 }}>
+                      {/* <VideoPlayer
+                        videoProps={
+                          {
+                            source: {
+                              uri: vidURL,
+                            },
+                            shouldPlay: false,
+                            resizeMode: Video.RESIZE_MODE_CONTAIN,
+                          }
+                        }
 
+                        isPortrait={true}
+                        playFromPositionMillis={0}
+                        inFullscreen={FScreen}
+                        showControlsOnLoad={true}
+                        showFullscreenButton={true}
+                        width={FScreen ? 700 : 360}
+                        height={FScreen ? 330 : 200}
+                        switchToLandscape={async () => {
+                          ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
+                          setFScreen(true)
+                        }}
+                        switchToPortrait={async () => {
+                          ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
+                          setFScreen(false)
+                        }}
+                      /> */}
+                      <Youtube youtubeLink={vidURL} style={{ height: 200 }}></Youtube>
+                    </View>
+                  )
+              }
 
-              />
 
               <View style={{ position: "absolute" }}>
                 <TouchableOpacity
@@ -156,9 +195,13 @@ export default function CoursesDetail({ navigation, props, route }) {
                 </TouchableOpacity>
               </View>
             </View>
+            {
+              // console.log(courseData)
+            }
             <ScrollView
               style={[styles.container, { backgroundColor: theme.background }]}
             >
+              {/* <Youtube youtubeLink={vidURL} style={{ height: 200, width: 360, display: 'flex' }}></Youtube> */}
               <Text style={[styles.title, { color: theme.foreground }]}>
                 {courseData ? courseData.title : ""}
               </Text>
@@ -167,8 +210,8 @@ export default function CoursesDetail({ navigation, props, route }) {
               </Text>
 
               <View style={styles.rating}>
-                {/* {console.log(courseData)} */}
-                {/* <Rating
+                {/* {console.log(courseData.id)} */}
+                <Rating
                   type={"custom"}
                   imageSize={20}
                   readonly
@@ -176,9 +219,9 @@ export default function CoursesDetail({ navigation, props, route }) {
                   ratingColor='yellow'
                   ratingBackgroundColor='#c8c7c8'
                   startingValue={
-                    courseData ? parseFloat(courseData.averagePoint) : 0
+                    courseData ? (courseData.averagePoint) : 0
                   }
-                /> */}
+                />
                 <Text style={{ color: theme.foreground }}>
                   {" "}
                   ({courseData ? courseData.ratedNumber : "0"} bình
@@ -294,15 +337,49 @@ export default function CoursesDetail({ navigation, props, route }) {
                       borderRadius: 50,
                       backgroundColor: theme.tagButton,
                     }}
+                    onPress={async () => {
+                      // FileSystem.downloadAsync(
+                      //   vidURL,
+                      //   FileSystem.documentDirectory + 'small.mp4'
+                      // )
+                      //   .then(({ uri }) => {
+                      //     Alert.alert('Finished downloading to ', uri);
+                      //   })
+                      //   .catch(error => {
+                      //     Alert.alert(error);
+                      //   });
+                      console.log(await FileSystem.readDirectoryAsync(FileSystem.documentDirectory))
+                    }}
                   >
                     <MaterialCommunityIcons
                       name="download"
                       color={theme.foreground}
-                      size={20}
+                      size={30}
                     ></MaterialCommunityIcons>
                   </TouchableOpacity>
                   <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Tải về</Text>
                 </View>
+                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: 50,
+                      height: 50,
+                      borderRadius: 50,
+                      backgroundColor: theme.tagButton,
+                    }}
+                    onPress={onShare}
+                  >
+                    <MaterialCommunityIcons
+                      name="share"
+                      color={theme.foreground}
+                      size={30}
+                    ></MaterialCommunityIcons>
+                  </TouchableOpacity>
+                  <Text style={{ color: theme.foreground, fontWeight: "bold" }}>Chia sẻ</Text>
+                </View>
+
               </View>
               <Text
                 style={{
@@ -430,7 +507,6 @@ export default function CoursesDetail({ navigation, props, route }) {
                 <View style={{ width: "95%", marginLeft: 10, marginRight: 0, height: 'auto' }}>
                   {courseData ? (
                     courseData.section.map((element) => {
-                      // console.log(element)
                       return (
                         <View key={element.numberOrder}>
                           <Text style={{ color: theme.foreground, fontWeight: '700' }}>
@@ -551,14 +627,17 @@ export default function CoursesDetail({ navigation, props, route }) {
                 </Text>
               <View style={{ width: "95%", marginLeft: 10, marginRight: 0, flex: 1, flexDirection: 'row', marginBottom: 30 }}>
                 <View style={{ marginTop: 10, width: '45%', justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
-                  <Text style={{ color: theme.foreground, fontSize: 60 }}>{courseData ? courseData.averagePoint : '0'}</Text>
+                  <Text style={{ color: theme.foreground, fontSize: 60 }}>{courseData ? (courseData.averagePoint !== 'NaN' ? (Math.round((courseData.averagePoint) * 100) / 100) : '0') : '0'}</Text>
+
+
                   <Text style={{ color: theme.foreground }}><Text style={{}}>({courseData ? courseData.ratings.ratingList.length : '0'}</Text> bình chọn)</Text>
-                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].contentPoint : '0') : '0'}</Text> điểm nội dung</Text>
-                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].formalityPoint : '0') : '0'}</Text> điểm hình thức</Text>
-                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].presentationPoint : '0') : '0'}</Text> điểm truyền đạt</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.averagePoint !== '' ? (Math.round((courseData.contentPoint) * 10) / 10) : '0') : '0'}</Text> điểm nội dung</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.averagePoint !== '' ? (Math.round((courseData.formalityPoint) * 100) / 100) : '0') : '0'}</Text> điểm hình thức</Text>
+                  <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.averagePoint !== '' ? (Math.round((courseData.presentationPoint) * 100) / 100) : '0') : '0'}</Text> điểm truyền đạt</Text>
+                  {/* courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].contentPoint : '0') : '0' */}
                 </View>
                 <View style={{ marginTop: 10, width: '55%' }}>
-                  {/* <RatingDetail data={courseData ? courseData.ratings : {}} navigation={navigation} /> */}
+                  <RatingDetail data={courseData ? courseData.ratings : {}} navigation={navigation} />
                 </View>
               </View>
               <Text
@@ -648,5 +727,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginTop: 5,
     marginBottom: 5,
+  },
+  img: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'contain',
+
   },
 });

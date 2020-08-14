@@ -2,6 +2,7 @@ import React from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
 import ThemeContext from '../../../Context/theme-context'
 const SectionCoursesItem = (props) => {
+    // console.log(props.item)
     return (
         <ThemeContext.Consumer>
             {
