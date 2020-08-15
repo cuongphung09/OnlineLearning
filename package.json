@@ -15,6 +15,7 @@
     "@react-navigation/bottom-tabs": "^5.4.5",
     "@react-navigation/native": "^5.4.0",
     "@react-navigation/stack": "^5.3.7",
+    "accordion-collapse-react-native": "^0.3.2",
     "aws-sdk": "^2.729.0",
     "base64-arraybuffer": "^0.2.0",
     "expo": "~37.0.3",

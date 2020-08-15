@@ -56,6 +56,9 @@ class API {
         this.getFreeCourse = this.getFreeCourse.bind(this)
         this.getAllCategory = this.getAllCategory.bind(this)
         this.getInstructor = this.getInstructor.bind(this)
+        this.getRating = this.getRating.bind(this)
+        this.getProgress = this.getProgress.bind(this)
+        this.rateCourse = this.rateCourse.bind(this)
     }
     login = async (info) => {
         return await this.instance
@@ -355,7 +358,54 @@ class API {
             })
 
     }
+    getRating = async (id) => {
+        return await this.instance
+            .get(`/course/get-rating/${id}`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
 
+    }
+    getProgress = async (id) => {
+        return await this.instance
+            .get(`/course/process-course/${id}`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    rateCourse = async (info) => {
+        return await this.instance
+            .post(`/course/rating-course`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
 }
 const REST_API = new API()
 

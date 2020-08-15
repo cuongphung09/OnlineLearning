@@ -25,6 +25,7 @@ import PathDetailScreen from "./Screen/PathDetailScreen";
 import AuthorDetailScreen from "./Screen/AuthorScreen";
 import AuthContext, { users } from "./src/Context/auth-context";
 import SignUpScreen from "./src/Auth/Register/SignUpScreen";
+import LearningScreen from "./Screen/LearningScreen"
 import { TouchableOpacity } from "react-native-gesture-handler";
 // import AuthContext from './src/Context/auth-context'
 const Stack = createStackNavigator();
@@ -312,7 +313,7 @@ function Main({ navigation }) {
                       />
                     ),
                   }}
-                  // navigation={navigation}
+                // navigation={navigation}
                 />
               </Tab.Navigator>
             );
@@ -485,6 +486,14 @@ export default function App() {
                   options={{ headerShown: false }}
                   name="SignUpScreen"
                   component={SignUpScreen}
+                />
+                <Stack.Screen
+                  name="LearningScreen"
+                  component={LearningScreen}
+                  options={{
+                    title: "",
+                    headerShown: false,
+                  }}
                 />
                 {/* </Stack.Navigator>
               </NavigationContainer>

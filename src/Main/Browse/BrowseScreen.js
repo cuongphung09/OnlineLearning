@@ -27,11 +27,11 @@ export default function BrowseScreen({ navigation }) {
     async function getCategory() {
       let getCategory = await REST_API.getAllCategory()
       let count = 0;
-      getCategoryJson.payload.forEach(element => {
+      getCategory.payload.forEach(element => {
         element.key = count
         count++
       })
-      setCategoryData(getCategoryJson.payload)
+      setCategoryData(getCategory.payload)
     }
     getCategory()
     async function getNewRelease() {

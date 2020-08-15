@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "1612074-OnlineLearning",
+    "icon": "./icon.png",
     "slug": "1612074-OnlineLearning",
-    "scheme":"accounts.google.com",
+    "scheme": "accounts.google.com",
     "platforms": [
       "ios",
       "android",
@@ -26,7 +27,7 @@
       "bundleIdentifier": "example.expo.googlesignin",
       "config": {
         "googleSignIn": {
-          "reservedClientId": "<YOUR_REVERSED_IOS_CLIENT_ID>"
+          "reservedClientId": "1075264511640-09ii1ptfepe7vdu4irvs83r4spdv20o7.apps.googleusercontent.com"
         }
       },
       "googleServicesFile": "./GoogleService-Info.plist"
@@ -34,6 +35,20 @@
     "android": {
       "package": "example.expo.googlesignin",
       "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyDldTq6VcDMcbpvuo5oMFeVfSviPN_6Xnk",
+          "authDomain": "online-learning-8ff74.firebaseapp.com",
+          "databaseURL": "https://online-learning-8ff74.firebaseio.com",
+          "projectId": "online-learning-8ff74",
+          "storageBucket": "online-learning-8ff74.appspot.com",
+          "messagingSenderId": "1075264511640",
+          "appId": "1:1075264511640:web:cc61abcde1f707a2f87aed",
+          "measurementId": "G-XQ90HCQ7NQ"
+        }
+      }
     },
     "description": ""
   }

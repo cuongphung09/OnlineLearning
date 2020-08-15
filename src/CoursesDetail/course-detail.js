@@ -21,6 +21,7 @@ import { Video } from 'expo-av'
 import { Rating, Avatar } from "react-native-elements";
 import ThemeContext from "../Context/theme-context";
 import RatingDetail from '../Component/ratingDetail'
+import RatingList from '../Component/ratingList'
 import SectionCourse from '../Main/Home/SectionCourses/section-courses'
 import { REST_API } from "../../config/api";
 import Youtube from "../Component/youtube"
@@ -47,7 +48,7 @@ export default function CoursesDetail({ navigation, props, route }) {
       let pay = await REST_API.checkPaid(item.id)
       setPaid(pay.payload)
       let demo = await REST_API.getCourseDetail(item.id, JSON.parse(userInfoTemp).id)
-      // console.log(item.id, JSON.parse(userInfoTemp).id)
+      console.log(item.id, JSON.parse(userInfoTemp).id)
       let like = await REST_API.getLikeStatus(item.id)
       setLikeStatus(like.likeStatus)
       setCourseData(demo.payload);
@@ -310,7 +311,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                               backgroundColor: theme.tagButton,
                             }}
                             onPress={async () => {
-
+                              navigation.navigate('LearningScreen', { data: courseData ? courseData : [] })
                             }}
                           >
                             <MaterialCommunityIcons
@@ -340,7 +341,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                     onPress={async () => {
                       // FileSystem.downloadAsync(
                       //   vidURL,
-                      //   FileSystem.documentDirectory + 'small.mp4'
+                      //   FileSystem.documentDirectory + 'video/small.mp4'
                       // )
                       //   .then(({ uri }) => {
                       //     Alert.alert('Finished downloading to ', uri);
@@ -348,7 +349,21 @@ export default function CoursesDetail({ navigation, props, route }) {
                       //   .catch(error => {
                       //     Alert.alert(error);
                       //   });
-                      console.log(await FileSystem.readDirectoryAsync(FileSystem.documentDirectory))
+                      // console.log(await FileSystem.readDirectoryAsync(FileSystem.documentDirectory+'video'))
+                      // const data = await AsyncStorage.setItem('download', JSON.stringify({
+                      //   payload: [
+                      //     courseData
+                      //   ]
+                      // }))
+                      // const data = await AsyncStorage.getItem('download')
+                      // const temp = (JSON.parse(data).payload)
+                      // temp[temp.length] = courseData
+                      // await AsyncStorage.setItem('download', JSON.stringify({
+                      //   payload: [
+                      //     temp
+                      //   ]
+                      // }))
+                      // console.log(temp)
                     }}
                   >
                     <MaterialCommunityIcons
@@ -640,6 +655,10 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <RatingDetail data={courseData ? courseData.ratings : {}} navigation={navigation} />
                 </View>
               </View>
+              <View>
+                <RatingList data={courseData ? courseData.ratings.ratingList : []} navigation={navigation} />
+              </View>
+
               <Text
                 style={{
                   marginLeft: 10,
