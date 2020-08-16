@@ -1,7 +1,6 @@
 {
   "expo": {
     "name": "1612074-OnlineLearning",
-    "icon": "./icon.png",
     "slug": "1612074-OnlineLearning",
     "scheme": "accounts.google.com",
     "platforms": [
@@ -27,13 +26,13 @@
       "bundleIdentifier": "example.expo.googlesignin",
       "config": {
         "googleSignIn": {
-          "reservedClientId": "1075264511640-09ii1ptfepe7vdu4irvs83r4spdv20o7.apps.googleusercontent.com"
+          "reservedClientId": "1075264511640-33k4lfk99nkv49ejqgj9dbm99q221ikm.apps.googleusercontent.com"
         }
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-      "package": "example.expo.googlesignin",
+      "package": "1612074-OnlineLearning.expo.googlesignin",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
