@@ -2,20 +2,12 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, AsyncStorage } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ThemeContext from "../../Context/theme-context";
-import * as FileSystem from 'expo-file-system';
-import Youtube from '../../Component/youtube'
-import * as ScreenOrientation from 'expo-screen-orientation';
-import VideoPlayer from 'expo-video-player'
-import { Video } from 'expo-av'
 import SectionCoursesItem from '../Home/SectionCoursesItem/section-courses-item'
 export default function DownloadScreen({ navigation }) {
   const [data, setData] = useState([])
   const [FScreen, setFScreen] = useState(false)
   useEffect(() => {
     const loadData = async () => {
-      // const data = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory + 'video')
-      // console.log(data)
-      // setData(data)
       const data1 = await AsyncStorage.getItem('download')
       setData(JSON.parse(data1).payload)
     }
@@ -28,7 +20,7 @@ export default function DownloadScreen({ navigation }) {
           return (
             <View style={{
               backgroundColor: theme.background, alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "center", height: '100%'
             }}>
               {data.length === 0 ? (
                 <View style={{

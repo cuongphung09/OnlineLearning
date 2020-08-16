@@ -23,9 +23,7 @@ export default class headerRight extends React.Component {
                     onPress={() => navigation.navigate("Profile")}
                 />
                 <CustomMenuIcon
-                    //Menu Text
                     menutext="Menu"
-                    //Menu View Style
                     menustyle={{
                         marginRight: 16,
                         flexDirection: 'row',

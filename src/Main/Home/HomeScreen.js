@@ -1,6 +1,6 @@
 import SectionCourses from "./SectionCourses/section-courses"
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, ImageBackground, TouchableOpacity, Text, ScrollView, AsyncStorage } from 'react-native'
+import { View, StyleSheet, ImageBackground, Text, ScrollView, AsyncStorage } from 'react-native'
 import ThemeContext from '../../../src/Context/theme-context'
 import { REST_API } from "../../../config/api"
 const HomeScreen = ({ navigation }) => {
@@ -12,9 +12,7 @@ const HomeScreen = ({ navigation }) => {
       async function fetchData() {
          const isLoggedInTemp = await AsyncStorage.getItem('isLoggedIn')
          const tokenTemp = await AsyncStorage.getItem('token')
-         console.log(tokenTemp)
          const userInfoTemp = await AsyncStorage.getItem('userInfo')
-         console.log(userInfoTemp)
          setIsLoggedIn(isLoggedInTemp)
          setToken(tokenTemp)
          setUserInfo(userInfoTemp)
@@ -29,6 +27,8 @@ const HomeScreen = ({ navigation }) => {
          })
          const newCourse = await REST_API.getNewestCourse(newInfo)
          const topCourse = await REST_API.getTopCourse(newInfo)
+         const learningCourse = await REST_API.getProcessCourses()
+         const favCourse = await REST_API.getFavCourses()
          let dataTemp = [
             {
                key: 1,
@@ -40,25 +40,36 @@ const HomeScreen = ({ navigation }) => {
                key: 2,
                id: '',
                name: 'Khóa học của tôi',
-               courses: favorite.payload?favorite.payload:[]
+               courses: favorite.payload ? favorite.payload : []
             },
             {
                key: 3,
                id: '',
                name: 'Khóa học mới nhất',
-               courses: newCourse.payload?newCourse.payload:[]
+               courses: newCourse.payload ? newCourse.payload : []
             },
             {
                key: 4,
                id: '',
                name: 'Khóa học nổi bật',
-               courses: topCourse.payload?topCourse.payload:[]
+               courses: topCourse.payload ? topCourse.payload : []
+            },
+            {
+               key: 5,
+               id: '',
+               name: 'Khóa học đang học',
+               courses: learningCourse.payload ? learningCourse.payload : []
+            },
+            {
+               key: 6,
+               id: '',
+               name: 'Khóa học yêu thích',
+               courses: favCourse.payload ? favCourse.payload : []
             }
          ]
          setData(dataTemp)
       }
       fetchData()
-      // getCategory()
    }, []);
    const renderData = (data) => {
       return data.map(item => <SectionCourses key={item.key}
@@ -80,13 +91,11 @@ const HomeScreen = ({ navigation }) => {
          },
       })
       let userInfo = await get.json()
-      // console.log(userInfo)
    }
 
    return (
       <ThemeContext.Consumer>
          {([theme, setTheme]) => {
-            // console.log(data)
             return (
                <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
                   <ImageBackground style={{ height: 100, justifyContent: 'flex-end', margin: 5 }} source={{ uri: 'https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg' }}>

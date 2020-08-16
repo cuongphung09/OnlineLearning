@@ -32,7 +32,7 @@
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-      "package": "1612074-OnlineLearning.expo.googlesignin",
+      "package": "online.learning_1612074",
       "googleServicesFile": "./google-services.json"
     },
     "web": {

@@ -1,15 +1,13 @@
 import React from "react"
 import { View, Text, ScrollView, StyleSheet, Alert } from "react-native"
-// import { ScrollView } from "react-native-gesture-handler"
 import SectionCoursesItem from "../SectionCoursesItem/section-courses-item"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import ThemeContext, { themes } from '../../../Context/theme-context'
 const SectionCourses = (props) => {
     const courses = (props.data)
-    // console.log(courses)
     const renderListItem = (courses) => {
 
-        return courses.map(item => (item.title) ? (<SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />) : (<View key={item.id}></View>))
+        return courses.map(item => (item.title || item.courseTitle) ? (<SectionCoursesItem item={item} key={item.id} onPress={() => props.navigation.navigate('CoursesDetail', { item: item })} />) : (<View key={item.id}></View>))
 
     }
     return (

@@ -1,11 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, ImageBackground } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from '@react-navigation/native';
 import DownloadScreen from '../../../Screen/DownloadScreen';
-// import ListLesson from '../../CoursesDetail/ListLesson/list-lesson';
 const DownloadStack = createStackNavigator();
-// import ImageButton from '../../Common/image-button'
 const DownloadNavigation = (props, navigation) => {
   return (
     <DownloadStack.Navigator

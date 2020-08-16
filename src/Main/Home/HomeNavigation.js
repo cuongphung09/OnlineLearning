@@ -1,13 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, ImageBackground } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from '@react-navigation/native';
-import ProfileScreen from '../../../Screen/ProfileScreen';
 import HomeScreen from './HomeScreen';
-import DownloadScreen from '../../../Screen/DownloadScreen';
-// import ListLesson from '../../CoursesDetail/ListLesson/list-lesson';
 const HomeStack = createStackNavigator();
-// import ImageButton from '../../Common/image-button'
 const HomeNavigation = (props, navigation) => {
   return (
     <HomeStack.Navigator

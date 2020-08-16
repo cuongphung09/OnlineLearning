@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { Avatar } from "react-native-elements";
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
 import ThemeContext from '../src/Context/theme-context'
 import path from '../src/Main/Browse/path-data'
-import Path from '../src/Main/Browse/Path/path'
 import PathItem from '../src/Main/Browse/pathItem/path-item'
 import { ScrollView } from 'react-native';
 export default function PathScreen({ navigation, props }) {
@@ -59,7 +55,6 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     lightText: {
-        // opacity: 0.5,
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20

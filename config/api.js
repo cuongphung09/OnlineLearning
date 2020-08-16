@@ -59,6 +59,8 @@ class API {
         this.getRating = this.getRating.bind(this)
         this.getProgress = this.getProgress.bind(this)
         this.rateCourse = this.rateCourse.bind(this)
+        this.getProcessCourses = this.getProcessCourses.bind(this)
+        this.getFavCourses = this.getFavCourses.bind(this)
     }
     login = async (info) => {
         return await this.instance
@@ -393,6 +395,38 @@ class API {
     rateCourse = async (info) => {
         return await this.instance
             .post(`/course/rating-course`, info)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    getProcessCourses = async () => {
+        return await this.instance
+            .get(`/user/get-process-courses/`)
+            .then((response) => {
+                return response.data || error_exception()
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return error.response.data || error_exception()
+                } else {
+                    console.log(error)
+                    return error_exception()
+                }
+            })
+
+    }
+    getFavCourses = async () => {
+        return await this.instance
+            .get(`/user/get-favorite-courses/`)
             .then((response) => {
                 return response.data || error_exception()
             })

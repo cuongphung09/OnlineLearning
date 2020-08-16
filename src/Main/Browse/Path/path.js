@@ -1,6 +1,5 @@
 import React from "react"
 import { View, Text, ScrollView, StyleSheet, Alert } from "react-native"
-// import { ScrollView } from "react-native-gesture-handler"
 import PathItem from '../pathItem/path-item'
 import { TouchableOpacity } from "react-native-gesture-handler"
 import ThemeContext, { themes } from '../../../Context/theme-context'
@@ -8,7 +7,6 @@ const Path = (props,navigation) => {
     const path = (props.data)
     const renderListItem = (path) => {
         return path.map(item => <PathItem item={item} key={item.id} onPress={
-            // () => props.navigation.navigate('Profile')
             props.onPress
         } />)
     }

@@ -28,7 +28,6 @@ export default function SignUpScreen({ navigation }) {
     const submit = async (navigation) => {
         if (password !== rePassword) {
             Alert.alert('Xác nhận mật khẩu không trùng khớp')
-            console.log(validateEmail(email))
         }
         else if (validateEmail(email) === false) {
             Alert.alert('Email không hợp lệ')
@@ -46,7 +45,6 @@ export default function SignUpScreen({ navigation }) {
                     email: email
                 })
                 let sendEmail = await REST_API.sendActivateEmail(info)
-                console.log(sendEmail)
                 Alert.alert('Đăng ký thành công. Hãy kiểm tra email của bạn!')
                 navigation.navigate('LoginScreen')
             }

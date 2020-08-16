@@ -1,13 +1,12 @@
-import React, { useContext, useState, createContext, useMemo, useEffect } from "react";
-import { Avatar, Icon } from "react-native-elements";
-import { StyleSheet, View, AsyncStorage, Button } from "react-native";
+import React, {  useState, useEffect } from "react";
+import { Avatar } from "react-native-elements";
+import { StyleSheet, View, AsyncStorage } from "react-native";
 import Search from "./src/Main/Search/SearchScreen";
 import SettingScreen from "./Screen/SettingScreen";
 import ProfileScreen from "./Screen/ProfileScreen";
 import "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-// const Tab = createBottomTabNavigator();
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ListCourses from "./src/Courses/ListCourses/list-course";
@@ -26,14 +25,12 @@ import AuthorDetailScreen from "./Screen/AuthorScreen";
 import AuthContext, { users } from "./src/Context/auth-context";
 import SignUpScreen from "./src/Auth/Register/SignUpScreen";
 import LearningScreen from "./Screen/LearningScreen"
-import { TouchableOpacity } from "react-native-gesture-handler";
-// import AuthContext from './src/Context/auth-context'
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const DownloadStack = createStackNavigator();
 const BrowseStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
+console.disableYellowBox = true;
 function Home({ navigation }) {
   return (
     <AuthContext.Consumer>
@@ -69,9 +66,7 @@ function Home({ navigation }) {
                           onPress={() => navigation.navigate("Profile")}
                         />
                         <CustomMenuIcon
-                          //Menu Text
                           menutext="Menu"
-                          //Menu View Style
                           menustyle={{
                             marginRight: 16,
                             flexDirection: "row",
@@ -244,7 +239,6 @@ function Main({ navigation }) {
   return (
     <AuthContext.Consumer>
       {([user, setUser]) => {
-        // console.log(user)
         return (<ThemeContext.Consumer>
           {([theme, setTheme]) => {
             return (
@@ -313,7 +307,6 @@ function Main({ navigation }) {
                       />
                     ),
                   }}
-                // navigation={navigation}
                 />
               </Tab.Navigator>
             );
@@ -374,7 +367,6 @@ export default function App() {
             </Stack.Navigator>
           </NavigationContainer>
         ) : (
-            // isLoggedIn === true ? (
             <NavigationContainer>
               <Stack.Navigator
                 headerMode="screen"
@@ -404,16 +396,6 @@ export default function App() {
                       backgroundColor: theme.header,
                     },
                     headerTintColor: theme.foreground,
-                    // headerRight: ({ navigation }) => (
-                    //   <View>
-                    //     <TouchableOpacity
-                    //       onPress={() => navigation.navigate('Main')}
-                    //       style={styles.headerIconRight}
-                    //     >
-                    //       <MaterialCommunityIcons name="home" color={theme.foreground} size={26} />
-                    //     </TouchableOpacity>
-                    //   </View>
-                    // ),
                   }}
 
                 />
@@ -432,7 +414,6 @@ export default function App() {
                   name="PathDetail"
                   component={PathDetailScreen}
                   options={{
-                    // title: "Paths",
                     headerStyle: {
                       backgroundColor: theme.header,
                     },
@@ -495,27 +476,10 @@ export default function App() {
                     headerShown: false,
                   }}
                 />
-                {/* </Stack.Navigator>
-              </NavigationContainer>
-            ) : (
-                <NavigationContainer>
-                  <Stack.Navigator
-                    headerMode="screen"
-                    screenOptions={() => ({
-                      headerStyle: {
-                        backgroundColor: "#212121",
-                      },
-                      headerTintColor: "white",
-                    })}
-                  > */}
-                {/* <Stack.Screen
-                      options={{ headerShown: false }}
-                      name="LoginScreen"
-                      component={LoginScreen}
-                    /> */}
+                
               </Stack.Navigator>
             </NavigationContainer>
-            // )
+            
           )}
 
 

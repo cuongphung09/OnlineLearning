@@ -6,7 +6,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar } from "react-native-elements";
 import ThemeContext, { themes } from '../../Context/theme-context'
 import authorsData from './authors-data'
-import listCourses from './listCourse-data'
 import PathItem from './pathItem/path-item'
 import pathData from './path-data'
 import { REST_API } from "../../../config/api";
@@ -15,12 +14,12 @@ export default function BrowseScreen({ navigation }) {
   const [newRelease, setNewRelease] = useState()
   const [favorite, setFavorite] = useState()
   const randomBackground = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU",
-    "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
+    // "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQqES9kxsC3orOAqH8EoGnweHcpqhcFYN5W3ne87MTdoAI1bl-J&usqp=CAU",
+    // "https://ak.picdn.net/shutterstock/videos/1019648569/thumb/12.jpg",
+    // "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJlVH1FX8Uoh_JOgnqYkuSJGM_h9qEXjnpFGV-J6zo_0TwbTGo&usqp=CAU",
     "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
-    "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
-    "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+    // "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
+    // "https://image.freepik.com/free-vector/abstract-technology-particle-background_52683-25766.jpg",
   ]
   useEffect(() => {
 
@@ -78,10 +77,8 @@ export default function BrowseScreen({ navigation }) {
       setFavorite(getFavoriteJson.payload)
     }
     getFavorite()
-    // console.log(favorite)
   }, []);
   const renderCategory = (data) => {
-    // console.log(data)
     return data ? data.map(item => <SmallerImageButton
       key={item.key}
       title={item.name}
@@ -193,9 +190,6 @@ export default function BrowseScreen({ navigation }) {
                 </ScrollView>
               </View>
               <View>
-                {/* <Path data={pathData[0].objects} onPress={()=>{navigation.navigate('Profile')}}
-              onPressSeeAll={()=>{navigation.navigate('Path')}}
-              ></Path> */}
 
                 <View style={{ marginBottom: 30, marginLeft: 10 }}>
                   <View style={{ marginBottom: 20, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>

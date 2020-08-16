@@ -41,7 +41,6 @@ const ListCourses = ({ route, navigation, props }) => {
         setData()
     }, []);
     const courses = route.params.data ? route.params.data : courseData
-    // console.log(courses)
     const renderListItem = (courses) => {
         return courses ? courses.map(item => item.title ? (<ListLessonItem item={item} key={item.id} onPress={() => navigation.navigate('CoursesDetail', { item: item })} />) : (<View key={item.id}></View>)) : (<View></View>)
     }

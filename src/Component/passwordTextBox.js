@@ -15,7 +15,6 @@ const PasswordTextBox = () => {
         return (
             <Item floatingLabel>
                 <Icon active name={icon} />
-                {/* <Label>{label}</Label> */}
                 <Input secureTextEntry={password} onChangeText={(e) => setPassword(e)} />
                 <Icon name={icon} onPress={() => changeIcon()} />
             </Item>

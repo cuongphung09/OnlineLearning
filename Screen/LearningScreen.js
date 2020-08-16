@@ -15,8 +15,6 @@ import {
 import { WebView } from 'react-native-webview';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ScreenOrientation from 'expo-screen-orientation';
-import VideoPlayer from 'expo-video-player'
-import { Video } from 'expo-av'
 import { Rating, Avatar } from "react-native-elements";
 import Youtube from '../src/Component/youtube'
 import CircularProgress from '../src/Component/CircularProgress'
@@ -61,267 +59,304 @@ export default function Learning({ navigation, props, route }) {
         }
         loadRating()
     }, [])
-    const FirstRoute = (theme) => (
-        <ScrollView style={[styles.scene, { backgroundColor: theme.background, marginTop: 10, marginLeft: 10 }]} >
+    const FirstRoute = (theme) => {
+        return <ThemeContext.Consumer>
             {
-                data.length !== 0 ? (
-                    data.map((item, index) =>
-                        (<Collapse key={index}>
-                            <CollapseHeader style={{ backgroundColor: theme.background, width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <View style={{ flexDirection: 'column' }}>
-                                    <Text style={{ color: theme.foreground, width: '100%', fontSize: 15, fontWeight: 'bold' }}>Phần {index + 1}: {item.name}</Text>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <MaterialCommunityIcons name='clock' size={20} color={theme.foreground}></MaterialCommunityIcons>
-                                        <Text style={{ color: theme.foreground }}>  {Math.round(item.sumHours * 60, 2)} phút</Text>
-                                    </View>
-
-                                </View>
-
-                                <MaterialCommunityIcons name='chevron-down'></MaterialCommunityIcons>
-                            </CollapseHeader>
-                            <CollapseBody style={{ backgroundColor: theme.background, width: '90%', justifyContent: 'space-between', alignItems: 'center', marginLeft: 10 }}>
-
-                                {
-                                    item.lesson.map((item, index) => (
-
-                                        <TouchableOpacity key={index} style={{ width: '100%', display: 'flex' }}
-                                            onPress={() => {
-                                                setVidURL(item.videoUrl)
-                                            }}
-                                        >
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ color: theme.foreground, width: '100%', fontSize: 15, fontWeight: 'bold' }}>Bài {index + 1}: {item.name}</Text>
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Text style={{ color: theme.foreground }}>  {Math.round(item.hours * 60, 2)} phút</Text>
+                ([theme,setTheme])=>{
+                    return (
+                        <ScrollView style={[styles.scene, { backgroundColor: theme.background, marginTop: 10, marginLeft: 10 }]} >
+                            {
+                                data.length !== 0 ? (
+                                    data.map((item, index) =>
+                                        (<Collapse key={index}>
+                                            <CollapseHeader style={{ backgroundColor: theme.background, width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ color: theme.foreground, width: '100%', fontSize: 15, fontWeight: 'bold' }}>Phần {index + 1}: {item.name}</Text>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <MaterialCommunityIcons name='clock' size={20} color={theme.foreground}></MaterialCommunityIcons>
+                                                        <Text style={{ color: theme.foreground }}>  {Math.round(item.sumHours * 60, 2)} phút</Text>
+                                                    </View>
+                
                                                 </View>
-                                            </View>
-                                        </TouchableOpacity>
-
-
-
-                                    ))
-
-                                }
-                            </CollapseBody>
-                        </Collapse>)
-
-
+                
+                                                <MaterialCommunityIcons name='chevron-down'></MaterialCommunityIcons>
+                                            </CollapseHeader>
+                                            <CollapseBody style={{ backgroundColor: theme.background, width: '90%', justifyContent: 'space-between', alignItems: 'center', marginLeft: 10 }}>
+                
+                                                {
+                                                    item.lesson.map((item, index) => (
+                
+                                                        <TouchableOpacity key={index} style={{ width: '100%', display: 'flex' }}
+                                                            onPress={() => {
+                                                                setVidURL(item.videoUrl)
+                                                            }}
+                                                        >
+                                                            <View style={{ flexDirection: 'column' }}>
+                                                                <Text style={{ color: theme.foreground, width: '100%', fontSize: 15, fontWeight: 'bold' }}>Bài {index + 1}: {item.name}</Text>
+                                                                <View style={{ flexDirection: 'row' }}>
+                                                                    <Text style={{ color: theme.foreground }}>  {Math.round(item.hours * 60, 2)} phút</Text>
+                                                                </View>
+                                                            </View>
+                                                        </TouchableOpacity>
+                
+                
+                
+                                                    ))
+                
+                                                }
+                                            </CollapseBody>
+                                        </Collapse>)
+                
+                
+                                    )
+                                ) : (
+                                        <View></View>
+                                    )
+                            }
+                        </ScrollView>
                     )
-                ) : (
-                        <View></View>
-                    )
+                }
             }
-        </ScrollView>
-    )
-    const SecondRoute = (theme) => (
-        <View style={[styles.scene, { backgroundColor: theme.background, marginTop: 10 }]} >
-            <Text style={{ color: theme.foreground, margin: 10 }}>
-                Không có bài tập
-
-            </Text>
-        </View>
-    )
-    const ThirdRoute = (theme) => (
-        <View style={[styles.scene, { backgroundColor: theme.background, marginTop: 10 }]} >
-            <Text style={{ color: theme.foreground, margin: 10 }}>
-                Không có câu hỏi
-
-            </Text>
-        </View>
-    )
-    const FourthRoute = (theme) => (
-        <View style={[styles.scene, { backgroundColor: theme.background, marginTop: 10 }]} >
-            <Text style={{ color: theme.foreground, margin: 10 }}>
-                Không có ghi chú
-
-            </Text>
-        </View>
-    )
-    const FifthRoute = (theme) => (
-        <ScrollView style={[styles.scene, { backgroundColor: theme.background, marginTop: 10, marginLeft: 10 }]} >
-
-            <View>
-                <Text style={{ color: theme.foreground, fontWeight: 'bold', textAlign: 'center' }}>ĐÁNH GIÁ</Text>
-                <View style={{ alignItems: 'center', margin: 20 }}>
-
-                    {
-                        rating === null ?
-                            (<View>
-                                <Text style={{ color: theme.foreground, alignItems: 'center' }}>Bạn chưa đánh giá khóa học này</Text>
-                                <View style={{
-                                    margin: 20,
-                                    backgroundColor: "white",
-                                    borderRadius: 20,
-                                    padding: 35,
-                                    alignItems: "center",
-                                }}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <Text style={{ color: theme.foreground }}>Điểm nội dung   </Text>
-                                        <Rating
-                                            style={{}}
-                                            type={"custom"}
-                                            imageSize={20}
-                                            tintColor={theme.background}
-                                            ratingColor='yellow'
-                                            ratingBackgroundColor='#c8c7c8'
-                                            startingValue={0}
-                                            onFinishRating={(value) => {
-                                                setRating1(value)
-                                            }}
-                                            startingValue={rating1}
-                                        />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <Text style={{ color: theme.foreground }}>Điểm hình thức  </Text>
-                                        <Rating
-                                            style={{}}
-                                            type={"custom"}
-                                            imageSize={20}
-                                            tintColor={theme.background}
-                                            ratingColor='yellow'
-                                            ratingBackgroundColor='#c8c7c8'
-                                            startingValue={0}
-                                            onFinishRating={(value) => {
-                                                setRating2(value)
-                                            }}
-                                            startingValue={rating2}
-                                        />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                                        <Text style={{ color: theme.foreground }}>Điểm truyền đạt </Text>
-                                        <Rating
-                                            style={{}}
-                                            type={"custom"}
-                                            imageSize={20}
-                                            tintColor={theme.background}
-                                            ratingColor='yellow'
-                                            ratingBackgroundColor='#c8c7c8'
-                                            startingValue={0}
-                                            onFinishRating={(value) => {
-                                                setRating3(value)
-                                            }}
-                                            startingValue={rating3}
-                                        />
-                                    </View>
-                                    <TextInput style={{ color: theme.foreground, height: 40, borderColor: 'gray', borderWidth: 1, borderRadius: 10, height: 100, width: 220, textAlignVertical: 'top', padding: 10, marginBottom: 10 }}
-                                        placeholder='Nhập đánh giá'
-                                        onChangeText={(value) => { setRatingContent(value) }}
-                                        value={ratingContent}
-                                    ></TextInput>
-                                    <TouchableOpacity style={{
-                                        justifyContent: 'center',
-                                        alignSelf: 'center',
-                                        alignItems: 'center',
-                                        borderColor: '#0084BD',
-                                        borderWidth: 1,
-                                        width: Dimensions.get('window').width * 40 / 100,
-                                        height: 40,
-                                        borderRadius: 5
-                                        , marginBottom: 10
-                                    }}
-                                        onPress={async () => {
-                                            sendRating()
-                                        }}
-                                    >
-                                        <Text style={{ color: '#0084BD' }}>Lưu</Text>
-                                    </TouchableOpacity>
+        </ThemeContext.Consumer>
+    }
+    const SecondRoute = (theme) => {
+        return <ThemeContext.Consumer>
+            {
+                ([theme,setTheme])=>{
+                    return (
+                        <View style={[styles.scene, { backgroundColor: theme.background, marginTop: 10 }]} >
+                            <Text style={{ color: theme.foreground, margin: 10 }}>
+                                Không có bài tập
+                
+                            </Text>
+                        </View>
+                    )
+                }
+            }
+        </ThemeContext.Consumer>
+    }
+    const ThirdRoute = (theme) => {
+        return <ThemeContext.Consumer>
+            {
+                ([theme,setTheme])=>{
+                    return (
+                        <View style={[styles.scene, { backgroundColor: theme.background, marginTop: 10 }]} >
+                            <Text style={{ color: theme.foreground, margin: 10 }}>
+                                Không có câu hỏi
+                
+                            </Text>
+                        </View>
+                    )
+                }
+            }
+        </ThemeContext.Consumer>
+    }
+    const FourthRoute = (theme) => {
+        return (<ThemeContext.Consumer>
+            {
+                (([theme,setTheme])=>{
+                    return (
+                        <View style={[styles.scene, { backgroundColor: theme.background, marginTop: 10 }]} >
+                            <Text style={{ color: theme.foreground, margin: 10 }}>
+                                Không có ghi chú
+                
+                            </Text>
+                        </View>
+                    )
+                })
+            }
+        </ThemeContext.Consumer>)
+    }
+    const FifthRoute = (theme) => {
+        return <ThemeContext.Consumer>
+            {
+                ([theme,setTheme])=>{
+                    return (
+                        <ScrollView style={[styles.scene, { backgroundColor: theme.background, marginTop: 10, marginLeft: 10 }]} >
+                
+                            <View>
+                                <Text style={{ color: theme.foreground, fontWeight: 'bold', textAlign: 'center' }}>ĐÁNH GIÁ</Text>
+                                <View style={{ alignItems: 'center', margin: 20 }}>
+                
+                                    {
+                                        rating === null ?
+                                            (<View>
+                                                <Text style={{ color: theme.foreground, alignItems: 'center' }}>Bạn chưa đánh giá khóa học này</Text>
+                                                <View style={{
+                                                    margin: 20,
+                                                    backgroundColor: theme.background,
+                                                    borderRadius: 20,
+                                                    padding: 35,
+                                                    alignItems: "center",
+                                                }}>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <Text style={{ color: theme.foreground }}>Điểm nội dung   </Text>
+                                                        <Rating
+                                                            style={{}}
+                                                            type={"custom"}
+                                                            imageSize={20}
+                                                            tintColor={theme.background}
+                                                            ratingColor='yellow'
+                                                            ratingBackgroundColor='#c8c7c8'
+                                                            startingValue={0}
+                                                            onFinishRating={(value) => {
+                                                                setRating1(value)
+                                                            }}
+                                                            startingValue={rating1}
+                                                        />
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <Text style={{ color: theme.foreground }}>Điểm hình thức  </Text>
+                                                        <Rating
+                                                            style={{}}
+                                                            type={"custom"}
+                                                            imageSize={20}
+                                                            tintColor={theme.background}
+                                                            ratingColor='yellow'
+                                                            ratingBackgroundColor='#c8c7c8'
+                                                            startingValue={0}
+                                                            onFinishRating={(value) => {
+                                                                setRating2(value)
+                                                            }}
+                                                            startingValue={rating2}
+                                                        />
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                                                        <Text style={{ color: theme.foreground }}>Điểm truyền đạt </Text>
+                                                        <Rating
+                                                            style={{}}
+                                                            type={"custom"}
+                                                            imageSize={20}
+                                                            tintColor={theme.background}
+                                                            ratingColor='yellow'
+                                                            ratingBackgroundColor='#c8c7c8'
+                                                            startingValue={0}
+                                                            onFinishRating={(value) => {
+                                                                setRating3(value)
+                                                            }}
+                                                            startingValue={rating3}
+                                                        />
+                                                    </View>
+                                                    <TextInput style={{ color: theme.foreground, height: 40, borderColor: 'gray', borderWidth: 1, borderRadius: 10, height: 100, width: 220, textAlignVertical: 'top', padding: 10, marginBottom: 10 }}
+                                                        placeholder='Nhập đánh giá'
+                                                        onChangeText={(value) => { setRatingContent(value) }}
+                                                        value={ratingContent}
+                                                    ></TextInput>
+                                                    <TouchableOpacity style={{
+                                                        justifyContent: 'center',
+                                                        alignSelf: 'center',
+                                                        alignItems: 'center',
+                                                        borderColor: '#0084BD',
+                                                        borderWidth: 1,
+                                                        width: Dimensions.get('window').width * 40 / 100,
+                                                        height: 40,
+                                                        borderRadius: 5
+                                                        , marginBottom: 10
+                                                    }}
+                                                        onPress={async () => {
+                                                            sendRating()
+                                                        }}
+                                                    >
+                                                        <Text style={{ color: '#0084BD' }}>Lưu</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>) :
+                                            (<View>
+                                                <View style={{
+                                                    backgroundColor: theme.background,
+                                                    alignItems: "center",
+                                                }}>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <Text style={{ color: theme.foreground }}>Điểm nội dung   </Text>
+                                                        <Rating
+                                                            style={{}}
+                                                            type={"custom"}
+                                                            imageSize={20}
+                                                            tintColor={theme.background}
+                                                            ratingColor='yellow'
+                                                            ratingBackgroundColor='#c8c7c8'
+                                                            startingValue={0}
+                                                            onFinishRating={(value) => {
+                                                                setRating1(value)
+                                                            }}
+                                                            startingValue={rating1}
+                                                        />
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <Text style={{ color: theme.foreground }}>Điểm hình thức  </Text>
+                                                        <Rating
+                                                            style={{}}
+                                                            type={"custom"}
+                                                            imageSize={20}
+                                                            tintColor={theme.background}
+                                                            ratingColor='yellow'
+                                                            ratingBackgroundColor='#c8c7c8'
+                                                            startingValue={0}
+                                                            onFinishRating={(value) => {
+                                                                setRating2(value)
+                                                            }}
+                                                            startingValue={rating2}
+                                                        />
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                                                        <Text style={{ color: theme.foreground }}>Điểm truyền đạt </Text>
+                                                        <Rating
+                                                            style={{}}
+                                                            type={"custom"}
+                                                            imageSize={20}
+                                                            tintColor={theme.background}
+                                                            ratingColor='yellow'
+                                                            ratingBackgroundColor='#c8c7c8'
+                                                            startingValue={0}
+                                                            onFinishRating={(value) => {
+                                                                setRating3(value)
+                                                            }}
+                                                            startingValue={rating3}
+                                                        />
+                                                    </View>
+                                                    <TextInput style={{ color: theme.foreground, height: 40, borderColor: 'gray', borderWidth: 1, borderRadius: 10, height: 100, width: 220, textAlignVertical: 'top', padding: 10, marginBottom: 10 }}
+                                                        placeholder='Nhập đánh giá'
+                                                        onChangeText={(text) => { setRatingContent(text) }}
+                                                        value={ratingContent}
+                                                    ></TextInput>
+                                                    <TouchableOpacity style={{
+                                                        justifyContent: 'center',
+                                                        alignSelf: 'center',
+                                                        alignItems: 'center',
+                                                        borderColor: '#0084BD',
+                                                        borderWidth: 1,
+                                                        width: Dimensions.get('window').width * 40 / 100,
+                                                        height: 40,
+                                                        borderRadius: 5
+                                                        , marginBottom: 10
+                                                    }}
+                                                        onPress={async () => {
+                                                            sendRating()
+                                                        }}
+                                                    >
+                                                        <Text style={{ color: '#0084BD' }}>Lưu</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>)
+                                    }
                                 </View>
-                            </View>) :
-                            (<View>
-                                <View style={{
-                                    // margin: 20,
-                                    backgroundColor: "white",
-                                    // borderRadius: 20,
-                                    // padding: 35,
-                                    alignItems: "center",
-                                }}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <Text style={{ color: theme.foreground }}>Điểm nội dung   </Text>
-                                        <Rating
-                                            style={{}}
-                                            type={"custom"}
-                                            imageSize={20}
-                                            tintColor={theme.background}
-                                            ratingColor='yellow'
-                                            ratingBackgroundColor='#c8c7c8'
-                                            startingValue={0}
-                                            onFinishRating={(value) => {
-                                                setRating1(value)
-                                            }}
-                                            startingValue={rating1}
-                                        />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <Text style={{ color: theme.foreground }}>Điểm hình thức  </Text>
-                                        <Rating
-                                            style={{}}
-                                            type={"custom"}
-                                            imageSize={20}
-                                            tintColor={theme.background}
-                                            ratingColor='yellow'
-                                            ratingBackgroundColor='#c8c7c8'
-                                            startingValue={0}
-                                            onFinishRating={(value) => {
-                                                setRating2(value)
-                                            }}
-                                            startingValue={rating2}
-                                        />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                                        <Text style={{ color: theme.foreground }}>Điểm truyền đạt </Text>
-                                        <Rating
-                                            style={{}}
-                                            type={"custom"}
-                                            imageSize={20}
-                                            tintColor={theme.background}
-                                            ratingColor='yellow'
-                                            ratingBackgroundColor='#c8c7c8'
-                                            startingValue={0}
-                                            onFinishRating={(value) => {
-                                                setRating3(value)
-                                            }}
-                                            startingValue={rating3}
-                                        />
-                                    </View>
-                                    <TextInput style={{ color: theme.foreground, height: 40, borderColor: 'gray', borderWidth: 1, borderRadius: 10, height: 100, width: 220, textAlignVertical: 'top', padding: 10, marginBottom: 10 }}
-                                        placeholder='Nhập đánh giá'
-                                        onChangeText={(text) => { setRatingContent(text) }}
-                                        value={ratingContent}
-                                    ></TextInput>
-                                    <TouchableOpacity style={{
-                                        justifyContent: 'center',
-                                        alignSelf: 'center',
-                                        alignItems: 'center',
-                                        borderColor: '#0084BD',
-                                        borderWidth: 1,
-                                        width: Dimensions.get('window').width * 40 / 100,
-                                        height: 40,
-                                        borderRadius: 5
-                                        , marginBottom: 10
-                                    }}
-                                        onPress={async () => {
-                                            sendRating()
-                                        }}
-                                    >
-                                        <Text style={{ color: '#0084BD' }}>Lưu</Text>
-                                    </TouchableOpacity>
+                            </View>
+                            <View>
+                                <Text style={{ color: theme.foreground, fontWeight: 'bold', textAlign: 'center' }}>BẠN ĐÃ HỌC ĐƯỢC</Text>
+                                <View style={{ alignItems: 'center', margin: 20 }}>
+                                    <CircularProgress percent={progress} radius={75} textFontColor={theme.foreground} ></CircularProgress>
                                 </View>
-                            </View>)
-                    }
-                </View>
-            </View>
-            <View>
-                <Text style={{ color: theme.foreground, fontWeight: 'bold', textAlign: 'center' }}>BẠN ĐÃ HỌC ĐƯỢC</Text>
-                <View style={{ alignItems: 'center', margin: 20 }}>
-                    <CircularProgress percent={progress} radius={75} ></CircularProgress>
-                </View>
-
-            </View>
-            <View>
-
-            </View>
-        </ScrollView>
-    )
+                
+                            </View>
+                            <View>
+                
+                            </View>
+                        </ScrollView>
+                    )
+                }
+            }
+        </ThemeContext.Consumer>
+    }
     const initialLayout = { width: Dimensions.get('window').width };
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([

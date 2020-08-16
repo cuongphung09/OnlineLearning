@@ -12,7 +12,7 @@ import SectionCourse from '../src/Main/Home/SectionCourses/section-courses'
 import { REST_API } from '../config/api';
 
 export default function AuthorDetailScreen({ navigation, props, route }) {
-    const id = route.params.item.id
+    const id = route.params.item.id || route.params.item
     // console.log(id)
     const [textHeight, setTextHeight] = useState(80)
     const [chevron, setchevron] = useState('chevron-down')
@@ -32,9 +32,7 @@ export default function AuthorDetailScreen({ navigation, props, route }) {
                 ([theme, setTheme]) => {
                     return (
                         <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
-                            {
-                                // console.log(authorData)
-                            }
+
                             <View style={{ margin: 10 }}>
                                 <View style={styles.avatar}>
                                     <Avatar
@@ -42,11 +40,11 @@ export default function AuthorDetailScreen({ navigation, props, route }) {
                                         size={75}
                                         rounded
                                         source={{
-                                            uri: route.params.item.avatar,
+                                            uri: route.params.item.avaUri ? route.params.item.avaUri : (authorData ? authorData.avatar : ''),
                                         }}
 
                                     />
-                                    <Text style={{ color: theme.foreground, fontSize: 20, fontWeight: 'bold' }}>{route.params.item.name}</Text>
+                                    <Text style={{ color: theme.foreground, fontSize: 20, fontWeight: 'bold' }}>{route.params.item.name ? route.params.item.name : (authorData ? authorData.name : '')}</Text>
                                     <Text style={{ color: theme.foreground, fontSize: 12, margin: 5 }}>
                                         {
                                             authorData ? authorData.major : ''

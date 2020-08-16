@@ -9,7 +9,6 @@ export default function SettingScreen({ navigation }) {
     return (
         <AuthContext.Consumer>
             {([user, setUser]) => {
-                // console.log(user)
                 return (
                     <ThemeContext.Consumer>
                         {

@@ -12,12 +12,8 @@ import {
   Image,
   Share
 } from "react-native";
-import { WebView } from 'react-native-webview';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-// import { Constants, Video } from 'expo';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import VideoPlayer from 'expo-video-player'
-import { Video } from 'expo-av'
 import { Rating, Avatar } from "react-native-elements";
 import ThemeContext from "../Context/theme-context";
 import RatingDetail from '../Component/ratingDetail'
@@ -25,7 +21,7 @@ import RatingList from '../Component/ratingList'
 import SectionCourse from '../Main/Home/SectionCourses/section-courses'
 import { REST_API } from "../../config/api";
 import Youtube from "../Component/youtube"
-import * as FileSystem from 'expo-file-system';
+// import * as FileSystem from 'expo-file-system';
 export default function CoursesDetail({ navigation, props, route }) {
   const [textHeight, setTextHeight] = useState(75);
   const [chevron, setchevron] = useState("chevron-down");
@@ -43,7 +39,6 @@ export default function CoursesDetail({ navigation, props, route }) {
   useEffect(() => {
     const getCourseDetail = async () => {
       const tokenTemp = await AsyncStorage.getItem("token");
-      console.log(tokenTemp)
       const userInfoTemp = await AsyncStorage.getItem("userInfo");
       let pay = await REST_API.checkPaid(item.id)
       setPaid(pay.payload)
@@ -110,12 +105,9 @@ export default function CoursesDetail({ navigation, props, route }) {
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          // shared with activity type of result.activityType
         } else {
-          // shared
         }
       } else if (result.action === Share.dismissedAction) {
-        // dismissed
       }
     } catch (error) {
       alert(error.message);
@@ -134,13 +126,11 @@ export default function CoursesDetail({ navigation, props, route }) {
               paddingBottom: 30,
             }}
           >
-            {/* {console.log(courseData.imageUrl)} */}
             <View>
               {
                 vidURL === null ? (
                   <View>
                     <Image style={[styles.img], { height: 200 }} source={{ uri: courseData ? courseData.imageUrl : null }}></Image>
-                    {/* <Text>ABC</Text> */}
                   </View>
 
                 ) : (
@@ -197,21 +187,18 @@ export default function CoursesDetail({ navigation, props, route }) {
               </View>
             </View>
             {
-              // console.log(courseData)
             }
             <ScrollView
               style={[styles.container, { backgroundColor: theme.background }]}
             >
-              {/* <Youtube youtubeLink={vidURL} style={{ height: 200, width: 360, display: 'flex' }}></Youtube> */}
               <Text style={[styles.title, { color: theme.foreground }]}>
-                {courseData ? courseData.title : ""}
+                {courseData ? courseData.title : route.params.item.title}
               </Text>
               <Text style={[styles.subtitle, { color: theme.foreground }]}>
                 {courseData ? courseData.subtitle : ""}
               </Text>
 
               <View style={styles.rating}>
-                {/* {console.log(courseData.id)} */}
                 <Rating
                   type={"custom"}
                   imageSize={20}
@@ -364,6 +351,7 @@ export default function CoursesDetail({ navigation, props, route }) {
                       //   ]
                       // }))
                       // console.log(temp)
+                      await AsyncStorage.removeItem('download')
                     }}
                   >
                     <MaterialCommunityIcons
@@ -538,7 +526,6 @@ export default function CoursesDetail({ navigation, props, route }) {
                                     justifyContent: "space-between",
                                     alignItems: "center",
                                     marginLeft: 10,
-                                    // width: '65%'
                                   }}
                                 >
                                   <TouchableOpacity disabled={!ls.isPreview}
@@ -582,14 +569,21 @@ export default function CoursesDetail({ navigation, props, route }) {
                   </Text>
               <View style={{ width: "95%", marginLeft: 10, marginRight: 0, flex: 1, flexDirection: 'row', marginBottom: 30 }}>
                 <View style={{ marginTop: 10, width: '40%', justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
-                  <Avatar
-                    containerStyle={{}}
-                    size={80}
-                    rounded
-                    source={{
-                      uri: courseData ? courseData.instructor.avatar : 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
-                    }}
-                  />
+                  <TouchableOpacity
+                    onPress={
+                      () => { navigation.navigate('Author', { item: courseData.instructor.id }) }
+                    }
+                  >
+                    <Avatar
+                      containerStyle={{}}
+                      size={80}
+                      rounded
+                      source={{
+                        uri: courseData ? courseData.instructor.avatar : 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
+                      }}
+                    />
+                  </TouchableOpacity>
+
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.soldNumber : '0'}</Text> học viên</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.totalCourse : '0'}</Text> khóa học</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? courseData.instructor.averagePoint.toFixed(1) : '0'}</Text>/5 điểm</Text>
@@ -649,7 +643,6 @@ export default function CoursesDetail({ navigation, props, route }) {
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.averagePoint !== '' ? (Math.round((courseData.contentPoint) * 10) / 10) : '0') : '0'}</Text> điểm nội dung</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.averagePoint !== '' ? (Math.round((courseData.formalityPoint) * 100) / 100) : '0') : '0'}</Text> điểm hình thức</Text>
                   <Text style={{ color: theme.foreground }}><Text style={{ fontWeight: 'bold' }}>{courseData ? (courseData.averagePoint !== '' ? (Math.round((courseData.presentationPoint) * 100) / 100) : '0') : '0'}</Text> điểm truyền đạt</Text>
-                  {/* courseData ? (courseData.ratings.ratingList[0] ? courseData.ratings.ratingList[0].contentPoint : '0') : '0' */}
                 </View>
                 <View style={{ marginTop: 10, width: '55%' }}>
                   <RatingDetail data={courseData ? courseData.ratings : {}} navigation={navigation} />

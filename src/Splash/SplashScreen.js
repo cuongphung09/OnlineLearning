@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Button, ProgressBarAndroid, AsyncStorage } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, ProgressBarAndroid } from "react-native";
 import ThemeContext from '../Context/theme-context'
 export default function SplashScreen({ navigation }) {
     const [count, setCount] = useState(0)
@@ -12,8 +10,6 @@ export default function SplashScreen({ navigation }) {
         }, 1);
         if (count > 99) {
             clearInterval(interval)
-            // navigation.navigate('LoginScreen')
-
         }
         return () => clearInterval(interval);
     }, [count]);

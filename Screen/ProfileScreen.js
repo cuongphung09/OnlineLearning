@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, AsyncStorage, Modal, Image, TouchableHighlight, Alert, Dimensions, TouchableHighlightBase } from 'react-native';
 import { Avatar, Icon } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";

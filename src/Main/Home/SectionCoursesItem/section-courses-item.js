@@ -2,7 +2,6 @@ import React from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
 import ThemeContext from '../../../Context/theme-context'
 const SectionCoursesItem = (props) => {
-    // console.log(props.item)
     return (
         <ThemeContext.Consumer>
             {
@@ -10,15 +9,14 @@ const SectionCoursesItem = (props) => {
                     return (
                         <TouchableOpacity style={[styles.container, {}]} onPress={props.onPress}>
                             <View style={styles.imgContainer}>
-                                <Image style={styles.img} source={{ uri: props.item.imageUrl }}></Image>
+                                <Image style={styles.img} source={{ uri: props.item.imageUrl || props.item.courseImage }}></Image>
                             </View>
 
                             <View style={styles.textContainer}>
-                                {/* {console.log(props.item)} */}
-                                <Text style={[styles.title, { color: theme.foreground }]}>{props.item.title}</Text>
-                                {/* <Text style={[styles.text, { color: theme.foreground }]}>{props.item.author}</Text> */}
-                                <Text style={[styles.text, { color: theme.foreground }]}>{props.item.totalHours} giờ</Text>
-
+                                <Text style={[styles.title, { color: theme.foreground }]}>{props.item.title || props.item.courseTitle}</Text>
+                                {
+                                    props.item.totalHours ? (<Text style={[styles.text, { color: theme.foreground }]}>{props.item.totalHours} giờ</Text>) : (props.item.process ? (<Text style={[styles.text, { color: theme.foreground }]}>{(Math.round((props.item.process) * 100) / 100)} %</Text>) : (<View></View>))
+                                }
                             </View>
                         </TouchableOpacity>
                     )

@@ -10,7 +10,6 @@ import ListLessonItem from '../src/Courses/ListCoursesItem/list-courses-item'
 import { render } from 'react-dom';
 
 export default function PathDetailScreen({ navigation, props, route }) {
-    // console.log(route.params.item)
     const [textHeight, setTextHeight] = useState(80)
     const [chevron, setchevron] = useState('chevron-down')
     const renderListItem = (courses, theme) => {

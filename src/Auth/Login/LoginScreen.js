@@ -19,31 +19,26 @@ export default function LoginScreen({ navigation }) {
     const [userOpacity, setUserOpacity] = useState(0.7)
     const [passwordOpacity, setPasswordOpacity] = useState(0.7)
     const [forgetOpacity, setForgetOpacity] = useState(0.7)
-    const [username, setUsername] = useState('cuongphung09111998@gmail.com')
+    const [username, setUsername] = useState('')
     const [forget, setForget] = useState('')
-    const [password, setPassword] = useState('Cuong1998')
+    const [password, setPassword] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [token, setToken] = useState('')
     const [userInfo, setUserInfo] = useState()
     const [loading, setLoading] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
     const discovery = useAutoDiscovery('https://accounts.google.com');
-    // Request
     const [request, response, promptAsync] = useAuthRequest(
         {
-            // responseType: ResponseType.Token,
             clientId: '1075264511640-09ii1ptfepe7vdu4irvs83r4spdv20o7.apps.googleusercontent.com',
             redirectUri: makeRedirectUri({
-                // For usage in bare and standalone
                 native: 'com.googleusercontent.apps.GOOGLE_GUID:/oauthredirect',
                 useProxy,
             }),
             scopes: ['openid', 'profile'],
 
-            // Optionally should the user be prompted to select or switch accounts
             prompt: Prompt.SelectAccount,
 
-            // Optional
             extraParams: {
             },
         },
@@ -54,21 +49,22 @@ export default function LoginScreen({ navigation }) {
 
         const info = JSON.stringify({
             "user": {
-                "email": "",
+                "email": "cuongphung09111998@gmail.com",
                 "id": code
             }
         })
-        console.log(code)
         const login = await REST_API.loginGoogle(info)
-        console.log(login)
         if (login.message === 'OK') {
             setUsername('')
             setPassword('')
-            // setUser(login.userInfo)
-            AsyncStorage.setItem('isLoggedIn', 'true')
             AsyncStorage.setItem('token', login.token)
-            AsyncStorage.setItem('userInfo', JSON.stringify(login.userInfo))
-            navigation.navigate('Main')
+            const userIf = await REST_API.getInfo()
+            if (userIf.message === 'OK') {
+                AsyncStorage.setItem('isLoggedIn', 'true')
+                AsyncStorage.setItem('userInfo', JSON.stringify(userIf.payload))
+                navigation.navigate('Main')
+            }
+
         }
     }
     useEffect(() => {
@@ -114,7 +110,6 @@ export default function LoginScreen({ navigation }) {
         }
     }
 
-    // const background = { uri: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&w=1000&q=80' }
     return (
         <AuthContext.Consumer>
             {([user, setUser]) => {
@@ -178,8 +173,7 @@ export default function LoginScreen({ navigation }) {
                                                 promptAsync({ useProxy });
                                             }}
                                         >
-                                            {/* <MaterialCommunityIcons name='google' size={20}></MaterialCommunityIcons> */}
-                                            {/* <Image source={require('../../../assets/btn_google_light.png')} style={{ width: 50, height: 50 }} /> */}
+                                            <Image source={require('../../../assets/btn_google_light.png')} style={{ width: 50, height: 50 }} />
                                         </TouchableOpacity>
                                         <View style={styles.centeredView, { backgroundColor: theme.background }}>
                                             <Modal
@@ -230,7 +224,6 @@ export default function LoginScreen({ navigation }) {
                                             </Modal>
                                         </View>
                                     </View>
-                                    // </ImageBackground>
                                 )
 
                         }}

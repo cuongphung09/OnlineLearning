@@ -17,27 +17,30 @@ const ListCoursesItem = (props) => {
             <View style={styles.imgContainer}>
               <Image
                 style={styles.img}
-                source={{ uri: props.item.imageUrl }}
+                source={{ uri: props.item.imageUrl || props.item.courseImage }}
               ></Image>
             </View>
 
             <View style={styles.textContainer}>
               <Text style={[styles.title, { color: theme.foreground }]}>
-                {props.item.title}
+                {props.item.title || props.item.courseTitle}
               </Text>
-              
+
               <Text style={[styles.text, { color: theme.foreground }]}>
-                {props.item.author}
+                {props.item.author || props.item.instructorName}
               </Text>
               <View style={{ flexDirection: "row" }}>
-                <Text
+                {/* <Text
                   style={[
                     styles.text,
                     { flex: 1, color: theme.foreground, flexWrap: "wrap" },
                   ]}
                 >
                   {props.item.totalHours || props.item.duration} giờ
-                </Text>
+                </Text> */}
+                {
+                  props.item.totalHours ? (<Text style={[styles.text, { color: theme.foreground }]}>{props.item.totalHours || props.item.duration} giờ</Text>) : (props.item.process ? (<Text style={[styles.text, { color: theme.foreground }]}>{(Math.round((props.item.process) * 100) / 100)} %</Text>) : (<View></View>))
+                }
               </View>
             </View>
           </TouchableOpacity>

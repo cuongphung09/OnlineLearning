@@ -7,6 +7,3 @@ export const users = {
 }
 const AuthContext = React.createContext(null);
 export default AuthContext
-// export function useAuth() {
-//   return useContext(AuthContext);
-// }
